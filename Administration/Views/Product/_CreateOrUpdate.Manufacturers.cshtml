@@ -6,22 +6,12 @@
 {
     if (Model.NumberOfAvailableManufacturers > 0)
     {
-        <script>
-			function onProductManufacturerEdit(e) {
-                $(e.form).find('#Manufacturer').select2('val', e.dataItem['ManufacturerId']);
-			}
-
-			function onProductManufacturerDataBound(e) {
-				$('#Manufacturer').selectWrapper({ resetDataUrl: '@Url.Action("AllManufacturers", "Manufacturer")' });
-			}
-        </script>
-	
-		@(Html.Telerik().Grid<ProductModel.ProductManufacturerModel>()
+        var grid = Html.Telerik().Grid<ProductModel.ProductManufacturerModel>()
             .Name("productmanufacturers-grid")
-            .DataKeys(keys =>
-            {
-                keys.Add(x => x.Id);
-            })
+                .DataKeys(keys =>
+                {
+                    keys.Add(x => x.Id);
+                })
             .DataBinding(dataBinding =>
             {
                 dataBinding.Ajax()
@@ -50,13 +40,37 @@
                 })
                 .Width(180);
             })
-            .ToolBar(commands => commands.Insert())
+            
             .ClientEvents(events =>
 			{
 				events.OnEdit("onProductManufacturerEdit");
 				events.OnDataBound("onProductManufacturerDataBound");
 			})
-            .EnableCustomBinding(true))
+            .EnableCustomBinding(true);
+        
+        <script>
+			function onProductManufacturerEdit(e) {
+                $(e.form).find('#Manufacturer').select2('val', e.dataItem['ManufacturerId']);
+			}
+
+			function onProductManufacturerDataBound(e) {
+				$('#Manufacturer').selectWrapper({ resetDataUrl: '@Url.Action("AllManufacturers", "Manufacturer")' });
+			}
+        </script>
+	
+		if (Model.ProductTypeId == (int)SmartStore.Core.Domain.Catalog.ProductType.SportFacility)
+        {
+            if (Model.NumOfManufacturers == 0)
+            {
+                grid.ToolBar(commands => commands.Insert());
+            }
+        }
+        else
+        {
+            grid.ToolBar(commands => commands.Insert());
+        }
+            
+        @(grid)
     }
     else
     {

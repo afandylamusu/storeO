@@ -1,0 +1,82 @@
+﻿@model ProductModel
+@using Telerik.Web.Mvc.UI;
+@using Telerik.Web.Mvc.UI.Html;
+
+<div id="scheduler"></div>
+
+<script>
+    YUI().use(
+  'aui-scheduler',
+  function (Y) {
+      var events = [
+        {
+            content: 'AllDay',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 5, 23, 59),
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 5, 0)
+        },
+        {
+            color: '#8D8',
+            content: 'Colorful',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 6, 6),
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 6, 2)
+        },
+        {
+            content: 'MultipleDays',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 8),
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 4)
+        },
+        {
+            content: 'Disabled',
+            disabled: true,
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 8, 5),
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 8, 1)
+        },
+        {
+            content: 'Meeting',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 7, 7),
+            meeting: true,
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 7, 3)
+        },
+        {
+            color: '#88D',
+            content: 'Overlap',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 5, 4),
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 5, 1)
+        },
+        {
+            content: 'Reminder',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 4, 1),
+            reminder: true,
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 4, 0)
+        },
+        {
+            content: '<a href="http://localhost:6108/Admin/Product/Edit/36">Game IV</a> 500.00 - #100',
+            endDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 4, 8),
+            reminder: true,
+            startDate: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 4, 7)
+        }
+      ];
+
+      var agendaView = new Y.SchedulerAgendaView();
+      var dayView = new Y.SchedulerDayView();
+      var eventRecorder = new Y.SchedulerEventRecorder();
+      var monthView = new Y.SchedulerMonthView();
+      var weekView = new Y.SchedulerWeekView();
+
+      new Y.Scheduler(
+        {
+            activeView: weekView,
+            boundingBox: '#scheduler',
+            date: new Date(@DateTime.Now.Year, @DateTime.Now.Month, 4),
+            //eventRecorder: eventRecorder,
+            items: events,
+            render: true,
+            views: [dayView, weekView, monthView, agendaView]
+        }
+      );
+  }
+);
+</script>
+
+
+

@@ -171,6 +171,15 @@
 					@Html.ValidationMessageFor(model => model.MaximumOrderAmount)
 				</td>
 			</tr>
+            <tr>
+                <td class="adminTitle">
+                    @Html.SmartLabelFor(model => model.MinimumBookingTime)
+                </td>
+                <td class="adminData">
+                    @Html.Telerik().TimePickerFor(model => model.MinimumBookingTime)
+                    @Html.ValidationMessageFor(model => model.MinimumBookingTime)
+                </td>
+            </tr>
 			<tr>
 				<td class="adminTitle">
 					@Html.SmartLabelFor(model => model.AmountRestrictionContext)

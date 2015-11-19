@@ -200,10 +200,6 @@
                                 @ILS.GetResource("SqlStandard") <strong>@ILS.GetResource("Recommended")</strong>
                                 @Html.RadioButton("DataProvider", "sqlserver", (Model.DataProvider == "sqlserver"), new { id = "provider_sqlserver" })
                             </label>
-                            <label class="radio">
-                                @ILS.GetResource("MySQL") <strong>@ILS.GetResource("Recommended")</strong>
-                                @Html.RadioButton("DataProvider", "mysql", (Model.DataProvider == "mysql"), new { id = "provider_sqlserver" })
-                            </label>
                         </div>
                         <div id="sqlConnectionInfo" style="display: none">
                             <div class="control-group">

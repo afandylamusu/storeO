@@ -1,0 +1,11 @@
+﻿FriendlyName: Sport Center Product
+Description: Provides sport center products for rent.
+SystemName: Lince.SportCenter
+Group: Developer
+Version: 1.0.0.0
+Author: Afandy Lamusu
+MinAppVersion: 2.2.0
+DisplayOrder: 1
+FileName: Lince.SportCenter.dll
+ResourceRootKey: Plugins.Lince.SportCenter
+Url: http://community.smartstore.com/marketplace/file/11-lince-spc-plugin/

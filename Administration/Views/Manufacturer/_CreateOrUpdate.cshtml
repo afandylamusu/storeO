@@ -7,9 +7,10 @@
 @Html.SmartStore().TabStrip().Name("manufacturer-edit").Items(x =>
 {
     x.Add().Text(T("Admin.Catalog.Manufacturers.Info").Text).Content(TabInfo()).Selected(true);
+    //x.Add().Text(T("Admin.Catalog.SportCenter.Schedules.Info").Text).Content(TabSchedules());
     x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo());
     x.Add().Text(T("Admin.Catalog.Manufacturers.Products").Text).Content(TabProducts());
-	x.Add().Text(T("Admin.Common.Stores").Text).Content(TabStores());
+    x.Add().Text(T("Admin.Common.Stores").Text).Content(TabStores());
     
     //generate an event
     EngineContext.Current.Resolve<IEventPublisher>().Publish(new TabStripCreated(x, "manufacturer-edit", this.Html, this.Model));
@@ -387,6 +388,11 @@
         </tr>
     </table>
 }
+
+@*@helper TabSchedules()
+{
+
+}*@
 
 <script type="text/javascript">
     $(document).ready(function () {

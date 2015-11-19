@@ -122,10 +122,19 @@
 
 	<!--These need to be at the end of the page to ensure that all the controls requiring scripts have been rendered-->
 	@(Html.Telerik().ScriptRegistrar()
-		.jQuery(false)
-		.jQueryValidation(false)
-		.Globalization(true)
-	)
+        //.DefaultGroup(group =>
+        //{
+        //    group.Add("telerik.common.js");         // That file is always required
+        //    group.Add("telerik.grid.js");
+        //    group.Add("telerik.grid.filtering.js"); // Include only if filtering is enabled
+        //    group.Add("telerik.grid.grouping.js");  // Include only if grouping is enabled
+        //    group.Add("telerik.grid.editing.js");   // Include only if editing is enabled
+        //    group.Add("telerik.timepicker.js");   // Include only if editing is enabled
+        //})
+        .jQuery(false)
+        .jQueryValidation(false)
+        .Globalization(true)
+    )
 </body>
 </html>
 
