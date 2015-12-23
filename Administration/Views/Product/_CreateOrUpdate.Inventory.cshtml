@@ -23,6 +23,7 @@
 				$('#pnlNotifyForQuantityBelow').hide();
 				$('#pnlAllowBackInStockSubscriptions').hide();
 				$('#pnlBackorders').hide();
+				$('#pnlIsRentStock').hide();
 			}
 			else if (selectedManageInventoryMethodId == '@((int)ManageInventoryMethod.ManageStock)') {
 				$('#pnlStockQuantity').show();
@@ -39,6 +40,7 @@
 				$('#pnlLowStockActivity').show();
 				$('#pnlNotifyForQuantityBelow').show();
 				$('#pnlBackorders').show();
+				$('#pnlIsRentStock').show();
 				var selectedBackorderModeId = $("#@Html.FieldIdFor(model => model.BackorderModeId)").val();
 				if (selectedBackorderModeId == '@((int)BackorderMode.NoBackorders)') {
 					//no backorders
@@ -52,6 +54,7 @@
 			else if (selectedManageInventoryMethodId == '@((int)ManageInventoryMethod.ManageStockByAttributes)') {
 				$('#pnlStockQuantity').hide();
 				$('#pnlDisplayStockAvailability').show();
+				$('#pnlIsRentStock').show();
 				if ($('#@Html.FieldIdFor(model => model.DisplayStockAvailability)').is(':checked')) {
 					$('#pnlDisplayStockQuantity').show();
 				}
@@ -63,6 +66,7 @@
 				$('#pnlNotifyForQuantityBelow').hide();
 				$('#pnlAllowBackInStockSubscriptions').hide();
 				$('#pnlBackorders').hide();
+				
 			}
 			else {
 				$('#pnlStockQuantity').hide();
@@ -98,6 +102,15 @@
 			@Html.ValidationMessageFor(model => model.StockQuantity)
 		</td>
 	</tr>
+    <tr id="pnlIsRentStock">
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.IsRentStock)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.IsRentStock)
+            @Html.ValidationMessageFor(model => model.IsRentStock)
+        </td>
+    </tr>
 	<tr id="pnlDisplayStockAvailability">
 		<td class="adminTitle">
 			@Html.SmartLabelFor(model => model.DisplayStockAvailability)

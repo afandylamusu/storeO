@@ -1,7 +1,68 @@
-﻿@model Lince.SportCenter.Models.ConfigurationModel
+﻿@model Lince.SportCenter.Models.SportCenterSettingModel
+
 @using SmartStore.Web.Framework;
+@using Telerik.Web.Mvc.UI;
+@using SmartStore.Web.Framework.UI;
+
+@{
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
 
 <h2>Configure</h2><div class="alert alert-info">
     <button class="close" data-dismiss="alert">×</button>
     @Html.Raw(@T("Plugins.Lince.SportCenter.AdminInstruction"))
 </div>
+
+<script>
+    function configure_onAjaxSuccess(tab, pane) {
+		applyCommonPlugins(pane);
+	}
+</script>
+
+
+@Html.ValidationSummary(false)
+
+@using (Html.BeginForm())
+{
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Enabled)
+            </td>
+            <td class="adminData">
+                @Html.SettingEditorFor(model => model.Enabled)
+                @Html.ValidationMessageFor(model => model.Enabled)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.DayProductAttributeId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.DayProductAttributeId, Model.ProductAttributes)
+                @Html.ValidationMessageFor(model => model.DayProductAttributeId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ScheduleProductAttributeId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ScheduleProductAttributeId, Model.ProductAttributes)
+                @Html.ValidationMessageFor(model => model.ScheduleProductAttributeId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td class="adminData">
+                <button type="submit" name="save" value="save" class="btn btn-primary">
+                    <i class="fa fa-check"></i>
+                    @T("Admin.Common.Save")
+                </button>
+            </td>
+        </tr>
+    </table>
+}

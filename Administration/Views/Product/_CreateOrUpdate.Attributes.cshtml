@@ -2,6 +2,10 @@
 
 @using Telerik.Web.Mvc.UI;
 
+@{ 
+    string pageBackUrl = this.Request.QueryString.Get("pback");
+}
+
 <div>
     <h3>@T("Admin.Catalog.Products.ProductVariantAttributes.Attributes")</h3>
 
@@ -54,6 +58,7 @@
                     .Centered();
                 columns.Bound(x => x.ViewEditUrl)
                     .Width(200)
+                    //.ClientTemplate("<a href=\"<#= ViewEditUrl #>" + (pageBackUrl.HasValue() ? "&pback=" + pageBackUrl : null) + "\"><#= ViewEditText #></a>")
                     .ClientTemplate("<a href=\"<#= ViewEditUrl #>\"><#= ViewEditText #></a>")
                     .ReadOnly()
                     .Title(T("Admin.Catalog.Products.ProductVariantAttributes.Attributes.Values").Text);

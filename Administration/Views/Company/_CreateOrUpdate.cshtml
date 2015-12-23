@@ -1,0 +1,440 @@
+﻿@model CompanyModel
+@using Telerik.Web.Mvc.UI;
+@{ 
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
+
+@Html.ValidationSummary(false)
+@Html.HiddenFor(model => model.Id)
+@Html.SmartStore().TabStrip().Name("company-edit").Items(x =>
+{
+    x.Add().Text(T("Admin.Companies.Info").Text).Content(TabInfo()).Selected(true);
+    x.Add().Text(T("Admin.Companies.Members").Text).Content(TabMembers());
+    //x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo());
+    x.Add().Text(T("Admin.Companies.Products").Text).Content(TabProducts());
+    //x.Add().Text(T("Admin.Common.Stores").Text).Content(TabStores());
+
+    //generate an event
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new TabStripCreated(x, "company-edit", this.Html, this.Model));
+})
+
+@helper TabInfo()
+{
+    <script type="text/javascript">
+             $(function() {
+                    $("#@Html.FieldIdFor(model => model.Country_Id)").change(function() {
+                        var selectedItem = $(this).val();
+                        var ddlStates = $("#@Html.FieldIdFor(model => model.StateProvince_Id)");
+                        $.ajax({
+                            cache:false,
+                            type: "GET",
+                            url: "@(Url.Action("GetStatesByCountryId", "Country"))",
+                            data: { "countryId": selectedItem, "addEmptyStateIfRequired": "true" },
+                            success: function (data) {
+                                ddlStates.html('');
+                                $.each(data, function(id, option) {
+                                    ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                                });
+                                ddlStates.trigger("change");
+                            },
+                            error:function (xhr, ajaxOptions, thrownError){
+                                alert('Failed to retrieve states.')
+                            }
+                        });
+                    });
+                });
+    </script>
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Name)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SystemName)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.SystemName)
+                @Html.ValidationMessageFor(model => model.SystemName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.CommercialRegister)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.CommercialRegister)
+                @Html.ValidationMessageFor(model => model.CommercialRegister)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.VatId)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.VatId)
+                @Html.ValidationMessageFor(model => model.VatId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.TaxNumber)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.TaxNumber)
+                @Html.ValidationMessageFor(model => model.TaxNumber)
+            </td>
+        </tr>
+        <tr class="adminSeparator">
+            <td colspan="2">
+                <hr />
+            </td>
+        </tr>
+    </table>
+
+    @(Html.LocalizedEditor<CompanyModel, CompanyLocalizedModel>("company-seo-localized",
+    @<table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Locales[item].CompanyManagement)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Locales[item].CompanyManagement)
+                @Html.ValidationMessageFor(model => model.Locales[item].CompanyManagement)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Locales[item].CompanyManagementDescription)
+            </td>
+            <td class="adminData">
+                @Html.TextAreaFor(model => model.Locales[item].CompanyManagementDescription)
+                @Html.ValidationMessageFor(model => model.Locales[item].CompanyManagementDescription)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                @Html.HiddenFor(model => model.Locales[item].LanguageId)
+            </td>
+        </tr>
+    </table>
+               ,
+    @<table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.CompanyManagement)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(x => x.CompanyManagement)
+                @Html.ValidationMessageFor(model => model.CompanyManagement)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.CompanyManagementDescription)
+            </td>
+            <td class="adminData">
+                @Html.TextAreaFor(x => x.CompanyManagementDescription)
+                @Html.ValidationMessageFor(model => model.CompanyManagementDescription)
+            </td>
+        </tr>
+    </table>))
+
+    <table class="adminContent">
+        <tr class="adminSeparator">
+            <td colspan="2">
+                <hr />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Title)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Firstname)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Firstname)
+                @Html.ValidationMessageFor(model => model.Firstname)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Lastname)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Lastname)
+                @Html.ValidationMessageFor(model => model.Lastname)
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Street)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Street)
+                @Html.ValidationMessageFor(model => model.Street)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Street2)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Street2)
+                @Html.ValidationMessageFor(model => model.Street2)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ZipCode)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.ZipCode)
+                @Html.ValidationMessageFor(model => model.ZipCode)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Region)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Region)
+                @Html.ValidationMessageFor(model => model.Region)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.City)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.City)
+                @Html.ValidationMessageFor(model => model.City)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Country_Id)
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("Country_Id", Model.AvailableCountries)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.StateProvince_Id)
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("StateProvince_Id", Model.AvailableStates)
+            </td>
+        </tr>
+        
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Phone)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Phone)
+                @Html.ValidationMessageFor(model => model.Phone)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Fax)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Fax)
+                @Html.ValidationMessageFor(model => model.Fax)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Email)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </td>
+        </tr>
+        
+
+    </table>
+}
+
+
+@helper TabProducts() {
+
+    if (Model.Id > 0)
+    {
+    var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<CompanyModel.CompanyProductModel>()
+                .Name("products-grid")
+                    .DataKeys(keys =>
+                    {
+                        keys.Add(x => x.Id);
+                    })
+                    .DataBinding(dataBinding =>
+                    {
+                        dataBinding.Ajax()
+                            .Select("ProductList", "Company", new { companyId = Model.Id })
+                            .Update("ProductUpdate", "Company")
+                            .Delete("ProductDelete", "Company");
+                    })
+                    .Columns(columns =>
+                    {
+                        columns.Bound(x => x.ProductName)
+                            .ReadOnly()
+                            .Template(x => @Html.LabeledProductName(x.ProductId, x.ProductName, x.ProductTypeName, x.ProductTypeLabelHint))
+                            .ClientTemplate(@Html.LabeledProductName("ProductId", "ProductName"));
+                        columns.Bound(x => x.Sku)
+                            .ReadOnly();
+                        columns.Bound(x => x.Published)
+                            .ReadOnly()
+                            .Width(100)
+                            .Template(item => @Html.SymbolForBool(item.Published))
+                            .ClientTemplate(@Html.SymbolForBool("Published"))
+                            .Centered();
+                        columns.Command(commands =>
+                        {
+                            //commands.Edit().Localize(T);
+                            commands.Delete().Localize(T);
+                        })
+                        .Width(180);
+                    })
+                    .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                    .PreserveGridState()
+                    .EnableCustomBinding(true))
+                </td>
+            </tr>
+            <tr>
+                <td width="100%">
+                    <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-warning btn-above add-new-combination" style="margin-top:3px;"
+                            onclick="javascript:OpenWindow('@(Url.Action("ProductAddPopup", "Company", new { companyId = Model.Id, btnId = "btnRefreshProducts", formId = "company-form" }))', 1000, 700, true); return false;">
+                        <i class="fa fa-plus"></i>
+                        @T("Admin.Customer.Companies.Products.AddNew")
+                    </button>
+                    <input type="submit" id="btnRefreshProducts" name="btnRefreshProducts" style="display: none" />
+                    <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('#btnRefreshProducts').click(function () {
+                                    //refresh grid
+                                    var optionsGrid = $("#products-grid");
+                                    optionsGrid.data('tGrid').ajaxRequest();
+
+                                    //return false to don't reload a page
+                                    return false;
+                                });
+                            });
+                    </script>
+                </td>
+            </tr>
+        </table>
+    }
+    else
+    {
+            @T("Admin.Companies.Products.SaveBeforeEdit")
+    }
+}
+
+@helper TabMembers()
+{
+    if (Model.Id > 0)
+    {
+        var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+            <table class="adminContent">
+                <tr>
+                    <td>
+                        @(Html.Telerik().Grid<CompanyModel.CompanyCustomerModel>()
+                        .Name("members-grid")
+                        .DataKeys(keys =>
+                        {
+                            keys.Add(x => x.Id);
+                        })
+                        .DataBinding(dataBinding =>
+                        {
+                            dataBinding.Ajax()
+                                .Select("MemberList", "Company", new { companyId = Model.Id })
+                                .Update("MemberUpdate", "Company")
+                                .Delete("MemberDelete", "Company");
+                        })
+                        .Columns(columns =>
+                        {
+                            columns.Bound(x => x.FullName)
+                                .Template(x => Html.ActionLink(x.FullName, "Edit", "Customer", new { id = x.Id }, new { }))
+                                .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/Customer/Edit/") + "<#= Id #>\"><#= Email #></a>")
+                                .ReadOnly();
+                            columns.Bound(x => x.MemberCode);
+                            columns.Bound(x => x.Email)
+                                .ReadOnly();
+                            columns.Bound(x => x.Username)
+                                .ReadOnly();
+                            columns.Bound(x => x.Active)
+                                .ReadOnly()
+                                .Width(100)
+                                .Template(item => @Html.SymbolForBool(item.Active))
+                                .ClientTemplate(@Html.SymbolForBool("Active"))
+                                .Centered();
+                            columns.Command(commands =>
+                            {
+                                commands.Edit().Localize(T);
+                                commands.Delete().Localize(T);
+                            })
+                            .Width(180);
+                        })
+                        .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+                        .PreserveGridState()
+                        .EnableCustomBinding(true))
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100%">
+                        <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-warning btn-above add-new-combination" style="margin-top:3px;"
+                                onclick="javascript:OpenWindow('@(Url.Action("MemberAddPopup", "Company", new { companyId = Model.Id, btnId = "btnRefreshMembers", formId = "company-form" }))', 1000, 700, true); return false;">
+                            <i class="fa fa-plus"></i>
+                            @T("Admin.Customer.Companies.Members.AddNew")
+                        </button>
+                        <input type="submit" id="btnRefreshMembers" name="btnRefreshMembers" style="display: none" />
+                        <script type="text/javascript">
+                                $(document).ready(function () {
+                                    $('#btnRefreshMembers').click(function () {
+                                        //refresh grid
+                                        var optionsGrid = $("#members-grid");
+                                        optionsGrid.data('tGrid').ajaxRequest();
+
+                                        //return false to don't reload a page
+                                        return false;
+                                    });
+                                });
+                        </script>
+                    </td>
+                </tr>
+            </table>
+    }
+    else
+    {
+            @T("Admin.Companies.Members.SaveBeforeEdit")
+    }
+}

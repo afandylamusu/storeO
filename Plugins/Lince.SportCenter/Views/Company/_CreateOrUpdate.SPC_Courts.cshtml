@@ -1,0 +1,69 @@
+﻿@model Lince.SportCenter.Models.CompanySPCModel
+@using Lince.SportCenter.Domain
+@using Lince.SportCenter.Models
+@using Telerik.Web.Mvc.UI;
+@{
+    Layout = "";
+}
+
+    @* VERY IMPORTANT for proper model binding *@
+    @*@Html.Hidden("__Type__", Model.GetType().AssemblyQualifiedName)*@
+
+    @Html.HiddenFor(m => m.CompanyId)
+
+    @if (Model.Id > 0)
+    {
+        var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>
+        ().GridPageSize;
+
+        <div>
+            @(Html.Telerik().Grid<CompanySPCModel.FacilityModel>()
+        .Name("courts-grid")
+            .DataKeys(keys =>
+            {
+                keys.Add(x => x.Id);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("ProductList", "Company", new { companyId = Model.CompanyId, spcfactype = (int)SPCFacilityType.Court })
+                    .Insert("ProductInsert", "Company", new { companyId = Model.CompanyId, spcfactype = (int)SPCFacilityType.Court })
+                    .Update("ProductUpdate", "Company")
+                    .Delete("ProductDelete", "Company");
+            })
+            .Columns(columns =>
+            {
+                columns.Bound(x => x.FacilityName)
+                    .Template(x => @Html.LabeledProductName(x.ProductId, x.FacilityName, x.ProductTypeName, x.ProductTypeLabelHint, "?pback=" + Url.Action("Edit", "Company", new { area = "Admin", id = Model.CompanyId })))
+                    .ClientTemplate(@Html.LabeledProductName("ProductId", "FacilityName", "ProductTypeName", "ProductTypeLabelHint", "?pback=" + Url.Action("Edit", "Company", new { area = "Admin", id = Model.CompanyId })));
+
+                columns.Bound(x => x.CourtType);
+
+                columns.Bound(x => x.Sku)
+                    .ReadOnly();
+
+                columns.Bound(x => x.Published)
+                    .ReadOnly()
+                    .Width(100)
+                    .Template(item => @Html.SymbolForBool(item.Published))
+                    .ClientTemplate(@Html.SymbolForBool("Published"))
+                    .Centered();
+
+                columns.Command(commands =>
+                {
+                    commands.Edit().Localize(T);
+                    commands.Delete().Localize(T);
+                })
+                .Width(180);
+            })
+            .ToolBar(commands => commands.Insert())
+            .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+            .PreserveGridState()
+            .EnableCustomBinding(true))
+        </div>
+    }
+    else
+    {
+        @T("Admin.Customer.Companies.Products.SaveBeforeEdit")
+    }
+

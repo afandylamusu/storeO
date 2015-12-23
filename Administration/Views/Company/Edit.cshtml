@@ -1,0 +1,34 @@
+﻿@model CompanyModel
+@{
+    //page title
+    ViewBag.Title = T("Admin.Customer.Companies.EditCompanyDetails").Text;
+
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "company-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            @T("Admin.Customer.Companies.EditCompanyDetails") - @Model.Name
+            <a href='@Url.Action("List")'>(@T("Admin.Customer.Companies.BackToList"))</a>
+        </div>
+        <div class="options">
+            <button type="submit" name="save" value="save" class="btn btn-primary">
+                <i class="fa fa-check"></i>
+                @T("Admin.Common.Save")
+            </button>
+            <button type="submit" name="save" value="save-continue" class="btn">
+                @T("Admin.Common.SaveContinue")
+            </button>
+            <button type="submit" name="company-delete" id="company-delete" class="btn btn-danger">
+                <i class="fa fa-trash-o"></i>
+                @T("Admin.Common.Delete")
+            </button>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+@Html.DeleteConfirmation("company-delete")
+

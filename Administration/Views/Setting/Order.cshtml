@@ -105,6 +105,14 @@
                 @Html.ValidationMessageFor(model => model.GiftCards_Deactivated_OrderStatusId)
             </td>
         </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.DefaultAutoCancelPendingExpiredInMinutes)
+            </td>
+            <td class="adminData">
+                @Html.SettingEditorFor(model => model.DefaultAutoCancelPendingExpiredInMinutes)
+            </td>
+        </tr>
         @if (Model.OrderIdent.HasValue)
         {
             <tr>

@@ -1,17 +1,25 @@
 ﻿@model ProductModel
 @using Telerik.Web.Mvc.UI;
 @{
-	//page title
-	ViewBag.Title = T("Admin.Catalog.Products.EditProductDetails").Text;
+    //page title
+    ViewBag.Title = T("Admin.Catalog.Products.EditProductDetails").Text;
+
+    string urlBackToList = Url.Action("List");
+    if (Request.QueryString.Get("pback").HasValue())
+    {
+        urlBackToList = Request.QueryString.Get("pback");
+    }
 }
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" })) {
+
+@using (Html.BeginForm(null, null, new { pback = Request.QueryString.Get("pback") }, FormMethod.Post, new { id = "product-form" })) {
+    @Html.Hidden("pback", Request.QueryString.Get("pback"))
     <div class="section-header">
         <div class="title">
             @if (!String.IsNullOrEmpty(Model.PictureThumbnailUrl)) {
                 <img src="@Url.Content(Model.PictureThumbnailUrl)" />
 			}
             @T("Admin.Catalog.Products.EditProductDetails") - <span title="@Model.Name">@Model.Name.Truncate(45, "...")</span> 
-			<a href='@Url.Action("List")'>(@T("Admin.Catalog.Products.BackToList"))</a>
+			<a href='@urlBackToList'>(@T("Admin.Catalog.Products.BackToList"))</a>
         </div>
         <div class="options">
 			<button type="submit" name="preview" value="preview" onclick="javascript:OpenWindow('@Model.ProductUrl', 1000, 600, true); return false;" class="btn">

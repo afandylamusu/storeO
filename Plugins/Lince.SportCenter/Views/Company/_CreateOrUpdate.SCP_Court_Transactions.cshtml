@@ -1,0 +1,12 @@
+﻿@model Lince.SportCenter.Models.CompanySPCModel
+@using Lince.SportCenter.Domain
+
+@{
+    Layout = "";
+}
+
+@* VERY IMPORTANT for proper model binding *@
+@*@Html.Hidden("__Type__", Model.GetType().AssemblyQualifiedName)
+
+@Html.HiddenFor(m => m.CompanyId)*@
+

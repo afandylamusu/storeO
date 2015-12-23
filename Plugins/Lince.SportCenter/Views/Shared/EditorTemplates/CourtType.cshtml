@@ -1,0 +1,17 @@
+﻿@using Lince.SportCenter.Domain
+@{ 
+    var controlTypeList = CourtType.Futsal.ToSelectList();
+}
+
+<select name="CourtType" id="CourtType" class="autowidth">
+@foreach (var item in controlTypeList)
+{
+    <option value="@item.Value">@item.Text</option>  
+}
+</select>
+
+<script>
+    $(function () {
+        $('#CourtType').selectWrapper();
+    });
+</script>

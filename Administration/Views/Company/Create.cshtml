@@ -1,0 +1,24 @@
+﻿@model CompanyModel
+@{
+    //page title
+    ViewBag.Title = T("Admin.Companies.AddNew").Text;
+
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "company-form" }))
+{
+    <div class="section-header">
+        <div class="title">
+            @T("Admin.Companies.AddNew")
+            <a href='@Url.Action("List")'>(@T("Admin.Companies.BackToList"))</a>
+        </div>
+        <div class="options">
+            <button type="submit" name="save" value="save" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;@T("Admin.Common.Save")</button>
+            <button type="submit" name="save" value="save-continue" class="btn">@T("Admin.Common.SaveContinue")</button>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdate", Model)
+}
+
