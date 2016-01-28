@@ -1,0 +1,69 @@
+﻿@model SmartStore.OfflinePayment.Models.BankTransferManualConfirmInfoModel
+
+@{
+	Layout = "";
+}
+
+@Html.Hidden("OfflinePaymentMethodType", "BankTransfer")
+
+<div class="form-horizontal">
+	<div class="control-group">
+		@Html.LabelFor(model => model.BankName, new { @class = "control-label required" })
+		<div class="controls">
+			@Html.TextBoxFor(model => model.BankName, new { autocomplete = "off" })
+			@Html.ValidationMessageFor(model => model.BankName)
+		</div>
+	</div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.AccountName, new { @class = "control-label required" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.AccountName, new { autocomplete = "off" })
+            @Html.ValidationMessageFor(model => model.AccountName)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.AccountNumber, new { @class = "control-label required" })
+        <div class="controls">
+            @Html.TextBoxFor(model => model.AccountNumber, new { autocomplete = "off" })
+            @Html.ValidationMessageFor(model => model.AccountNumber)
+        </div>
+    </div>
+    <div class="control-group">
+        @Html.LabelFor(model => model.PictureId, new { @class = "control-label required" })
+        <div class="controls">
+            @Html.EditorFor(model => model.PictureId, new { transientUpload = true })
+            @Html.ValidationMessageFor(model => model.PictureId)
+        </div>
+    </div>
+    <script type="text/javascript">
+		$(document).ready(function () {
+
+            $('#addProductPicture').click(function () {
+                var pictureId = $("#@Html.FieldIdFor(model => model.PictureId)").val();
+                var displayOrder = $("#DisplayOrder").val();
+
+                if (pictureId == 0) {
+                	alert('@T("Admin.Catalog.Products.Pictures.UploadFirst")');
+                    return;
+                }
+
+                $('#addProductPicture').attr('disabled', true);
+                $.ajax({
+                    cache:false,
+                    type: "POST",
+                    url: "@(Url.Action("ManualConfirmPictureAdd", "Order"))",
+                    data: { "pictureId": pictureId, "displayOrder": displayOrder, "orderId": @Model.OrderId },
+                    success: function (data) {
+                         var productpicturesGrid = $("#productpictures-grid");
+                         productpicturesGrid.data('tGrid').ajaxRequest();
+                         $('#addProductPicture').attr('disabled', false);
+                    },
+                    error:function (xhr, ajaxOptions, thrownError){
+                    	alert('@T("Admin.Catalog.Products.Pictures.AddFailed")')
+                        $('#addProductPicture').attr('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+</div>

@@ -91,6 +91,10 @@
 									{
 										<a href="@Url.Action("ReturnRequest", "ReturnRequest", new { id = order.Id })" data-role="button" rel="nofollow">@T("Account.CustomerOrders.ReturnItems")</a>
 									}
+                                    @if (order.IsCanPaid)
+                                    {
+                                        <a href="@Url.Action("ManualConfirm", "Order", new { id = order.Id })" data-role="button" rel="nofollow">@T("Account.CustomerOrders.ConfirmOrder")</a>
+                                    }
 									<a href="@Url.Action("Details", "Order", new { id = order.Id })" data-role="button" rel="nofollow">@T("Account.CustomerOrders.OrderDetails")</a>
                                 </div>
                             </div>
