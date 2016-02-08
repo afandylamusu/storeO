@@ -124,8 +124,8 @@
                 @Html.HiddenFor(model => model.Locales[item].LanguageId)
             </td>
         </tr>
-    </table>
-               ,
+    </table>,
+               
     @<table class="adminContent">
         <tr>
             <td class="adminTitle">
@@ -279,13 +279,58 @@
         
 
     </table>
-}
+
+    <table class="adminContent">
+        <tr class="adminSeparator">
+            <td colspan="2">
+                <hr />
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.BA_BankName)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.BA_BankName)
+                @Html.ValidationMessageFor(model => model.BA_BankName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.BA_SwiftCode)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.BA_SwiftCode)
+                @Html.ValidationMessageFor(model => model.BA_SwiftCode)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.BA_Number)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.BA_Number)
+                @Html.ValidationMessageFor(model => model.BA_Number)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.BA_Name)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.BA_Name)
+                @Html.ValidationMessageFor(model => model.BA_Name)
+            </td>
+        </tr>
+    </table>
+        }
 
 
-@helper TabProducts() {
+        @helper TabProducts()
+        {
 
-    if (Model.Id > 0)
-    {
+if (Model.Id > 0)
+{
     var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
         <table class="adminContent">
             <tr>
@@ -338,36 +383,36 @@
                     </button>
                     <input type="submit" id="btnRefreshProducts" name="btnRefreshProducts" style="display: none" />
                     <script type="text/javascript">
-                            $(document).ready(function () {
-                                $('#btnRefreshProducts').click(function () {
-                                    //refresh grid
-                                    var optionsGrid = $("#products-grid");
-                                    optionsGrid.data('tGrid').ajaxRequest();
+                        $(document).ready(function () {
+                            $('#btnRefreshProducts').click(function () {
+                                //refresh grid
+                                var optionsGrid = $("#products-grid");
+                                optionsGrid.data('tGrid').ajaxRequest();
 
-                                    //return false to don't reload a page
-                                    return false;
-                                });
+                                //return false to don't reload a page
+                                return false;
                             });
+                        });
                     </script>
                 </td>
             </tr>
         </table>
-    }
-    else
-    {
-            @T("Admin.Companies.Products.SaveBeforeEdit")
-    }
+}
+else
+{
+        @T("Admin.Companies.Products.SaveBeforeEdit")
+}
 }
 
-@helper TabMembers()
+        @helper TabMembers()
+        {
+if (Model.Id > 0)
 {
-    if (Model.Id > 0)
-    {
-        var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
-            <table class="adminContent">
-                <tr>
-                    <td>
-                        @(Html.Telerik().Grid<CompanyModel.CompanyCustomerModel>()
+    var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+        <table class="adminContent">
+            <tr>
+                <td>
+                    @(Html.Telerik().Grid<CompanyModel.CompanyCustomerModel>()
                         .Name("members-grid")
                         .DataKeys(keys =>
                         {
@@ -386,7 +431,11 @@
                                 .Template(x => Html.ActionLink(x.FullName, "Edit", "Customer", new { id = x.Id }, new { }))
                                 .ClientTemplate("<a href=\"" + @Url.Content("~/Admin/Customer/Edit/") + "<#= Id #>\"><#= Email #></a>")
                                 .ReadOnly();
+
+                            columns.Bound(x => x.CompanyContactType);
+
                             columns.Bound(x => x.MemberCode);
+
                             columns.Bound(x => x.Email)
                                 .ReadOnly();
                             columns.Bound(x => x.Username)
@@ -407,34 +456,34 @@
                         .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
                         .PreserveGridState()
                         .EnableCustomBinding(true))
-                    </td>
-                </tr>
-                <tr>
-                    <td width="100%">
-                        <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-warning btn-above add-new-combination" style="margin-top:3px;"
-                                onclick="javascript:OpenWindow('@(Url.Action("MemberAddPopup", "Company", new { companyId = Model.Id, btnId = "btnRefreshMembers", formId = "company-form" }))', 1000, 700, true); return false;">
-                            <i class="fa fa-plus"></i>
-                            @T("Admin.Customer.Companies.Members.AddNew")
-                        </button>
-                        <input type="submit" id="btnRefreshMembers" name="btnRefreshMembers" style="display: none" />
-                        <script type="text/javascript">
-                                $(document).ready(function () {
-                                    $('#btnRefreshMembers').click(function () {
-                                        //refresh grid
-                                        var optionsGrid = $("#members-grid");
-                                        optionsGrid.data('tGrid').ajaxRequest();
+                </td>
+            </tr>
+            <tr>
+                <td width="100%">
+                    <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-warning btn-above add-new-combination" style="margin-top:3px;"
+                            onclick="javascript:OpenWindow('@(Url.Action("MemberAddPopup", "Company", new { companyId = Model.Id, btnId = "btnRefreshMembers", formId = "company-form" }))', 1000, 700, true); return false;">
+                        <i class="fa fa-plus"></i>
+                        @T("Admin.Customer.Companies.Members.AddNew")
+                    </button>
+                    <input type="submit" id="btnRefreshMembers" name="btnRefreshMembers" style="display: none" />
+                    <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#btnRefreshMembers').click(function () {
+                                //refresh grid
+                                var optionsGrid = $("#members-grid");
+                                optionsGrid.data('tGrid').ajaxRequest();
 
-                                        //return false to don't reload a page
-                                        return false;
-                                    });
-                                });
-                        </script>
-                    </td>
-                </tr>
-            </table>
-    }
-    else
-    {
-            @T("Admin.Companies.Members.SaveBeforeEdit")
-    }
+                                //return false to don't reload a page
+                                return false;
+                            });
+                        });
+                    </script>
+                </td>
+            </tr>
+        </table>
+}
+else
+{
+        @T("Admin.Companies.Members.SaveBeforeEdit")
+}
 }

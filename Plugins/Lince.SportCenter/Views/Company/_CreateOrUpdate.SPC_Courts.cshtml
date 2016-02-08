@@ -1,7 +1,6 @@
 ﻿@model Lince.SportCenter.Models.CompanySPCModel
 @using Lince.SportCenter.Domain
 @using Lince.SportCenter.Models
-@using Telerik.Web.Mvc.UI;
 @{
     Layout = "";
 }
@@ -26,13 +25,17 @@
             .DataBinding(dataBinding =>
             {
                 dataBinding.Ajax()
-                    .Select("ProductList", "Company", new { companyId = Model.CompanyId, spcfactype = (int)SPCFacilityType.Court })
-                    .Insert("ProductInsert", "Company", new { companyId = Model.CompanyId, spcfactype = (int)SPCFacilityType.Court })
-                    .Update("ProductUpdate", "Company")
-                    .Delete("ProductDelete", "Company");
+                    .Select("ProductList", "Company", new { companyId = Model.CompanyId, spcfactype = (int)FacilityType.Court })
+                    .Insert("ProductInsert", "Company", new { companyId = Model.CompanyId, spcfactype = (int)FacilityType.Court })
+                    .Update("ProductUpdate", "Company", new { companyId = Model.CompanyId, spcfactype = (int)FacilityType.Court })
+                    .Delete("ProductDelete", "Company", new { companyId = Model.CompanyId, spcfactype = (int)FacilityType.Court });
             })
             .Columns(columns =>
             {
+                columns.Bound(x => x.FacilityTypeString).Title("Facility Type");
+
+                columns.Bound(x => x.ProductId).Hidden();
+
                 columns.Bound(x => x.FacilityName)
                     .Template(x => @Html.LabeledProductName(x.ProductId, x.FacilityName, x.ProductTypeName, x.ProductTypeLabelHint, "?pback=" + Url.Action("Edit", "Company", new { area = "Admin", id = Model.CompanyId })))
                     .ClientTemplate(@Html.LabeledProductName("ProductId", "FacilityName", "ProductTypeName", "ProductTypeLabelHint", "?pback=" + Url.Action("Edit", "Company", new { area = "Admin", id = Model.CompanyId })));
@@ -49,14 +52,14 @@
                     .ClientTemplate(@Html.SymbolForBool("Published"))
                     .Centered();
 
-                columns.Command(commands =>
-                {
-                    commands.Edit().Localize(T);
-                    commands.Delete().Localize(T);
-                })
-                .Width(180);
+                //columns.Command(commands =>
+                //{
+                //    commands.Edit().Localize(T);
+                //    commands.Delete().Localize(T);
+                //})
+                //.Width(180);
             })
-            .ToolBar(commands => commands.Insert())
+            //.ToolBar(commands => commands.Insert())
             .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
             .PreserveGridState()
             .EnableCustomBinding(true))

@@ -1,0 +1,17 @@
+﻿@using Lince.SportCenter.Domain
+@{ 
+    var controlTypeList = FacilityType.Court.ToSelectList();
+}
+
+<select name="FacilityType" id="FacilityType" class="autowidth">
+@foreach (var item in controlTypeList)
+{
+    <option value="@item.Value">@item.Text</option>  
+}
+</select>
+
+<script>
+    $(function () {
+        $('#FacilityType').selectWrapper();
+    });
+</script>

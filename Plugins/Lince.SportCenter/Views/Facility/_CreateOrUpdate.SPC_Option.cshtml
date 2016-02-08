@@ -14,19 +14,10 @@
     <table id="SPCFacilityData" class="adminContent">
         <tr>
             <td class="adminTitle">
-                @Html.SmartLabelFor(m => m.Exporting)
-            </td>
-            <td class="adminData">
-                @Html.EditorFor(m => m.Exporting)
-                @Html.ValidationMessageFor(m => m.Exporting)
-            </td>
-        </tr>
-        <tr>
-            <td class="adminTitle">
                 @Html.SmartLabelFor(m => m.FacilityTypeId)
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.FacilityTypeId, ((SPCFacilityType)Model.FacilityTypeId).ToSelectList())
+                @Html.DropDownListFor(model => model.FacilityTypeId, ((FacilityType)Model.FacilityTypeId).ToSelectList())
                 @Html.ValidationMessageFor(m => m.FacilityTypeId)
             </td>
         </tr>

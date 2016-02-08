@@ -1,0 +1,17 @@
+﻿@using SmartStore.Core.Domain.Customers
+@{ 
+    var controlTypeList = CompanyContactType.Admin.ToSelectList();
+}
+
+<select name="CompanyContactType" id="CompanyContactType" class="autowidth">
+@foreach (var item in controlTypeList)
+{
+    <option value="@item.Value">@item.Text</option>  
+}
+</select>
+
+<script>
+    $(function () {
+        $('#CompanyContactType').selectWrapper();
+    });
+</script>
