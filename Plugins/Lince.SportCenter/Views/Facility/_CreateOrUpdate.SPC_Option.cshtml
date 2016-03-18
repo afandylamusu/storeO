@@ -1,4 +1,4 @@
-﻿@model Lince.SportCenter.Models.ProductSPCModel
+﻿@model Lince.SportCenter.Models.SportFacilityModel
 @using Lince.SportCenter.Domain
 
 @{
@@ -11,6 +11,7 @@
 @Html.HiddenFor(m => m.ProductId)
 
 <div style="margin-bottom: 30px; overflow: hidden;">
+    @Html.HiddenFor(m => m.Id)
     <table id="SPCFacilityData" class="adminContent">
         <tr>
             <td class="adminTitle">

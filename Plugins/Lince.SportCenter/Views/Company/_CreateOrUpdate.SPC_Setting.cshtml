@@ -1,0 +1,88 @@
+﻿@model Lince.SportCenter.Models.SportCompanyModel
+@using Lince.SportCenter.Domain
+@using Lince.SportCenter.Models
+@using SmartStore.Core.Domain.Common
+
+@{
+    Layout = "";
+}
+
+@* VERY IMPORTANT for proper model binding *@
+@Html.Hidden("__Type__", Model.GetType().AssemblyQualifiedName)
+
+@Html.HiddenFor(m => m.CompanyId)
+
+@if (Model.Id > 0)
+{
+    @Html.HiddenFor(m => m.Id)
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.MinCourtTraxPerDay)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.MinCourtTraxPerDay)
+                @Html.ValidationMessageFor(model => model.MinCourtTraxPerDay)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.MaxMembers)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.MaxMembers)
+                @Html.ValidationMessageFor(model => model.MaxMembers)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.IsTest)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.IsTest)
+                @Html.ValidationMessageFor(model => model.IsTest)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ContractStart)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.ContractStart)
+                @Html.ValidationMessageFor(model => model.ContractStart)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ContractExpired)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.ContractExpired)
+                @Html.ValidationMessageFor(model => model.ContractExpired)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.LastSendTraxInvoice)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.LastSendTraxInvoice)
+                @Html.ValidationMessageFor(model => model.LastSendTraxInvoice)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ContractStatus)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ContractStatus, Model.ContractStatusTypeList)
+                @Html.ValidationMessageFor(model => model.ContractStatus)
+            </td>
+        </tr>
+    </table>
+}
+else
+{
+    @T("Admin.Customer.Companies.SaveBeforeEdit")
+}
+

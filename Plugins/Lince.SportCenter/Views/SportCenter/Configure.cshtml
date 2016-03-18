@@ -14,11 +14,11 @@
     @Html.Raw(@T("Plugins.Lince.SportCenter.AdminInstruction"))
 </div>
 
-<script>
+@*<script>
     function configure_onAjaxSuccess(tab, pane) {
 		applyCommonPlugins(pane);
 	}
-</script>
+</script>*@
 
 
 @Html.ValidationSummary(false)
@@ -35,22 +35,77 @@
                 @Html.ValidationMessageFor(model => model.Enabled)
             </td>
         </tr>
+        
         <tr>
             <td class="adminTitle">
-                @Html.SmartLabelFor(model => model.DayProductAttributeId)
+                @Html.SmartLabelFor(model => model.MinCourtTraxPerDay)
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.DayProductAttributeId, Model.ProductAttributes)
-                @Html.ValidationMessageFor(model => model.DayProductAttributeId)
+                @Html.SettingEditorFor(model => model.MinCourtTraxPerDay)
+                @Html.ValidationMessageFor(model => model.MinCourtTraxPerDay)
             </td>
         </tr>
         <tr>
             <td class="adminTitle">
-                @Html.SmartLabelFor(model => model.ScheduleProductAttributeId)
+                @Html.SmartLabelFor(model => model.MaxMembersPerCompany)
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.ScheduleProductAttributeId, Model.ProductAttributes)
-                @Html.ValidationMessageFor(model => model.ScheduleProductAttributeId)
+                @Html.SettingEditorFor(model => model.MaxMembersPerCompany)
+                @Html.ValidationMessageFor(model => model.MaxMembersPerCompany)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ProdAttrId_Day)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ProdAttrId_Day, Model.ProductAttributes)
+                @Html.ValidationMessageFor(model => model.ProdAttrId_Day)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ProdAttrId_CourtSchedule)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ProdAttrId_CourtSchedule, Model.ProductAttributes)
+                @Html.ValidationMessageFor(model => model.ProdAttrId_CourtSchedule)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SpecAttrId_CourtFloorType)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SpecAttrId_CourtFloorType, Model.SpecificationAttributes)
+                @Html.ValidationMessageFor(model => model.SpecAttrId_CourtFloorType)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SpecAttrId_City)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SpecAttrId_City, Model.SpecificationAttributes)
+                @Html.ValidationMessageFor(model => model.SpecAttrId_City)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SpecAttrId_Area)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SpecAttrId_Area, Model.SpecificationAttributes)
+                @Html.ValidationMessageFor(model => model.SpecAttrId_Area)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.DurationContractPeriod)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.DurationContractPeriod, Model.SpecificationAttributes)
+                @Html.ValidationMessageFor(model => model.DurationContractPeriod)
             </td>
         </tr>
         <tr>

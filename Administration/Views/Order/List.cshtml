@@ -123,6 +123,14 @@
                 @Html.DropDownList("ShippingStatusIds", Model.AvailableShippingStatuses, null, new { multiple = "multiple" })
             </td>
         </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.CompanyId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("CompanyId", Model.AvailableCompanies)
+            </td>
+        </tr>
        <tr>
             <td class="adminTitle">
                 @Html.SmartLabelFor(model => model.StoreId)
@@ -284,7 +292,8 @@
 
         function onDataBinding(e) {
             var searchModel = {
-				StartDate: $('#@Html.FieldIdFor(model => model.StartDate)').val(),
+                StartDate: $('#@Html.FieldIdFor(model => model.StartDate)').val(),
+                CompanyId: $('#@Html.FieldIdFor(model=>model.CompanyId)').val(),
 				EndDate: $('#@Html.FieldIdFor(model => model.EndDate)').val(),
 				CustomerEmail: $('#@Html.FieldIdFor(model => model.CustomerEmail)').val(),
             	CustomerName: $('#@Html.FieldIdFor(model => model.CustomerName)').val(),
