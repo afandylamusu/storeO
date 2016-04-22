@@ -140,6 +140,16 @@
     {
         <tr>
             <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Area)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Area)
+                @Html.ValidationMessageFor(model => model.Area)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
                 @Html.SmartLabelFor(model => model.City)
             </td>
             <td class="adminData">

@@ -97,6 +97,12 @@
 @if (Model.CityEnabled)
 {
     <div>
+        @Html.LabelFor(model => model.Area, new { @class = "control-label" + (Model.CityRequired ? " required" : ""), @for = "City" })
+        @Html.EditorFor(model => model.Area)
+        @Html.ValidationMessageFor(model => model.Area)
+    </div>
+
+    <div>
         @Html.LabelFor(model => model.City, new { @class = "control-label" + (Model.CityRequired ? " required" : ""), @for = "City" })
         @Html.EditorFor(model => model.City)
         @Html.ValidationMessageFor(model => model.City)
