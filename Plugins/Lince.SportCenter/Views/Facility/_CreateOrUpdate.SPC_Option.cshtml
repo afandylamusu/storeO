@@ -31,6 +31,34 @@
                 @Html.ValidationMessageFor(m => m.CourtTypeId)
             </td>
         </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Operation_Start)
+            </td>
+            <td class="adminData">
+                @Html.Telerik().TimePickerFor(m=>m.Operation_Start).Format("HH:mm")
+                @Html.ValidationMessageFor(m => m.Operation_Start)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Operation_End)
+            </td>
+            <td class="adminData">
+                @Html.Telerik().TimePickerFor(m => m.Operation_End).Format("HH:mm")
+                @Html.ValidationMessageFor(m => m.Operation_End)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.TimezoneId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(o=> new SelectListItem { Value = o.Id, Text = o.StandardName }))
+                @Html.ValidationMessageFor(m => m.TimezoneId)
+            </td>
+        </tr>
         
     </table>
 </div>
