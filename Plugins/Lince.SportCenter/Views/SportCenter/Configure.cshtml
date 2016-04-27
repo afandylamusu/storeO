@@ -63,13 +63,31 @@
                 @Html.ValidationMessageFor(model => model.ProdAttrId_Day)
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="adminTitle">
                 @Html.SmartLabelFor(model => model.ProdAttrId_CourtSchedule)
             </td>
             <td class="adminData">
                 @Html.DropDownListFor(model => model.ProdAttrId_CourtSchedule, Model.ProductAttributes)
                 @Html.ValidationMessageFor(model => model.ProdAttrId_CourtSchedule)
+            </td>
+        </tr>*@
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ProdAttrId_Start)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ProdAttrId_Start, Model.ProductAttributes)
+                @Html.ValidationMessageFor(model => model.ProdAttrId_Start)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ProdAttrId_End)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ProdAttrId_End, Model.ProductAttributes)
+                @Html.ValidationMessageFor(model => model.ProdAttrId_End)
             </td>
         </tr>
         <tr>
