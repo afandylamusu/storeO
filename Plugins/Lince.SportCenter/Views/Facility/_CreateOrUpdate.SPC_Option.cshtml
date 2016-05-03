@@ -59,6 +59,57 @@
                 @Html.ValidationMessageFor(m => m.TimezoneId)
             </td>
         </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.CountryCode)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.CountryCode, Model.AvailableCountries)
+                @Html.ValidationMessageFor(m => m.CountryCode)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.CityId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.CityId, Model.Cities)
+                @Html.ValidationMessageFor(m => m.CityId)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.AreaId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.AreaId, Model.Areas)
+                @Html.ValidationMessageFor(m => m.AreaId)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Street)
+            </td>
+            <td class="adminData">
+                @Html.TextAreaFor(m => m.Street)
+                @Html.ValidationMessageFor(m => m.Street)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Phone)
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.Phone)
+                @Html.ValidationMessageFor(m => m.Phone)
+            </td>
+        </tr>
+
         
     </table>
 </div>
