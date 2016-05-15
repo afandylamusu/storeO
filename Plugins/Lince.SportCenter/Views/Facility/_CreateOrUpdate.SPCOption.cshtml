@@ -1,0 +1,115 @@
+﻿@model Lince.SportCenter.Models.SportFacilityModel
+@using Lince.SportCenter.Domain
+
+@{
+    Layout = "";
+}
+
+@* VERY IMPORTANT for proper model binding *@
+@Html.Hidden("__Type__", Model.GetType().AssemblyQualifiedName)
+
+@Html.HiddenFor(m => m.ProductId)
+
+<div style="margin-bottom: 30px; overflow: hidden;">
+    @Html.HiddenFor(m => m.Id)
+    <table id="SPCFacilityData" class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.FacilityTypeId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.FacilityTypeId, ((FacilityType)Model.FacilityTypeId).ToSelectList())
+                @Html.ValidationMessageFor(m => m.FacilityTypeId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.CourtTypeId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.CourtTypeId, (Model.CourtTypeId.HasValue ? (CourtType)Model.CourtTypeId : CourtType.Futsal).ToSelectList())
+                @Html.ValidationMessageFor(m => m.CourtTypeId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Operation_Start)
+            </td>
+            <td class="adminData">
+                @Html.Telerik().TimePickerFor(m=>m.Operation_Start).Format("HH:mm")
+                @Html.ValidationMessageFor(m => m.Operation_Start)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Operation_End)
+            </td>
+            <td class="adminData">
+                @Html.Telerik().TimePickerFor(m => m.Operation_End).Format("HH:mm")
+                @Html.ValidationMessageFor(m => m.Operation_End)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.TimezoneId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(o=> new SelectListItem { Value = o.Id, Text = o.StandardName }))
+                @Html.ValidationMessageFor(m => m.TimezoneId)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.CountryCode)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.CountryCode, Model.AvailableCountries)
+                @Html.ValidationMessageFor(m => m.CountryCode)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.CityId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.CityId, Model.Cities)
+                @Html.ValidationMessageFor(m => m.CityId)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.AreaId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(m => m.AreaId, Model.Areas)
+                @Html.ValidationMessageFor(m => m.AreaId)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Street)
+            </td>
+            <td class="adminData">
+                @Html.TextAreaFor(m => m.Street)
+                @Html.ValidationMessageFor(m => m.Street)
+            </td>
+        </tr>
+
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Phone)
+            </td>
+            <td class="adminData">
+                @Html.TextBoxFor(m => m.Phone)
+                @Html.ValidationMessageFor(m => m.Phone)
+            </td>
+        </tr>
+
+        
+    </table>
+</div>

@@ -1,0 +1,88 @@
+﻿@using Lince.SportCenter.Models
+
+@model SportFacilityModel
+@{
+    Layout = "";
+}
+
+@Html.HiddenFor(m => m.ProductId)
+
+<div>
+    <h3>@T("Admin.Plugins.Lince.SportCenter.Products.Schedules.Master")</h3>
+    @if (Model.Id > 0)
+    {
+        var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>
+        ().GridPageSize;
+
+        if (true)
+        {
+            @*<script>
+                function onProductVariantAttributeEdit(e) {
+                	$(e.form).find('#ProductAttribute').select2('val', e.dataItem['ProductAttributeId']);
+                	$(e.form).find('#AttributeControlType').select2('val', e.dataItem['AttributeControlTypeId']);
+
+                	if (parseInt(e.dataItem['Id']) === 0) {
+                		$(e.form).find('#IsRequired').prop('checked', true);
+                	}
+                }
+            </script>*@
+
+            @(Html.Telerik().Grid<SportFacilityModel.CourtInvTypeItemModel>()
+            .Name("courtinvtypeitem-grid")
+            .DataKeys(keys =>
+            {
+                keys.Add(x => x.Id);
+            })
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("MasterScheduleList", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
+                    .Insert("MasterScheduleInsert", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
+                    .Update("MasterScheduleUpdate", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
+                    .Delete("MasterScheduleDelete", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
+            })
+            .Columns(columns =>
+            {
+                columns.Bound(x => x.StartText).ReadOnly()
+                    .Width(50);
+                columns.Bound(x => x.EndText).ReadOnly()
+                    .Width(50);
+                columns.Bound(x => x.OrderIndex).ReadOnly()
+                    .Width(50)
+                    .Centered();
+                columns.Bound(x => x.AvailStatus)
+                    .Width(50)
+                    .Centered();
+                columns.Bound(x => x.Price)
+                    .Format("{0:#,###.00}")
+                    .Width(120)
+                    .RightAlign();
+
+                columns.Command(commands =>
+                {
+                    commands.Edit().Localize(T);
+                    commands.Delete().Localize(T);
+                })
+                .Width(180);
+            })
+            .ToolBar(commands => commands.Insert())
+            .Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+            .PreserveGridState()
+            .EnableCustomBinding(true))
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                @T("Admin.Catalog.Products.ProductVariantAttributes.NoAttributesAvailable")
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            @T("Admin.Catalog.Products.ProductVariantAttributes.SaveBeforeEdit")
+        </div>
+    }
+</div>
+
+
