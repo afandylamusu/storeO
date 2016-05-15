@@ -30,7 +30,7 @@
         function refreshGridRates() {
             var startDatePicker = $('#start_dd').data("tDatePicker");
             var grid = $("#courtschedulerate-grid").data("tGrid");
-
+            
             if(startDatePicker.value() != null){
                 grid.ajaxRequest({ start: new Date(startDatePicker.value()).toDateString() });
             }
@@ -38,11 +38,18 @@
                 grid.ajaxRequest();
             }
         }
+
         $('#btnRefreshRates').click(function () {
             refreshGridRates();
 
             return false;
         });
+
+        //(function runForever() {
+        //    // Do something here
+        //    refreshGridRates();
+        //    setTimeout(runForever, 5000);
+        //})();
     </script>
 </div>
 
