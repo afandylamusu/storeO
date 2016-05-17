@@ -63,7 +63,7 @@
 				}
 			</button>
 			<ul class="dropdown-menu">
-				@if (checkUpdateResult != null && checkUpdateResult.UpdateAvailable)
+				@if (checkUpdateResult != null && checkUpdateResult.UpdateAvailable && false)
 				{
 					<li>
 						<a href='@Url.Action("CheckUpdate", new { area = "Admin" })'>

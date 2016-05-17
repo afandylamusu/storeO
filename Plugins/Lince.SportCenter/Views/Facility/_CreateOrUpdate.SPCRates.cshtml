@@ -21,13 +21,13 @@
         @T("Bulk Update")
     </button>
     <div class="form-inline pull-right">
-        @Html.Telerik().DatePicker().Name("start_dd").Min(Model.NowCourt.Date.ToString()).InputHtmlAttributes(new { @class = "input-small", placeholder = "Start" }).ClientEvents(e => e.OnChange("refreshGridRates"))
+        @Html.Telerik().DatePicker().Name("start_dd").Min(Model.NowCourt.Date.ToString()).InputHtmlAttributes(new { @class = "input-small", placeholder = "Start" }).ClientEvents(e => e.OnChange("Grid_Refresh"))
         @*@Html.Telerik().DatePicker().Name("start_dd").InputHtmlAttributes(new { @class = "input-small", placeholder="Start" }).ClientEvents(e => e.OnChange("startChange"))
         @Html.Telerik().DatePicker().Name("end_dd").InputHtmlAttributes(new { @class = "input-small", placeholder = "end" }).ClientEvents(e => e.OnChange("endChange"))*@
         <button id="btnRefreshRates" name="btnRefreshRates" class="btn">Refresh</button>
     </div>
     <script>
-        function refreshGridRates() {
+        function Grid_Refresh() {
             var startDatePicker = $('#start_dd').data("tDatePicker");
             var grid = $("#courtschedulerate-grid").data("tGrid");
             
@@ -39,15 +39,47 @@
             }
         }
 
+        function Grid_onComplete(e) {
+
+            $('#courtschedulerate-grid th.D1_Schedules span.t-link').text(e.response.data[0].D1_Day);
+            $('#courtschedulerate-grid th.D1_Price span.t-link').text(e.response.data[0].D1_Day);
+            $('#courtschedulerate-grid th.D1_Status span.t-link').text(e.response.data[0].D1_Day);
+
+            $('#courtschedulerate-grid th.D2_Schedules span.t-link').text(e.response.data[0].D2_Day);
+            $('#courtschedulerate-grid th.D2_Price span.t-link').text(e.response.data[0].D2_Day);
+            $('#courtschedulerate-grid th.D2_Status span.t-link').text(e.response.data[0].D2_Day);
+
+            $('#courtschedulerate-grid th.D3_Schedules span.t-link').text(e.response.data[0].D3_Day);
+            $('#courtschedulerate-grid th.D3_Price span.t-link').text(e.response.data[0].D3_Day);
+            $('#courtschedulerate-grid th.D3_Status span.t-link').text(e.response.data[0].D3_Day);
+
+            $('#courtschedulerate-grid th.D4_Schedules span.t-link').text(e.response.data[0].D4_Day);
+            $('#courtschedulerate-grid th.D4_Price span.t-link').text(e.response.data[0].D4_Day);
+            $('#courtschedulerate-grid th.D4_Status span.t-link').text(e.response.data[0].D4_Day);
+
+            $('#courtschedulerate-grid th.D5_Schedules span.t-link').text(e.response.data[0].D5_Day);
+            $('#courtschedulerate-grid th.D5_Price span.t-link').text(e.response.data[0].D5_Day);
+            $('#courtschedulerate-grid th.D5_Status span.t-link').text(e.response.data[0].D5_Day);
+
+            $('#courtschedulerate-grid th.D6_Schedules span.t-link').text(e.response.data[0].D6_Day);
+            $('#courtschedulerate-grid th.D6_Price span.t-link').text(e.response.data[0].D6_Day);
+            $('#courtschedulerate-grid th.D6_Status span.t-link').text(e.response.data[0].D6_Day);
+
+            $('#courtschedulerate-grid th.D7_Schedules span.t-link').text(e.response.data[0].D7_Day);
+            $('#courtschedulerate-grid th.D7_Price span.t-link').text(e.response.data[0].D7_Day);
+            $('#courtschedulerate-grid th.D7_Status span.t-link').text(e.response.data[0].D7_Day);
+
+        }
+
         $('#btnRefreshRates').click(function () {
-            refreshGridRates();
+            Grid_Refresh();
 
             return false;
         });
 
         //(function runForever() {
         //    // Do something here
-        //    refreshGridRates();
+        //    Grid_Refresh();
         //    setTimeout(runForever, 5000);
         //})();
     </script>
@@ -61,16 +93,6 @@
 
             if (true)
             {
-        @*<script>
-                function onProductVariantAttributeEdit(e) {
-                    $(e.form).find('#ProductAttribute').select2('val', e.dataItem['ProductAttributeId']);
-                    $(e.form).find('#AttributeControlType').select2('val', e.dataItem['AttributeControlTypeId']);
-
-                    if (parseInt(e.dataItem['Id']) === 0) {
-                        $(e.form).find('#IsRequired').prop('checked', true);
-                    }
-                }
-            </script>*@
 
         @(Html.Telerik().Grid<CourtScheduleRateModel>()
             .Name("courtschedulerate-grid")
@@ -82,9 +104,7 @@
             {
                 dataBinding.Ajax()
                     .Select("ScheduleRateList", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
-                    //.Insert("ScheduleRateInsert", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
                     .Update("ScheduleRateUpdate", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
-                //.Delete("ScheduleRateDelete", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
             })
             .Columns(columns =>
             {
@@ -93,49 +113,70 @@
                     .ClientTemplate(@"<span class=""av-<#= D1_Status #>""><#= D1_Schedules #></span>");
                 columns.Bound(x => x.D1_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D1_Price" });
-                columns.Bound(x => x.D1_Status).Width(100).Centered();
+                columns.Bound(x => x.D1_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D1_Status" });
+                columns.Bound(x => x.D1_Rate_Id).Hidden();
+                columns.Bound(x => x.D1_Schedule_Id).Hidden();
 
                 columns.Bound(x => x.D2_Schedules).Width(100).ReadOnly()
                     .HeaderHtmlAttributes(new { @class = "D2_Schedules" })
                     .ClientTemplate(@"<span class=""av-<#= D2_Status #>""><#= D2_Schedules #></span>");
                 columns.Bound(x => x.D2_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D2_Price" });
-                columns.Bound(x => x.D2_Status).Width(100).Centered();
+                columns.Bound(x => x.D2_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D2_Status" });
+                columns.Bound(x => x.D2_Rate_Id).Hidden();
+                columns.Bound(x => x.D2_Schedule_Id).Hidden();
 
                 columns.Bound(x => x.D3_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D3_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D3_Status #>""><#= D3_Schedules #></span>");
                 columns.Bound(x => x.D3_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D3_Price" });
-                columns.Bound(x => x.D3_Status).Width(100).Centered();
+                columns.Bound(x => x.D3_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D3_Status" });
+                columns.Bound(x => x.D3_Rate_Id).Hidden();
+                columns.Bound(x => x.D3_Schedule_Id).Hidden();
 
                 columns.Bound(x => x.D4_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D4_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D4_Status #>""><#= D4_Schedules #></span>");
                 columns.Bound(x => x.D4_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D4_Price" });
-                columns.Bound(x => x.D4_Status).Width(100);
+                columns.Bound(x => x.D4_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D4_Status" });
+                columns.Bound(x => x.D4_Rate_Id).Hidden();
+                columns.Bound(x => x.D4_Schedule_Id).Hidden();
 
                 columns.Bound(x => x.D5_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D5_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D5_Status #>""><#= D5_Schedules #></span>");
                 columns.Bound(x => x.D5_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D5_Price" });
-                columns.Bound(x => x.D5_Status).Width(100).Centered();
+                columns.Bound(x => x.D5_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D5_Status" });
+                columns.Bound(x => x.D5_Rate_Id).Hidden();
+                columns.Bound(x => x.D5_Schedule_Id).Hidden();
 
                 columns.Bound(x => x.D6_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D6_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D6_Status #>""><#= D6_Schedules #></span>");
                 columns.Bound(x => x.D6_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D6_Price" });
-                columns.Bound(x => x.D6_Status).Width(100).Centered();
+                columns.Bound(x => x.D6_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D6_Status" });
+                columns.Bound(x => x.D6_Rate_Id).Hidden();
+                columns.Bound(x => x.D6_Schedule_Id).Hidden();
 
                 columns.Bound(x => x.D7_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D7_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D7_Status #>""><#= D7_Schedules #></span>");
                 columns.Bound(x => x.D7_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D7_Price" });
-                columns.Bound(x => x.D7_Status).Width(100).Centered();
+                columns.Bound(x => x.D7_Status).Width(100).Centered()
+                .HeaderHtmlAttributes(new { @class = "D7_Status" });
+                columns.Bound(x => x.D7_Rate_Id).Hidden();
+                columns.Bound(x => x.D7_Schedule_Id).Hidden();
 
 
                 columns.Command(commands =>
@@ -144,10 +185,16 @@
                     //commands.Delete().Localize(T);
                 })
                 .Width(180);
+
+            })
+            .ClientEvents(events => {
+                events.OnComplete("Grid_onComplete");
+                //events.OnLoad("Grid_onComplete");
             })
             //.Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
             .PreserveGridState()
             .EnableCustomBinding(true))
+            
     }
     else
     {
