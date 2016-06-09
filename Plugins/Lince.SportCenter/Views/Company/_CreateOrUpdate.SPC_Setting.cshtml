@@ -12,7 +12,7 @@
 
 @Html.HiddenFor(m => m.CompanyId)
 
-@if (Model.Id > 0)
+@if (Model.CompanyId > 0)
 {
     @Html.HiddenFor(m => m.Id)
     <table class="adminContent">
@@ -23,6 +23,15 @@
             <td class="adminData">
                 @Html.EditorFor(model => model.MinCourtTraxPerDay)
                 @Html.ValidationMessageFor(model => model.MinCourtTraxPerDay)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.MaxCourtTraxPerDay)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.MaxCourtTraxPerDay)
+                @Html.ValidationMessageFor(model => model.MaxCourtTraxPerDay)
             </td>
         </tr>
         <tr>

@@ -41,7 +41,11 @@
     var tabShippingInfo = x.Add().Text(T("Admin.Orders.ShippingInfo").Text).Content(TabShippingInfo());
     var tabProducts = x.Add().Text(T("Admin.Orders.Products").Text).Content(TabProducts());
     var tabOrderNotes = x.Add().Text(T("Admin.Orders.OrderNotes").Text).Content(TabOrderNotes());
-    var tabAttributes = x.Add().Text(T("Admin.Common.GenericAttributes").Text).Content(TabOrderAttributes());
+    if (!Model.IsCompanyUser)
+    {
+        var tabAttributes = x.Add().Text(T("Admin.Common.GenericAttributes").Text).Content(TabOrderAttributes());
+    }
+    
 
     //generate an event
     EngineContext.Current.Resolve<IEventPublisher>().Publish(new TabStripCreated(x, "order-edit", this.Html, this.Model));
@@ -1335,6 +1339,7 @@
 					form.find('input[name=NewPriceExclTax]').val(table.find('input[name=pvPriceExclTax' + orderItemId + ']').val());
 				}
 
+
 				$('#AutoUpdateOrderItemModal').modal();
 			});
 		});
@@ -1401,9 +1406,12 @@
                             <th>
                                 @T("Admin.Orders.Products.Total")
                             </th>
-                            <th>
-                                @T("Admin.Common.Edit")
-                            </th>
+                            @if (!Model.IsCompanyUser)
+                            {
+                                <th>
+                                    @T("Admin.Common.Edit")
+                                </th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -1668,28 +1676,32 @@
                                         </table>
                                     </div>
                                 </td>
+                            @if (!Model.IsCompanyUser)
+                            {
                                 <td align="center" style="width: 27%;">
                                     
-                                    @if (item.IsReturnRequestPossible)
-                                    {
-                                        <input type="submit" name="btnAddReturnRequest@(item.Id)" value="@T("Admin.Orders.Products.ReturnRequest.Create")" id="btnAddReturnRequest@(item.Id)"
-                                               class="btn" onclick="return confirm('@T("Admin.Common.AreYouSure")');" />
-                                    }
                                     
-                                    <input type="submit" name="btnEditOrderItem@(item.Id)" value="@T("Admin.Common.Edit")" id="btnEditOrderItem@(item.Id)"
-                                           class="btn" onclick="toggleOrderItemEdit(@(item.Id), true);return false;" />
+                                        if (item.IsReturnRequestPossible)
+                                        {
+                                            <input type="submit" name="btnAddReturnRequest@(item.Id)" value="@T("Admin.Orders.Products.ReturnRequest.Create")" id="btnAddReturnRequest@(item.Id)"
+                                                   class="btn" onclick="return confirm('@T("Admin.Common.AreYouSure")');" />
+                                        }
 
-                                    <input type="button" name="btnDeleteOrderItem@(item.Id)" value="@T("Admin.Common.Delete")" id="btnDeleteOrderItem@(item.Id)"
-                                           class="btn delete-order-item-button" data-id="@(item.Id)" data-url="@Url.Action("DeleteOrderItem")" />
+                                        <input type="submit" name="btnEditOrderItem@(item.Id)" value="@T("Admin.Common.Edit")" id="btnEditOrderItem@(item.Id)"
+                                               class="btn" onclick="toggleOrderItemEdit(@(item.Id), true);return false;" />
+
+                                        <input type="button" name="btnDeleteOrderItem@(item.Id)" value="@T("Admin.Common.Delete")" id="btnDeleteOrderItem@(item.Id)"
+                                               class="btn delete-order-item-button" data-id="@(item.Id)" data-url="@Url.Action("DeleteOrderItem")" />
 
 
-                                    <input type="button" name="btnSaveOrderItem@(item.Id)" value="@T("Admin.Common.Save")" id="btnSaveOrderItem@(item.Id)"
-                                           class="btn save-order-item-button" style="display: none;" data-id="@(item.Id)" data-url="@Url.Action("EditOrderItem")" />
+                                        <input type="button" name="btnSaveOrderItem@(item.Id)" value="@T("Admin.Common.Save")" id="btnSaveOrderItem@(item.Id)"
+                                               class="btn save-order-item-button" style="display: none;" data-id="@(item.Id)" data-url="@Url.Action("EditOrderItem")" />
 
-                                    <input type="submit" name="btnCancelOrderItem@(item.Id)" value="@T("Admin.Common.Cancel")" id="btnCancelOrderItem@(item.Id)"
-                                           class="btn" onclick="toggleOrderItemEdit(@(item.Id), false);return false;" style="display: none;" />
-
+                                        <input type="submit" name="btnCancelOrderItem@(item.Id)" value="@T("Admin.Common.Cancel")" id="btnCancelOrderItem@(item.Id)"
+                                               class="btn" onclick="toggleOrderItemEdit(@(item.Id), false);return false;" style="display: none;" />
+                                    
                                 </td>
+                            }
                             </tr>
                         }
                     </tbody>
@@ -1706,14 +1718,19 @@
                 </td>
             </tr>
         }
-        <tr>
-            <td>
-                <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-below" value="@T("Admin.Orders.Products.AddNew")"
-						onclick="javascript:setLocation('@(Url.Action("AddProductToOrder", "Order", new { orderId = Model.Id }))'); return false;">
-					<i class="fa fa-plus"></i>&nbsp;@T("Admin.Orders.Products.AddNew")
-				</button>
-            </td>
-        </tr>
+
+        @if (!Model.IsCompanyUser)
+        {
+            <tr>
+                <td>
+                    <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-below" value="@T("Admin.Orders.Products.AddNew")"
+                            onclick="javascript:setLocation('@(Url.Action("AddProductToOrder", "Order", new { orderId = Model.Id }))'); return false;">
+                        <i class="fa fa-plus"></i>&nbsp;@T("Admin.Orders.Products.AddNew")
+                    </button>
+                </td>
+            </tr>
+        }
+        
     </table>
 }
 @helper TabOrderNotes()
@@ -1739,12 +1756,13 @@
                         columns.Bound(x => x.DisplayToCustomer)
                             .Template(item => @Html.SymbolForBool(item.DisplayToCustomer))
                             .ClientTemplate(@Html.SymbolForBool("DisplayToCustomer"))
-				            .Centered()
+                            .Centered()
                             .Width(140);
                         columns.Command(commands =>
                         {
                             commands.Delete().Localize(T);
-                        }).Width(140).Title(T("Admin.Common.Delete").Text);
+
+                        }).Width(140).Title(T("Admin.Common.Delete").Text).Visible(!Model.IsCompanyUser);
                     })
                     .EnableCustomBinding(true))
             </td>

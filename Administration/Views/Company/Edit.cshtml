@@ -12,7 +12,8 @@
     <div class="section-header">
         <div class="title">
             @T("Admin.Customer.Companies.EditCompanyDetails") - @Model.Name
-            <a href='@Url.Action("List")'>(@T("Admin.Customer.Companies.BackToList"))</a>
+            @if (!Model.IsCompanyUser)
+            {<a href='@Url.Action("List")'>(@T("Admin.Customer.Companies.BackToList"))</a>}
         </div>
         <div class="options">
             <button type="submit" name="save" value="save" class="btn btn-primary">
@@ -22,10 +23,14 @@
             <button type="submit" name="save" value="save-continue" class="btn">
                 @T("Admin.Common.SaveContinue")
             </button>
+            @Html.HiddenFor(f => f.IsCompanyUser)
+            @if (!Model.IsCompanyUser)
+            {
             <button type="submit" name="company-delete" id="company-delete" class="btn btn-danger">
                 <i class="fa fa-trash-o"></i>
                 @T("Admin.Common.Delete")
             </button>
+            }
         </div>
     </div>
     @Html.Partial("_CreateOrUpdate", Model)
