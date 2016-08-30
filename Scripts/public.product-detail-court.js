@@ -6,10 +6,10 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     var productId = null; 
 
     smNetConsumer.init({
-        //publicKey: '013ec99566f1cf1a5523882f782b7c29',
-        //secretKey: '55abde66d89e2a6d786b027b9f775e11',
-        publicKey: '3694f413763e220ba0e87d62a34cc64f',
-        secretKey: '309f92910b9eaad3504f7b3bafacefe0',
+        publicKey: '013ec99566f1cf1a5523882f782b7c29',
+        secretKey: '55abde66d89e2a6d786b027b9f775e11',
+        //publicKey: '3694f413763e220ba0e87d62a34cc64f',
+        //secretKey: '309f92910b9eaad3504f7b3bafacefe0',
         url: 'http://localhost:6109'
     });
 
@@ -66,12 +66,19 @@ var SportCenterCourt = (function ($, window, document, undefined) {
                 text: formatTime(v.StartProductVariantValue) + ' - ' + formatTime(v.EndProductVariantValue) + ' | ' + $.number(v.Price, 2)
             });
 
-            if (v.AvailStatusId == "2") {
-                btn.addClass('btn btn-warning add-to-cart-button');
-                btn.attr("disabled", 'disabled');
-            }
-            else
-                btn.addClass('btn btn-success add-to-cart-button ajax-cart-link');
+            switch (parseInt(v.AvailStatusId)) {
+                case 1:
+                    btn.addClass('btn btn-warning add-to-cart-button');
+                    btn.attr("disabled", 'disabled');
+                    break;
+                case 2:
+                    btn.addClass('btn btn-error add-to-cart-button');
+                    btn.attr("disabled", 'disabled');
+                    break;
+                case 0:
+                    btn.addClass('btn btn-success add-to-cart-button ajax-cart-link');
+                    break;
+            }              
             
             btn.appendTo('div.spc-schedules');
         });
