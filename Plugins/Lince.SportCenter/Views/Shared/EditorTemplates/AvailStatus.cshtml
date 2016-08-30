@@ -1,17 +1,8 @@
 ﻿@using Lince.SportCenter.Domain
-@{ 
-    var list = AvailStatus.Open.ToSelectList();
-}
+@model AvailStatus?
 
-<select name="AvailStatus" id="AvailStatus" class="autowidth">
-@foreach (var item in list)
-{
-    <option value="@item.Value">@item.Text</option>  
+@{
+    var selectedValue = Model.HasValue ? Model.Value : AvailStatus.Open;
 }
-</select>
+@Html.DropDownListFor(m => m, selectedValue.ToSelectList())
 
-<script>
-    $(function () {
-        $('#AvailStatus').selectWrapper();
-    });
-</script>

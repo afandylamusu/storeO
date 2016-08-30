@@ -1,0 +1,105 @@
+﻿@model ProductDetailsModel
+@using SmartStore.Web.Models.Catalog;
+@using SmartStore.Core.Domain.Orders;
+@using SmartStore.Core.Infrastructure;
+@using SmartStore.Core;
+@using System.Text;
+@using System.Globalization;
+@using SmartStore.Services.Customers;
+@using SmartStore.Services.Security;
+@using SmartStore.Web;
+@using SmartStore.Utilities;
+@using Telerik;
+
+@{
+    var storeUrl = EngineContext.Current.Resolve<IWebHelper>().GetStoreLocation(false);
+
+    var dayControl = Model.ProductVariantAttributes.FirstOrDefault(o => o.Alias == "Day");
+    string dayControlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", dayControl.ProductId, dayControl.BundleItemId, dayControl.ProductAttributeId, dayControl.Id);
+    string textPromptDayControl = !string.IsNullOrEmpty(dayControl.TextPrompt) ? dayControl.TextPrompt : dayControl.Name;
+    var startControl = Model.ProductVariantAttributes.FirstOrDefault(o => o.Alias == "Start");
+    string startControlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", startControl.ProductId, startControl.BundleItemId, startControl.ProductAttributeId, startControl.Id);
+    var endControl = Model.ProductVariantAttributes.FirstOrDefault(o => o.Alias == "End");
+    string endControlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", endControl.ProductId, endControl.BundleItemId, endControl.ProductAttributeId, endControl.Id);
+    var invTypeCodeControl = Model.ProductVariantAttributes.FirstOrDefault(o => o.Alias == "InvTypeCode");
+    string invTypeCodeControlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", invTypeCodeControl.ProductId, invTypeCodeControl.BundleItemId, invTypeCodeControl.ProductAttributeId, invTypeCodeControl.Id);
+}
+<div class="attributes">
+
+    <div class="control-group">
+        <label class='control-label@(dayControl.IsRequired ? " required" : "")' for="@(dayControlId)">@textPromptDayControl</label>
+        @if (!string.IsNullOrEmpty(dayControl.Description))
+        {
+            <div class="attribute-description">
+                @Html.Raw(dayControl.Description)
+            </div>
+        }
+
+        <div class="controls">
+            @Html.DatePickerDropDowns(dayControlId + "_day", dayControlId + "_month", dayControlId + "_year", DateTime.Now.Year, DateTime.Now.Year+1, DateTime.Now.Day, DateTime.Now.Month, DateTime.Now.Year, true, dayControl.IsDisabled)
+            <input id="@(startControlId)" name="@(startControlId)" type="hidden" class="hidden spc-start" />
+            <input id="@(endControlId)" name="@(endControlId)" type="hidden" class="hidden spc-end" />
+            <input id="@(invTypeCodeControlId)" name="@(invTypeCodeControlId)" type="hidden" class="hidden spc-invtypecode" />
+            <input id="product_id" name="product_id" type="hidden" class="hidden" value="@Model.Id"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class='control-label@(invTypeCodeControl.IsRequired ? " required" : "")' for="@(invTypeCodeControl)">Schedules</label>
+        <div class="btn-group btn-group-vertical spc-schedules">
+            <a class="btn disabled">07:00 - 08:00 | Rp. 150,000.00</a>
+            <a class="btn btn-warning add-to-cart-button ajax-cart-link"
+                href="#"
+			    rel="nofollow"
+                data-href='@Url.Action("AddProduct", "ShoppingCart", new { productId = Model.AddToCart.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })' 
+                data-form-selector="#product-details-form"
+                data-type="cart"
+                data-action="add"> 
+                08:00 - 09:00 | Rp. 150,000.00
+            </a>
+            <a class="btn btn-success add-to-cart-button ajax-cart-link"
+               href="#"
+               rel="nofollow"
+               data-href='@Url.Action("AddProduct", "ShoppingCart", new { productId = Model.AddToCart.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })'
+               data-form-selector="#product-details-form"
+               data-type="cart"
+               data-action="add">
+                09:00 - 10:00 | Rp. 150,000.00
+            </a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        function refreshSchdules() {
+            /// SportCenterCourt in public.product-detail-court.js
+            SportCenterCourt.refreshSchedules(@Model.Id,
+                $("select[name='@(dayControlId + "_day")'] option:selected"),
+                $("select[name='@(dayControlId + "_month")'] option:selected"),
+                $("select[name='@(dayControlId + "_year")'] option:selected"),
+                $("#@startControlId"),
+                $("#@endControlId"),
+                $("#@invTypeCodeControlId"),
+                '@Url.Action("AddProduct", "ShoppingCart", new { productId = Model.AddToCart.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })'
+            );
+        }
+
+        $("select[name='@(dayControlId + "_day")']").ready(function(){
+            refreshSchdules();
+        });
+        
+
+        $("select[name='@(dayControlId + "_day")'").change(function() {
+            refreshSchdules();
+        });
+
+        $("select[name='@(dayControlId + "_month")'").change(function() {
+            refreshSchdules();
+        });
+
+        $("select[name='@(dayControlId + "_year")'").change(function() {
+            refreshSchdules();
+        });
+    });
+</script>

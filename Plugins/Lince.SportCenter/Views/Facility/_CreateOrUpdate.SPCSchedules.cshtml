@@ -38,8 +38,8 @@
                 dataBinding.Ajax()
                     .Select("MasterScheduleList", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
                     .Insert("MasterScheduleInsert", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
-                    .Update("MasterScheduleUpdate", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id })
-                    .Delete("MasterScheduleDelete", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
+                    .Update("MasterScheduleUpdate", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
+                    //.Delete("MasterScheduleDelete", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
             })
             .Columns(columns =>
             {
@@ -61,7 +61,7 @@
                 columns.Command(commands =>
                 {
                     commands.Edit().Localize(T);
-                    commands.Delete().Localize(T);
+                    //commands.Delete().Localize(T);
                 })
                 .Width(180);
             })

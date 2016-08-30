@@ -1,4 +1,5 @@
 ﻿@using Lince.SportCenter.Models
+@using Lince.SportCenter.Domain
 
 @model SportFacilityModel
 
@@ -16,7 +17,7 @@
 </div>
 
 <div class="clearfix" style="margin-bottom: 15px">
-    <button class="btn btn-warning btn-above add-new-combination">
+    <button id="btnBulkUpdate" class="btn btn-warning btn-above" type="button">
         <i class="fa fa-plus"></i>
         @T("Bulk Update")
     </button>
@@ -108,79 +109,110 @@
             })
             .Columns(columns =>
             {
+                columns.Bound(x => x.InvTypeItemId).Hidden();
+
                 columns.Bound(x => x.D1_Schedules).Width(100).ReadOnly()
-                    .HeaderHtmlAttributes(new { @class = "D1_Schedules" })
-                    .ClientTemplate(@"<span class=""av-<#= D1_Status #>""><#= D1_Schedules #></span>");
+                .HeaderHtmlAttributes(new { @class = "D1_Schedules" })
+                .ClientTemplate(@"<span class=""av-<#= D1_Status #>""><#= D1_Schedules #></span>");
                 columns.Bound(x => x.D1_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D1_Price" });
-                columns.Bound(x => x.D1_Status).Width(100).Centered()
+                columns.Bound(x => x.D1_Status).Width(100).Centered().ClientTemplate("<#= D1_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D1_Status" });
                 columns.Bound(x => x.D1_Rate_Id).Hidden();
                 columns.Bound(x => x.D1_Schedule_Id).Hidden();
+                columns.Bound(x => x.D1_Day).Hidden();
+                columns.Bound(x => x.D1_Start).Hidden();
+                columns.Bound(x => x.D1_End).Hidden();
+                columns.Bound(x => x.D1_CanUpdate).Hidden();
 
                 columns.Bound(x => x.D2_Schedules).Width(100).ReadOnly()
                     .HeaderHtmlAttributes(new { @class = "D2_Schedules" })
                     .ClientTemplate(@"<span class=""av-<#= D2_Status #>""><#= D2_Schedules #></span>");
                 columns.Bound(x => x.D2_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D2_Price" });
-                columns.Bound(x => x.D2_Status).Width(100).Centered()
+                columns.Bound(x => x.D2_Status).Width(100).Centered().ClientTemplate("<#= D2_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D2_Status" });
                 columns.Bound(x => x.D2_Rate_Id).Hidden();
                 columns.Bound(x => x.D2_Schedule_Id).Hidden();
+                columns.Bound(x => x.D2_Day).Hidden();
+                columns.Bound(x => x.D2_Start).Hidden();
+                columns.Bound(x => x.D2_End).Hidden();
+                columns.Bound(x => x.D2_CanUpdate).Hidden();
 
                 columns.Bound(x => x.D3_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D3_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D3_Status #>""><#= D3_Schedules #></span>");
                 columns.Bound(x => x.D3_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D3_Price" });
-                columns.Bound(x => x.D3_Status).Width(100).Centered()
+                columns.Bound(x => x.D3_Status).Width(100).Centered().ClientTemplate("<#= D3_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D3_Status" });
                 columns.Bound(x => x.D3_Rate_Id).Hidden();
                 columns.Bound(x => x.D3_Schedule_Id).Hidden();
+                columns.Bound(x => x.D3_Day).Hidden();
+                columns.Bound(x => x.D3_Start).Hidden();
+                columns.Bound(x => x.D3_End).Hidden();
+                columns.Bound(x => x.D3_CanUpdate).Hidden();
 
                 columns.Bound(x => x.D4_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D4_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D4_Status #>""><#= D4_Schedules #></span>");
                 columns.Bound(x => x.D4_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D4_Price" });
-                columns.Bound(x => x.D4_Status).Width(100).Centered()
+                columns.Bound(x => x.D4_Status).Width(100).Centered().ClientTemplate("<#= D4_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D4_Status" });
                 columns.Bound(x => x.D4_Rate_Id).Hidden();
                 columns.Bound(x => x.D4_Schedule_Id).Hidden();
+                columns.Bound(x => x.D4_Day).Hidden();
+                columns.Bound(x => x.D4_Start).Hidden();
+                columns.Bound(x => x.D4_End).Hidden();
+                columns.Bound(x => x.D4_CanUpdate).Hidden();
 
                 columns.Bound(x => x.D5_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D5_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D5_Status #>""><#= D5_Schedules #></span>");
                 columns.Bound(x => x.D5_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D5_Price" });
-                columns.Bound(x => x.D5_Status).Width(100).Centered()
+                columns.Bound(x => x.D5_Status).Width(100).Centered().ClientTemplate("<#= D5_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D5_Status" });
                 columns.Bound(x => x.D5_Rate_Id).Hidden();
                 columns.Bound(x => x.D5_Schedule_Id).Hidden();
+                columns.Bound(x => x.D5_Day).Hidden();
+                columns.Bound(x => x.D5_Start).Hidden();
+                columns.Bound(x => x.D5_End).Hidden();
+                columns.Bound(x => x.D5_CanUpdate).Hidden();
 
                 columns.Bound(x => x.D6_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D6_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D6_Status #>""><#= D6_Schedules #></span>");
                 columns.Bound(x => x.D6_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D6_Price" });
-                columns.Bound(x => x.D6_Status).Width(100).Centered()
+                columns.Bound(x => x.D6_Status).Width(100).Centered().ClientTemplate("<#= D6_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D6_Status" });
                 columns.Bound(x => x.D6_Rate_Id).Hidden();
                 columns.Bound(x => x.D6_Schedule_Id).Hidden();
+                columns.Bound(x => x.D6_Day).Hidden();
+                columns.Bound(x => x.D6_Start).Hidden();
+                columns.Bound(x => x.D6_End).Hidden();
+                columns.Bound(x => x.D6_CanUpdate).Hidden();
 
                 columns.Bound(x => x.D7_Schedules).Width(100).ReadOnly()
                    .HeaderHtmlAttributes(new { @class = "D7_Schedules" })
                    .ClientTemplate(@"<span class=""av-<#= D7_Status #>""><#= D7_Schedules #></span>");
                 columns.Bound(x => x.D7_Price).Format("{0:#,###.00}").Width(100).RightAlign()
                 .HeaderHtmlAttributes(new { @class = "D7_Price" });
-                columns.Bound(x => x.D7_Status).Width(100).Centered()
+                columns.Bound(x => x.D7_Status).Width(100).Centered().ClientTemplate("<#= D7_StatusName #>")
                 .HeaderHtmlAttributes(new { @class = "D7_Status" });
                 columns.Bound(x => x.D7_Rate_Id).Hidden();
                 columns.Bound(x => x.D7_Schedule_Id).Hidden();
+                columns.Bound(x => x.D7_Day).Hidden();
+                columns.Bound(x => x.D7_Start).Hidden();
+                columns.Bound(x => x.D7_End).Hidden();
+                columns.Bound(x => x.D7_CanUpdate).Hidden();
 
 
                 columns.Command(commands =>
                 {
+
                     commands.Edit().Localize(T);
                     //commands.Delete().Localize(T);
                 })
@@ -194,7 +226,121 @@
             //.Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
             .PreserveGridState()
             .EnableCustomBinding(true))
+
+@(Html.Telerik().Window()
+    .Name("bulkUpdateInventory")
+    .Title("Bulk Update Inventory")
+    .Width(350).Height(400)
+    .Modal(true)
+    .Draggable(true)
+    .Visible(false)
+    .Content(
+    @<text>
+        <div class="form-group">
+                @(Html.LabelFor(m=>m.BulkUpdate.BulkStart))
+                @(Html.Telerik().DatePickerFor(m=>m.BulkUpdate.BulkStart).Min(Model.NowCourt.Date).Value(Model.NowCourt.Date).ClientEvents(x => { x.OnChange("BulkUpdateSchedule.bulkStart_changed"); }))
+                @(Html.LabelFor(m => m.BulkUpdate.BulkEnd))
+                @(Html.Telerik().DatePickerFor(m => m.BulkUpdate.BulkEnd).Max(Model.NowCourt.Date.AddYears(1)).Value(Model.NowCourt.Date.AddDays(7)).ClientEvents(x => { x.OnChange("BulkUpdateSchedule.bulkEnd_changed"); }))
+            </div>
+            <div class="form-group">
+                @(Html.Label("Schedule"))
+                @(Html.DropDownListFor(m => m.BulkUpdate.BulkInvTypeItemId, Model.AvailSchedules))
+            </div>
+            <div class="form-group">
+                @(Html.Label("Price"))
+                @(Html.Telerik().NumericTextBoxFor(m=>m.BulkUpdate.BulkSchRate).MinValue(1).Value(100))
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                @(Html.Label("Status"))
+                @(Html.DropDownListFor(m => m.BulkUpdate.BulkAvailStatus, AvailStatus.Open.ToSelectList()))
+            </div>
+            <br />
+            <div class="form-group text-right">
+                <button type="button" id="btnSubmitBulkUpdate">Update</button>
+            </div>
+    </text>
+)
+.ClientEvents(x => x.OnOpen("BulkUpdateSchedule.bulkForm_opened")))
+
+<script type="text/javascript">
+
+    var BulkUpdateSchedule = {
+        bulkStart_changed: function () { },
+        bulkEnd_changed: function () { },
+        bulkForm_opened: function () { }
+    };
+
+    $(function () {
+
+        var bulkStart = $('#@Html.IdFor(m => m.BulkUpdate.BulkStart)');
+        var bulkEnd = $('#@Html.IdFor(m => m.BulkUpdate.BulkEnd)');
+
+        $.extend(BulkUpdateSchedule, {
+            bulkStart_changed: function () {
+                //console.log(bulkStart.data('tDatePicker'));
+                // Use the datepicker client object
+                bulkStart.data('tDatePicker').max(bulkEnd.data('tDatePicker').value());
+                bulkEnd.data('tDatePicker').min(bulkStart.data('tDatePicker').value());
+            },
+            bulkEnd_changed: function () {
+                //console.log(bulkEnd.data('tDatePicker'));
+                // Use the datepicker client object
+                bulkEnd.data('tDatePicker').min(bulkStart.data('tDatePicker').value());
+                bulkStart.data('tDatePicker').max(bulkEnd.data('tDatePicker').value());
+            },
+            bulkForm_opened: function () {
+
+                BulkUpdateSchedule.bulkStart_changed();
+                BulkUpdateSchedule.bulkEnd_changed();
+            }
+        });
+
+        $('#btnBulkUpdate').click(function () {
+            var window = $('#bulkUpdateInventory').data('tWindow');
+            window.center().open();
+        });
+
+        $('#btnSubmitBulkUpdate').click(function () {
+            var data = {
+                'ProductId' : @Model.BulkUpdate.ProductId,
+                'SpcFacilityId': @Model.BulkUpdate.SpcFacilityId,
+                'BulkStart': $.telerik.formatString('{0:yyyy-M-dd}', $('#@Html.IdFor(m=>m.BulkUpdate.BulkStart)').data('tDatePicker').value()),
+                'BulkEnd': $.telerik.formatString('{0:yyyy-M-dd}',$('#@Html.IdFor(m=>m.BulkUpdate.BulkEnd)').data('tDatePicker').value()),
+                'BulkInvTypeItemId': $('#@Html.IdFor(m=>m.BulkUpdate.BulkInvTypeItemId) option:selected').attr('value'),
+                'BulkSchRate': $('#@Html.IdFor(m=>m.BulkUpdate.BulkSchRate)').data("tTextBox").value(),
+                'BulkAvailStatus': $('#@Html.IdFor(m=>m.BulkUpdate.BulkAvailStatus) option:selected').attr('value')
+            };
+
             
+
+            console.log(data);
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("BulkUpdateSchedule")',
+                contentType: 'application/x-www-form-urlencoded',
+                data: data,
+                success: function (res) {
+                    console.log(res);
+                    var window = $('#bulkUpdateInventory').data('tWindow');
+                    var grid = $("#courtschedulerate-grid").data("tGrid");
+                    if(res.success == true){
+                        window.close();
+                        grid.ajaxRequest();
+                        alert("Success");
+                    }
+                },
+                dataType: 'json'
+            });
+
+        });
+    });
+</script>
+
+
     }
     else
     {
@@ -209,3 +355,4 @@ else
         @T("Admin.Catalog.Products.ProductVariantAttributes.SaveBeforeEdit")
     </div>
 }
+

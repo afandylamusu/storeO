@@ -77,7 +77,7 @@ var AjaxCart = (function ($, window, document, undefined) {
             busy = true;
 
             if (cmd.action === "add") {
-                EventBroker.publish("ajaxcart.item.adding", cmd);
+                EventBroker.publishSync("ajaxcart.item.adding", cmd);
             }
             else if (cmd.action === "addfromwishlist") {
                 EventBroker.publish("ajaxcart.item.adding", cmd);
