@@ -1681,7 +1681,7 @@
                                 <td align="center" style="width: 27%;">
                                     
                                     
-                                        if (item.IsReturnRequestPossible)
+                                        @if (item.IsReturnRequestPossible)
                                         {
                                             <input type="submit" name="btnAddReturnRequest@(item.Id)" value="@T("Admin.Orders.Products.ReturnRequest.Create")" id="btnAddReturnRequest@(item.Id)"
                                                    class="btn" onclick="return confirm('@T("Admin.Common.AreYouSure")');" />
