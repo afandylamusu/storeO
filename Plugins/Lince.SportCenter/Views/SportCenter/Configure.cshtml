@@ -133,8 +133,17 @@
                 @Html.SmartLabelFor(model => model.DurationContractPeriod)
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.DurationContractPeriod, Model.SpecificationAttributes)
+                @Html.TextBoxFor(model => model.DurationContractPeriod)
                 @Html.ValidationMessageFor(model => model.DurationContractPeriod)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.IntervalBookingTimeInMinutes)
+            </td>
+            <td class="adminData">
+                @Html.SettingEditorFor(model => model.IntervalBookingTimeInMinutes)
+                @Html.ValidationMessageFor(model => model.IntervalBookingTimeInMinutes)
             </td>
         </tr>
         <tr>
