@@ -1,0 +1,6 @@
+SmartStore Error: 2 : ERROR: Error while calling TaskScheduler endpoint 'http://d.kandangbola.com/TaskScheduler/Sweep'. HTTP 500, Internal Server Error
+    DateTime=2016-08-30T01:03:10.3241371Z
+SmartStore Error: 2 : ERROR: Error while calling TaskScheduler endpoint 'http://www.kandangbola.com/TaskScheduler/Sweep'. HTTP 404, Not Found
+    DateTime=2016-08-30T01:07:00.7997235Z
+SmartStore Error: 2 : ERROR: Error while calling TaskScheduler endpoint 'http://www.kandangbola.com/TaskScheduler/Sweep'. HTTP 404, Not Found
+    DateTime=2016-08-30T01:08:00.0787558Z

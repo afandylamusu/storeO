@@ -8,9 +8,9 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     smNetConsumer.init({
         //publicKey: '013ec99566f1cf1a5523882f782b7c29',
         //secretKey: '55abde66d89e2a6d786b027b9f775e11',
-        publicKey: '3694f413763e220ba0e87d62a34cc64f',
-        secretKey: '309f92910b9eaad3504f7b3bafacefe0',
-        url: 'http://localhost:6109'
+        publicKey: '8c46dc33da2f3a7b8a42ede5236b2f59',
+        secretKey: '06f9fe7e713e99eb9eb218d4d78fa301',
+        url: 'http://d.kandangbola.com'
     });
 
     function GetApiResource(resource) {
