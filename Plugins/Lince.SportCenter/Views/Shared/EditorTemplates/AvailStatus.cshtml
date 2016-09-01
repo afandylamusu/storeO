@@ -2,7 +2,7 @@
 @model AvailStatus?
 
 @{
-    var selectedValue = Model.HasValue ? Model.Value : AvailStatus.Open;
+    var selectedValue = Model.HasValue ? Model.Value : AvailStatus.Available;
 }
 @Html.DropDownListFor(m => m, selectedValue.ToSelectList())
 
