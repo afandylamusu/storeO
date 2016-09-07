@@ -1,8 +1,13 @@
 ﻿@model ProductDetailsModel
 @using SmartStore.Web.Models.Catalog;
 @using SmartStore.Web;
+@using SmartStore.Web.Framework.Events;
+@using SmartStore.Core.Events;
+@using SmartStore.Core.Infrastructure;
+
 @{
     string leftContentWidth = (Model.ThumbDimensions + 20).ToString() + "px";
+
 }
 <div class="product-variant-line update-container" data-url="@Html.Raw(Model.UpdateProductDetailsUrl("associateditem"))">
 	<div class="clearfix">
@@ -142,6 +147,8 @@
 					@{
 			var dataDictAttributes = new ViewDataDictionary();
 			dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+            EngineContext.Current.Resolve<IEventPublisher>().Publish(new ViewDataAppend("_Attributes_Court", dataDictAttributes, Model.Id));
+
 			<div class="product-attributes">
 				@Html.Partial("_Attributes_Court", Model, dataDictAttributes)
 			</div>

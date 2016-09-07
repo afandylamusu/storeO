@@ -37,6 +37,7 @@
         var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, this.Request.Url.Scheme);
         Html.AddCanonicalUrlParts(productUrl);
     }
+
 }
 
 <div class="page product-details-page">
@@ -225,11 +226,13 @@
 										</div>
 									}
 								</div>
-							}
-							else if (Model.ProductVariantAttributes.ShouldBeRendered())
-							{
-								var dataDictAttributes = new ViewDataDictionary();
-								dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+}
+                            else if (Model.ProductVariantAttributes.ShouldBeRendered())
+                            {
+                                var dataDictAttributes = new ViewDataDictionary();
+                                dataDictAttributes.TemplateInfo.HtmlFieldPrefix = string.Format("attributes_{0}", Model.Id);
+
+                                EngineContext.Current.Resolve<IEventPublisher>().Publish(new ViewDataAppend("_Attributes_Court", dataDictAttributes, Model.Id));
 
 								<div class="product-attributes line">
 									@Html.Partial("_Attributes_Court", Model, dataDictAttributes)                  
