@@ -3,6 +3,7 @@
 
 @{
     var selectedValue = Model.HasValue ? Model.Value : AvailStatus.Available;
+    var list = selectedValue.ToSelectList().Where(o => o.Text != AvailStatus.Reserved.GetFriendlyName());
 }
-@Html.DropDownListFor(m => m, selectedValue.ToSelectList())
+@Html.DropDownListFor(m => m, list)
 
