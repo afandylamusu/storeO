@@ -6,8 +6,8 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     var productId = null; 
 
     smNetConsumer.init({
-        publicKey: '013ec99566f1cf1a5523882f782b7c29',
-        secretKey: '55abde66d89e2a6d786b027b9f775e11',
+        publicKey: '934f584794be7037974abd433ddc3829',
+        secretKey: 'ad11c01e0f3e6cb2ae3a4539a3558de7',
         //publicKey: '3694f413763e220ba0e87d62a34cc64f',
         //secretKey: '309f92910b9eaad3504f7b3bafacefe0',
         url: 'http://localhost:6109'
@@ -46,27 +46,21 @@ var SportCenterCourt = (function ($, window, document, undefined) {
         if (!data[0])
             return;
 
-        $.each(data[0].Avails, function (i, v) {
-
-            var rate = $.grep(data[0].Prices, function (n) {
-                return n.InvTypeItem_Id == v.InvTypeItem_Id;
-            });
-
-            console.log(rate);
+        $.each(data[0].schedules, function (i, v) {
             
             var btn = jQuery('<div/>', {
-                'data-id': v.Id,
-                'data-invtypecode': v.InvTypeItem_Id + ":" + v.Id + ":" + rate[0].Id,
-                'data-start': v.StartProductVariantValue,
-                'data-end': v.EndProductVariantValue,
+                'data-id': v.id,
+                'data-invtypecode': v.master_schedule_id + ":" + v.id + ":" + v.rate_id,
+                'data-start': v.start,
+                'data-end': v.end,
                 'data-href': urlCartAction,
                 'data-form-selector': '#product-details-form',
                 'data-type': 'cart',
                 'data-action': 'add',
-                text: formatTime(v.StartProductVariantValue) + ' - ' + formatTime(v.EndProductVariantValue) + ' | ' + $.number(v.Price, 2)
+                text: formatTime(v.start) + ' - ' + formatTime(v.end) + ' | ' + $.number(v.rate.amount, 2)
             });
 
-            switch (parseInt(v.AvailStatusId)) {
+            switch (parseInt(v.avail_status_code)) {
                 case 1:
                     btn.addClass('btn btn-warning add-to-cart-button');
                     btn.attr("disabled", 'disabled');
@@ -141,7 +135,10 @@ var SportCenterCourt = (function ($, window, document, undefined) {
             co: bookingDate
         };
 
-        callSMWapi(GetApiResource("/CourtSchedules?pid=" + d.pid + "&ci=" + d.ci + "&co=" + d.co));
+        callSMWapi(GetApiResource("/search"), "post", {
+            check_in: d.ci,
+            field_ids: [d.pid]
+        });
     }
 
     EventBroker.subscribe("ajaxcart.item.adding", function (msg, data) {
