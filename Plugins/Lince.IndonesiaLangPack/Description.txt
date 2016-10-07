@@ -1,11 +1,11 @@
-﻿FriendlyName: Google Lang Pack (Lince)
-Description: Provides language pack integrate with google translation api.
-SystemName: Lince.GoogleLangPack
+﻿FriendlyName: Manage Destinations (Lince)
+Description: Manage cities and areas of country.
+SystemName: Lince.Destinations
 Group: Developer
 Version: 1.0.0.0
 Author: Afandy Lamusu
 MinAppVersion: 2.2.0
 DisplayOrder: 1
-FileName: Lince.GoogleLangPack.dll
-ResourceRootKey: Plugins.Lince.GoogleLangPack
+FileName: Lince.Destinations.dll
+ResourceRootKey: Plugins.Lince.Destinations
 Url: http://community.smartstore.com/marketplace/file/11-lince-langpack-id-plugin/
