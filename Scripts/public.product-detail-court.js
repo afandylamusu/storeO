@@ -6,10 +6,12 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     var productId = null; 
 
     smNetConsumer.init({
+        /// ADE-KHI
         publicKey: '934f584794be7037974abd433ddc3829',
         secretKey: 'ad11c01e0f3e6cb2ae3a4539a3558de7',
-        //publicKey: '3694f413763e220ba0e87d62a34cc64f',
-        //secretKey: '309f92910b9eaad3504f7b3bafacefe0',
+        /// ADE-HOME
+        //publicKey: '0774ac25c7106c23abf586b1a83cc975',
+        //secretKey: '71402570156091753e523d29b1ccad55',
         url: 'http://localhost:6109'
     });
 
@@ -47,6 +49,9 @@ var SportCenterCourt = (function ($, window, document, undefined) {
             return;
 
         $.each(data[0].schedules, function (i, v) {
+
+            if (v.rate == null)
+                return;
             
             var btn = jQuery('<div/>', {
                 'data-id': v.id,
