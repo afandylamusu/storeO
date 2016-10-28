@@ -88,6 +88,10 @@
 			
 			this.imageWrapperWidth = this.imageWrapper.width();
 			this.imageWrapperHeight = opts.height || 300;
+
+			if (this.imageWrapperHeight > 300) {
+				this.imageWrapper.css({ height: this.imageWrapperHeight + 'px' })
+			}
 			
 			this.navDisplayWidth = this.nav.width();
 			this.currentIndex = 0;
@@ -128,7 +132,9 @@
 				};
 			};
 			
-			this.loading(true);
+			if (this.images[startAt]) {
+				this.loading(true);
+			}
 			
 			this.showImage(startAt);
 			
@@ -180,9 +186,8 @@
 			this.nav = el.find('.sg-nav').css("opacity", "0");
 			this.thumbsWrapper = this.nav.find('.sg-thumbs');
 			this.preloads = $('<div class="sg-preloads"></div>');
-			this.loader = $('<div class="ajax-loader-small sg-loader"></div>');
+			this.loader = $('<div class="spinner-container sg-loader"></div>').append(createCircularSpinner(24, false, null, true));
 			this.imageWrapper.append(this.loader);
-			this.loader.hide();
 			$(document.body).append(this.preloads);
 		},
 
@@ -220,10 +225,10 @@
 
 		loading: function(value) {
 			if (value) {
-				this.loader.show();
+				this.loader.addClass('active');
 			} 
 			else {
-				this.loader.hide();
+			    this.loader.removeClass('active');
 			};
 		},
 

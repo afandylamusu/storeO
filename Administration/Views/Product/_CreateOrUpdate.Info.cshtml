@@ -34,10 +34,25 @@
         toggleShipping();
         toggleTax();
         
-    	// show/hide homepage display order
+    	// toggle homepage display order
     	$('#ShowOnHomePage').change(function () {
     		$('#pnlHomePageDisplayOrder').toggle($(this).is(':checked'));
-        }).trigger('change');
+    	}).trigger('change');
+
+    	// add required products
+    	$(document).on('click', '#SearchRequiredProductsButton', function () {
+    		$('#@(Html.FieldIdFor(x => x.RequiredProductIds))').entityPicker('loadDialog', {
+    			url: '@Url.Action("EntityPicker", "Common", new { area = "" })',
+    			caption: '@T("Admin.Catalog.Products.Fields.RequireOtherProducts")',
+    			returnValueDelimiter: ',',
+    			onLoadDialogBefore: function () {
+    				$('#SearchRequiredProductsButton').button('loading').prop('disabled', true);
+    			},
+    			onLoadDialogComplete: function () {
+    				$('#SearchRequiredProductsButton').prop('disabled', false).button('reset');
+    			}
+    		});
+    	});
     });
 
     function toggleProductType() {
@@ -191,14 +206,14 @@
 
 <div style="margin-bottom: 30px; overflow: hidden;">
 	<table class="adminContent">
-		@if (Model.Id > 0)
+		@if (Model.Id != 0)
 		{
 			<tr>
 				<td class="adminTitle">
 					@Html.SmartLabelFor(model => model.Id)
 				</td>
 				<td class="adminData">
-					@Model.Id.ToString()
+					@Html.DisplayFor(model => model.Id)
 					@Html.ValidationMessageFor(model => model.Id)
 				</td>
 			</tr>
@@ -211,9 +226,6 @@
 				</td>
 			</tr>
 		}
-
-        @if (!Model.IsCompanyUser)
-        {
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.ProductTypeId)
@@ -232,8 +244,8 @@
 				@Html.ValidationMessageFor(model => model.VisibleIndividually)
 			</td>
 		</tr>
-		if (Model.Id > 0 && Model.AssociatedToProductId > 0)
-        {
+		@if (Model.Id > 0 && Model.AssociatedToProductId > 0)
+		{
 			<tr>
 				<td class="adminTitle">
 					@Html.SmartLabelFor(model => model.AssociatedToProductId)
@@ -242,7 +254,7 @@
 					@Html.ActionLink(Model.AssociatedToProductName, "Edit", "Product", new { id = Model.AssociatedToProductId }, new { })
 				</td>
 			</tr>
-        }
+		}
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.ProductTemplateId)
@@ -252,7 +264,6 @@
 				@Html.ValidationMessageFor(model => model.ProductTemplateId)
 			</td>
 		</tr>
-        }
 	</table>
 
 	<p></p>
@@ -325,8 +336,6 @@
 					))
 
 	<table class="adminContent">
-        @if (!Model.IsCompanyUser)
-        {
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.Sku)
@@ -336,7 +345,6 @@
 				@Html.ValidationMessageFor(model => model.Sku)
 			</td>
 		</tr>
-        
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.ManufacturerPartNumber)
@@ -391,7 +399,6 @@
 				@Html.ValidationMessageFor(model => model.AvailableEndDateTimeUtc)
 			</td>
 		</tr>
-        }
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.AllowCustomerReviews)
@@ -401,8 +408,6 @@
 				@Html.ValidationMessageFor(model => model.AllowCustomerReviews)
 			</td>
 		</tr>
-        @if (!Model.IsCompanyUser)
-        {
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.ShowOnHomePage)
@@ -421,7 +426,6 @@
 				@Html.ValidationMessageFor(model => model.HomePageDisplayOrder)
 			</td>
 		</tr>
-        }
 		<tr>
 			<td class="adminTitle">
 				@Html.SmartLabelFor(model => model.Published)
@@ -455,9 +459,6 @@
 		}
 	</table>
 
-    @if (true)
-    {
-
 	<table class="adminContent" id="group-required-other-products">
 		<tr class="adminSeparator">
 			<td colspan="2">
@@ -479,6 +480,11 @@
 			</td>
 			<td class="adminData">
 				@Html.EditorFor(model => model.RequiredProductIds)
+
+				<button type="button" class="btn" id="SearchRequiredProductsButton" data-loading-text="@(T("Common.Loading"))&hellip;">
+					<i class="fa fa-search"></i>&nbsp;@T("Admin.Common.Search")
+				</button>
+
 				@Html.ValidationMessageFor(model => model.RequiredProductIds)
 			</td>
 		</tr>
@@ -593,7 +599,7 @@
 				@Html.SmartLabelFor(model => model.UserAgreementText)
 			</td>
 			<td class="adminData">
-				@Html.TextAreaFor(model => model.UserAgreementText)
+				@Html.EditorFor(model => model.UserAgreementText, Html.RichEditorFlavor())
 				@Html.ValidationMessageFor(model => model.UserAgreementText)
 			</td>
 		</tr>
@@ -612,7 +618,7 @@
 			</td>
 			<td class="adminData">
 				@Html.EditorFor(model => model.SampleDownloadId)
-				@*@Html.ValidationMessageFor(model => model.SampleDownloadId)*@
+				@Html.ValidationMessageFor(model => model.SampleDownloadId)
 			</td>
 		</tr>
 	</table>
@@ -785,24 +791,10 @@
 		</tr>
 	</table>
 
-    }
-
 	<script>
 		$(function () {
 			var tagChooser = $("#@Html.FieldIdFor(x => x.ProductTags)");
-		    tagChooser.select2({ tags: [@(Html.Raw(ViewBag.SerializedTags))] });
-
-		    var isCompanyUser = @(Model.IsCompanyUser ? "true" : "false");
-		    if(isCompanyUser){
-		        $("#group-required-other-products").hide();
-		        $("#group-downloads").hide();
-		        $("#group-giftcard").hide();
-		        $("#group-recurring").hide();
-		        $("#group-shipping").hide();
-		        $("#group-tax").hide();
-
-		    }
-
+			tagChooser.select2({ tags:[@(Html.Raw(ViewBag.SerializedTags))] });
 		});
 	</script>
 </div>

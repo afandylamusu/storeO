@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Language Name="English">
+  <LocaleResource Name="Admin.Companies.List.Title">
+    <Value>Merchants</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Edit.Title">
+    <Value>Merchant</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Tab.Info">
+    <Value>Info</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Tab.Members">
+    <Value>Members</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Tab.Facilities">
+    <Value>Facilities</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Edit.BackToList">
+    <Value>back</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Customers.AddNew.Popup.Title">
+    <Value>Add Member</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Products.Buttons.AddNew">
+    <Value>Add Facility</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Companies.Members.Buttons.AddNew">
+    <Value>Add Member</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Countries.States.Tabs.Info">
+    <Value>Info</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Countries.States.Tabs.Items">
+    <Value>Cities, Areas and etc</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Countries.States.Destinations.AddNew">
+    <Value>Add New Destination</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Countries.States.BackToEditCountry">
+    <Value>Back to Edit Country</Value>
+  </LocaleResource>
+</Language>

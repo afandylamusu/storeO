@@ -1,9 +1,13 @@
 ﻿@using Lince.SportCenter.Domain
+@using SmartStore.Services.Localization
+@using System.Linq
+
 @model AvailStatus?
 
 @{
+    var cantChangeList = new List<int> { (int)AvailStatus.Reserved , (int)AvailStatus.SoldOut };
     var selectedValue = Model.HasValue ? Model.Value : AvailStatus.Available;
-    var list = selectedValue.ToSelectList().Where(o => o.Text != AvailStatus.Reserved.GetFriendlyName());
+    var list = selectedValue.ToSelectList().Where(o => !cantChangeList.Contains(o.Value.Convert<int>()));
 }
 @Html.DropDownListFor(m => m, list)
 

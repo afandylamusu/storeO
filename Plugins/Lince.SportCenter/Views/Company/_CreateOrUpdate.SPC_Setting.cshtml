@@ -81,10 +81,10 @@
         </tr>
         <tr>
             <td class="adminTitle">
-                @Html.SmartLabelFor(model => model.ContractStatus)
+                @Html.SmartLabelFor(model => model.ContractStatusId)
             </td>
             <td class="adminData">
-                @Html.DropDownListFor(model => model.ContractStatus, Model.ContractStatusTypeList)
+                @Html.DropDownListFor(model => model.ContractStatusId, Model.ContractStatusTypeList)
                 @Html.ValidationMessageFor(model => model.ContractStatus)
             </td>
         </tr>
@@ -92,6 +92,6 @@
 }
 else
 {
-    @T("Admin.Customer.Companies.SaveBeforeEdit")
+    @T("Admin.Companies.Edit.SaveBeforeEdit")
 }
 

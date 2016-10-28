@@ -1,0 +1,78 @@
+﻿@model MerchantPerformanceListModel
+@using Telerik.Web.Mvc.UI
+@using SmartStore.Web.Framework.UI;
+
+@{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = @T("Plugins.Lince.SportCenter.Report.Performance.Title");
+
+    var hideProfitReport = false;
+    var allString = T("Admin.Common.All").Text;
+
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-puzzle-piece"></i>
+        @T("Plugins.Lince.SportCenter.Report.Performance.Title")
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.StartDate)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StartDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.EndDate)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.EndDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td class="adminData">
+                <button type="submit" id="btnSearch" class="btn">
+                    <i class="fa fa-search"></i>
+                    @T("Admin.Common.Search")
+                </button>
+            </td>
+        </tr>
+    </table>
+}
+
+@helper TabAllResult()
+{
+    <div>
+        sdfsd
+    </div>
+}
+
+@helper TabResultByPaymentMethods()
+{
+    <div>
+        sdf
+    </div>
+}
+
+
+@Html.SmartStore().TabStrip().Name("sportcenter-sales-report").OnAjaxSuccess("salesTab_onAjaxSuccess").HtmlAttributes(new { store_id = Model.StoreId }).Style(TabsStyle.Tabs).Position(TabsPosition.Left).Items(x =>
+{
+    x.Add().Text(T("Plugins.Lince.SportCenter.Report.Sales.Tab.AllResult").Text).Content(TabAllResult()).Selected(true);
+
+    x.Add().Text(T("Plugins.Lince.SportCenter.Report.Sales.Tab.FilterByPaymentMethods").Text).Content(TabResultByPaymentMethods());
+
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new TabStripCreated(x, "sportcenter-sales-report", this.Html, this.Model));
+})

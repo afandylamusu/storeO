@@ -1,11 +1,10 @@
-﻿@model CustomerOrderListModel
+﻿@using SmartStore.Web.Models.Customer;
+@model CustomerOrderListModel
 @{
     Layout = "~/Views/Shared/_Root.cshtml";
 
-    //title
     Html.AddTitleParts(T("PageTitle.Account").Text);
 }
-@using SmartStore.Web.Models.Customer;
 <div class="page account-page order-list-page">
     <div class="page-title">
         <h1>@T("Account.CustomerOrders")</h1>
@@ -66,6 +65,7 @@
             </div>
             }
         }
+
         <div class="order-list">
             @if (Model.Orders.Count > 0)
             {
@@ -91,10 +91,6 @@
 									{
 										<a href="@Url.Action("ReturnRequest", "ReturnRequest", new { id = order.Id })" data-role="button" rel="nofollow">@T("Account.CustomerOrders.ReturnItems")</a>
 									}
-                                    @if (order.IsCanPaid)
-                                    {
-                                        <a href="@Url.Action("ManualConfirm", "Order", new { id = order.Id })" data-role="button" rel="nofollow">@T("Account.CustomerOrders.ConfirmOrder")</a>
-                                    }
 									<a href="@Url.Action("Details", "Order", new { id = order.Id })" data-role="button" rel="nofollow">@T("Account.CustomerOrders.OrderDetails")</a>
                                 </div>
                             </div>
@@ -107,5 +103,7 @@
                 @T("Account.CustomerOrders.NoOrders")
             }
         </div>
+
+		@Html.SmartStore().Pager(Model.Orders).Name("orders-paginator").Action("Orders", "Customer")
     </div>
 </div>

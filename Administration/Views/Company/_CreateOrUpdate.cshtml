@@ -9,10 +9,10 @@
 @Html.HiddenFor(model => model.Id)
 @Html.SmartStore().TabStrip().Name("company-edit").Items(x =>
 {
-    x.Add().Text(T("Admin.Companies.Info").Text).Content(TabInfo()).Selected(true);
-    x.Add().Text(T("Admin.Companies.Members").Text).Content(TabMembers());
+    x.Add().Text(T("Admin.Companies.Tab.Info").Text).Content(TabInfo()).Selected(true);
+    x.Add().Text(T("Admin.Companies.Tab.Members").Text).Content(TabMembers());
     //x.Add().Text(T("Admin.Common.SEO").Text).Content(TabSeo());
-    x.Add().Text(T("Admin.Companies.Products").Text).Content(TabProducts());
+    x.Add().Text(T("Admin.Companies.Tab.Facilities").Text).Content(TabProducts());
     //x.Add().Text(T("Admin.Common.Stores").Text).Content(TabStores());
 
     //generate an event
@@ -379,7 +379,7 @@ if (Model.Id > 0)
                     <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-warning btn-above add-new-combination" style="margin-top:3px;"
                             onclick="javascript:OpenWindow('@(Url.Action("ProductAddPopup", "Company", new { companyId = Model.Id, btnId = "btnRefreshProducts", formId = "company-form" }))', 1000, 700, true); return false;">
                         <i class="fa fa-plus"></i>
-                        @T("Admin.Customer.Companies.Products.AddNew")
+                        @T("Admin.Companies.Products.Buttons.AddNew")
                     </button>
                     <input type="submit" id="btnRefreshProducts" name="btnRefreshProducts" style="display: none" />
                     <script type="text/javascript">
@@ -463,7 +463,7 @@ if (Model.Id > 0)
                     <button type="submit" id="btnAddNewProduct" name="btnAddNewProduct" class="btn btn-warning btn-above add-new-combination" style="margin-top:3px;"
                             onclick="javascript:OpenWindow('@(Url.Action("MemberAddPopup", "Company", new { companyId = Model.Id, btnId = "btnRefreshMembers", formId = "company-form" }))', 1000, 700, true); return false;">
                         <i class="fa fa-plus"></i>
-                        @T("Admin.Customer.Companies.Members.AddNew")
+                        @T("Admin.Companies.Members.Buttons.AddNew")
                     </button>
                     <input type="submit" id="btnRefreshMembers" name="btnRefreshMembers" style="display: none" />
                     <script type="text/javascript">

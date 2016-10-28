@@ -7,12 +7,12 @@ var SportCenterCourt = (function ($, window, document, undefined) {
 
     smNetConsumer.init({
         /// ADE-KHI
-        publicKey: '934f584794be7037974abd433ddc3829',
-        secretKey: 'ad11c01e0f3e6cb2ae3a4539a3558de7',
+        publicKey: 'f5f557dd5455be386195a3a50c466cad',
+        secretKey: 'f02722d0f20daa702c52df579bf27eb8',
         /// ADE-HOME
-        //publicKey: '0774ac25c7106c23abf586b1a83cc975',
-        //secretKey: '71402570156091753e523d29b1ccad55',
-        url: 'http://localhost:6109'
+        //publicKey: '683d33e859cf79745f3226f603ee8370',
+        //secretKey: 'f91544ca30b41eeaca7abb76615213ce',
+        url: 'http://localhost:6100'
     });
 
     function GetApiResource(resource) {
@@ -40,7 +40,7 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     }
 
     function Done(data, textStatus, jqXHR) {
-        console.log('Response OK:\r\n' + jqXHR.getAllResponseHeaders() + '\r\n' + JsonStringify(data));
+        //console.log('Response OK:\r\n' + jqXHR.getAllResponseHeaders() + '\r\n' + JsonStringify(data));
 
         /// remove all childs
         $('div.spc-schedules').empty();

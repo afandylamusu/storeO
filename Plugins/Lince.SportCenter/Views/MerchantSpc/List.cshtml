@@ -1,0 +1,211 @@
+﻿@using Lince.SportCenter.Models
+@model MerchantListModel
+@{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Merchants of SportCenter";
+
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
+
+@helper MerchantList(IEnumerable<MerchantModel> merchants)
+{
+
+foreach (var plugin in merchants)
+{
+        <div class="module-item@(!plugin.Active ? " inactive" : "") clearfix" data-system-name="@plugin.Name" data-friendly-name="@plugin.Name">
+            <div class="module-icon">
+                <img class="icon img-responsive" src="@Url.Content(plugin.IconUrl)" />
+            </div>
+            <div class="module-data module-data-cols-2 clearfix@(!plugin.Active ? " inactive" : "")">
+                <!-- General -->
+                <div class="module-col">
+                    <div>
+                        <span class="module-name">
+                            @plugin.Name
+                        </span>
+                        @if (plugin.Active)
+                        {
+                            <span class="label label-warning">@T("Admin.Configuration.Plugins.Fields.Installed")</span>
+                        }
+
+                    </div>
+                    <div class="module-info">
+                        @if (plugin.WebsiteUrl.HasValue())
+                        {
+                            <span class="attr">
+                                <i class="fa fa-external-link"></i>
+                                <a href="@plugin.WebsiteUrl" target="PluginWebsiteWnd">@T("Common.Website")</a>
+                            </span>
+                        }
+                        @if (plugin.Business_ContactName.HasValue())
+                        {
+                            <span class="attr">
+                                <span class="attr-name">@T("Admin.Configuration.Plugins.Fields.Author"):</span>
+                                <span class="attr-value">@plugin.Business_ContactName</span>
+                            </span>
+                        }
+                        <span class="attr">
+                            <span class="attr-name">@T("Admin.Configuration.Plugins.Fields.Version"):</span>
+                            <span class="attr-value">@plugin.ContractStart</span>
+                        </span>
+                        <span class="attr">
+                            <span class="attr-name">@T("Admin.Configuration.Plugins.Fields.SystemName"):</span>
+                            <span class="attr-value">@plugin.ContractEnd</span>
+                        </span>
+                    </div>
+                    @if (plugin.Description.HasValue())
+                    {
+                        <div class="module-description">
+                            @plugin.Description
+                        </div>
+                    }
+
+                    @if (plugin.Active)
+                    {
+                        <div class="module-actions">
+                            <div class="btn-group">
+                                @*<a class="btn btn-small plugin-update-resources" href="@Url.Action("UpdateStringResources", new { systemName = plugin.Name })">
+                                    <i class="fa fa-language"></i>
+                                    @T("Admin.Configuration.Plugins.Resources.Update")
+                                </a>*@
+                                @if (plugin.WebsiteUrl.HasValue())
+                                {
+                                    <a class="btn btn-small plugin-configure" href="@Url.Action("Edit", "Company", new { area = "Admin", id = 1 })">
+                                        <i class="fa fa-cog"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.EditProfile")
+                                    </a> 
+                                    <a class="btn btn-small plugin-configure" href="@Url.Action("Facilities")">
+                                        <i class="fa fa-cog"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.Facilities")
+                                    </a> 
+                                    <a class="btn btn-small plugin-configure" href="@Url.Action("Members")">
+                                        <i class="fa fa-cog"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.Members")
+                                    </a>
+                                    <a class="btn btn-small plugin-configure" href="@Url.Action("Performance", "ReportSpc")">
+                                        <i class="fa fa-cog"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.Performance")
+                                    </a>
+                                }
+                                @if (plugin.WebsiteUrl.HasValue())
+                                {
+                                    <button class="btn btn-small plugin-licence" type="button" data-url="@plugin.WebsiteUrl">
+                                        <i class="fa fa-key"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.Agreement")
+                                    </button>
+                                }
+                            </div>
+                        </div>   }
+                </div>
+
+                <!-- Buttons -->
+                <div class="module-col">
+
+                        <div class="btn-group" style="vertical-align: middle">
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.ChangeStatus")
+                                <span class="fa fa-caret-down"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="@Url.Action("ReloadList")">
+                                        <i class="fa fa-refresh"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.ChangeStatus.Active")
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ReloadList")">
+                                        <i class="fa fa-refresh"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.ChangeStatus.InActive")
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("UpdateAllStringResources")" class="plugin-update-allresources">
+                                        <i class="fa fa-refresh"></i>
+                                        @T("Plugins.Lince.SportCenter.Merchants.List.Buttons.ChangeStatus.Suspended")
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+}
+}
+
+@using (Html.BeginForm("Performance", null, FormMethod.Post, new { id = "plugins-form" }))
+{
+    @*@Html.DropDownList("pluginsToInstall", allPluginsSelectList, new { @class = "hide", multiple = "multiple" })
+        @Html.DropDownList("pluginsToUninstall", allPluginsSelectList, new { @class = "hide", multiple = "multiple" })*@
+
+    <div class="section-header">
+        <div class="title">
+            <i class="fa fa-puzzle-piece"></i>
+            @T("Plugins.Lince.SportCenter.Merchants.List.Title")
+        </div>
+        <div class="options">
+            @Html.TextBox("filter-query", "", new { style = "margin: 0", placeholder = T("Common.Search").Text })
+            <button id="btn-execute-tasks" type="submit" class="btn" disabled="disabled">
+                <i class="fa fa-cogs"></i>
+                @T("Admin.Configuration.Plugins.ExecuteTasks")
+                <span class="label label-important label-uninstall-count hide">0</span>
+                <span class="label label-warning label-install-count hide">0</span>
+            </button>
+            <a id="uploadpackage" href="#uploadpackage-window" data-toggle="modal" class="btn" role="button">
+                <i class="fa fa-upload"></i>
+                @T("Admin.Packaging.UploadPlugin")
+            </a>
+            <div class="btn-group" style="vertical-align: middle">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    @T("Admin.Common.Edit")
+                    <span class="fa fa-caret-down"></span>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="@Url.Action("ReloadList")">
+                            <i class="fa fa-refresh"></i>
+                            @T("Admin.Configuration.Plugins.ReloadList")
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("UpdateAllStringResources")" class="plugin-update-allresources">
+                            <i class="fa fa-refresh"></i>
+                            @T("Admin.Configuration.Plugins.Resources.UpdateAll")
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info fade in">
+        <button class="close" data-dismiss="alert">x</button>
+        <h4>@T("Plugins.Lince.SportCenter.Merchants.List.Description")</h4>
+        <ol>
+            <li>@Html.Raw(T("Admin.Configuration.Plugins.Description.Step1", "uploadpackage", "#uploadpackage-window"))</li>
+            <li>@Html.Raw(T("Admin.Configuration.Plugins.Description.Step2"))</li>
+            <li>@Html.Raw(T("Admin.Configuration.Plugins.Description.Step3"))</li>
+            <li>@Html.Raw(T("Admin.Configuration.Plugins.Description.Step4"))</li>
+        </ol>
+    </div>
+
+    <table class="adminContent" id="merchants">
+        <tr>
+            <td>
+
+                @foreach (var g in Model.Groups.OrderBy(x => x.Key))
+                {
+                    <div class="module-list">
+                        <h3>@g.Key</h3>
+                        @MerchantList(g.Value)
+                    </div>
+                }
+
+                <input type="submit" id="btnRefresh" name="btnRefresh" style="display: none" />
+            </td>
+        </tr>
+    </table>
+}
+

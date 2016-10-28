@@ -4,12 +4,12 @@
     var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
 
     //page title
-    ViewBag.Title = T("Admin.Customer.Companies").Text;
+    ViewBag.Title = T("Admin.Companies.List.Title").Text;
 }
 <div class="section-header">
     <div class="title">
         <i class="fa fa-building-o"></i>
-        @T("Admin.Customer.Companies")
+        @T("Admin.Companies.List.Title")
     </div>
     <div class="options">
         <a href="@Url.Action("Create")" class="btn btn-primary">

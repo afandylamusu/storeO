@@ -1,5 +1,5 @@
 ﻿<Language Name="Deutsch" IsDefault="false" IsRightToLeft="false">
-  <LocaleResource Name="Plugins.Lince.SportCenter.Settings" AppendRootKey="false">
+  <LocaleResource Name="Settings">
     <Children>
       <LocaleResource Name="Fields.Enabled">
         <Value>Enabled</Value>

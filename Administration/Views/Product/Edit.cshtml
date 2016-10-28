@@ -1,64 +1,45 @@
 ﻿@model ProductModel
 @using Telerik.Web.Mvc.UI;
 @{
-    //page title
-    ViewBag.Title = T("Admin.Catalog.Products.EditProductDetails").Text;
-
-    string urlBackToList = Url.Action("List");
-    if (Request.QueryString.Get("pback").HasValue())
-    {
-        urlBackToList = Request.QueryString.Get("pback");
-    }
+	ViewBag.Title = T("Admin.Catalog.Products.EditProductDetails").Text;
 }
-
-@using (Html.BeginForm(null, null, new { pback = Request.QueryString.Get("pback") }, FormMethod.Post, new { id = "product-form" })) {
-    @Html.Hidden("pback", Request.QueryString.Get("pback"))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "product-form" })) {
     <div class="section-header">
         <div class="title">
             @if (!String.IsNullOrEmpty(Model.PictureThumbnailUrl)) {
                 <img src="@Url.Content(Model.PictureThumbnailUrl)" />
 			}
             @T("Admin.Catalog.Products.EditProductDetails") - <span title="@Model.Name">@Model.Name.Truncate(45, "...")</span> 
-            @if (!Model.IsCompanyUser)
-            {
-                <a href='@urlBackToList'>(@T("Admin.Catalog.Products.BackToList"))</a>
-            }
-            else
-            {
-              <a href='@Url.Action("Edit", "Company", new { area = "Admin", id = Model.CurrentUserCompanyId })'>(@T("Admin.Catalog.Products.BackToList"))</a>
-            }
-
+			<a href='@Url.Action("List")'>(@T("Admin.Catalog.Products.BackToList"))</a>
         </div>
         <div class="options">
+			@Html.Widget("admin_button_toolbar_before")
+
 			<button type="submit" name="preview" value="preview" onclick="javascript:OpenWindow('@Model.ProductUrl', 1000, 600, true); return false;" class="btn">
                 <i class="fa fa-eye"></i>
                 @T("Admin.Common.Preview")
             </button>
 			<button type="submit" value="save" class="btn btn-primary entity-commit-trigger" data-commit-type="product" data-commit-action="update" data-commit-id="@Model.Id">
 				<i class="fa fa-check"></i>
-
-                @T("Admin.Common.Save")
+				@T("Admin.Common.Save")
 			</button>
 			<button type="submit" value="save-continue" class="btn entity-commit-trigger" data-commit-type="product" data-commit-action="update" data-commit-id="@Model.Id">
-
-                @T("Admin.Common.SaveContinue")
+				@T("Admin.Common.SaveContinue")
 			</button>
-            @if (!Model.IsCompanyUser) {
-
-            <a href="#copyproduct-window" data-toggle="modal" class="btn">
+			<a href="#copyproduct-window" data-toggle="modal" class="btn">
 				<i class="fa fa-files-o"></i>&nbsp;@T("Admin.Catalog.Products.Copy")
 			</a>
 			<button type="submit" id="product-delete" class="btn btn-danger">
 				<i class="fa fa-trash-o"></i>
-
-                @T("Admin.Common.Delete")
+				@T("Admin.Common.Delete")
 			</button>
-            }
+
+			@Html.Widget("admin_button_toolbar_after")
         </div>
     </div>
     @Html.Partial("_CreateOrUpdate", Model)
 }
-                @Html.DeleteConfirmation("product-delete")
+@Html.DeleteConfirmation("product-delete")
 
 @*copy product form*@
 @{Html.SmartStore().Window()

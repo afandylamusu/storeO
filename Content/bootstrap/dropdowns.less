@@ -52,13 +52,18 @@
   background-color: @dropdownBackground;
   border: 1px solid #ccc; // Fallback for IE7-8
   border: 1px solid @dropdownBorder;
+  border-color: rgba(0,0,0, 0.15);
   *border-right-width: 2px;
   *border-bottom-width: 2px;
-  .border-radius(6px);
-  .box-shadow(0 5px 10px rgba(0,0,0,.2));
+  .border-radius(@baseBorderRadius);
+  
+  .box-shadow(0 2px 6px rgba(0,0,0,.15));
   -webkit-background-clip: padding-box;
-     -moz-background-clip: padding;
           background-clip: padding-box;
+  
+  .dropdown-menu {
+    .box-shadow(0 5px 10px rgba(0,0,0,.2));
+  }
 
   // Aligns the dropdown menu to right
   &.pull-right {
@@ -72,7 +77,7 @@
   }
 
   // Links within the dropdown menu
-  > li > a {
+  li > a {
     display: block;
     padding: 3px 20px;
     clear: both;
@@ -83,12 +88,11 @@
   }
 }
 
-// Hover/Focus state
+// Hover state
 // -----------
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus,
-.dropdown-submenu:hover > a,
-.dropdown-submenu:focus > a {
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a {
   text-decoration: none;
   color: @dropdownLinkColorHover;
   #gradient > .vertical(@dropdownLinkBackgroundHover, darken(@dropdownLinkBackgroundHover, 5%));
@@ -96,9 +100,8 @@
 
 // Active state
 // ------------
-.dropdown-menu > .active > a,
-.dropdown-menu > .active > a:hover,
-.dropdown-menu > .active > a:focus {
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover {
   color: @dropdownLinkColorActive;
   text-decoration: none;
   outline: 0;
@@ -107,19 +110,16 @@
 
 // Disabled state
 // --------------
-// Gray out text and ensure the hover/focus state remains gray
-.dropdown-menu > .disabled > a,
-.dropdown-menu > .disabled > a:hover,
-.dropdown-menu > .disabled > a:focus {
+// Gray out text and ensure the hover state remains gray
+.dropdown-menu .disabled > a,
+.dropdown-menu .disabled > a:hover {
   color: @grayLight;
 }
-// Nuke hover/focus effects
-.dropdown-menu > .disabled > a:hover,
-.dropdown-menu > .disabled > a:focus {
+// Nuke hover effects
+.dropdown-menu .disabled > a:hover {
   text-decoration: none;
   background-color: transparent;
   background-image: none; // Remove CSS gradient
-  .reset-filter();
   cursor: default;
 }
 
@@ -133,17 +133,6 @@
   & > .dropdown-menu {
     display: block;
   }
-}
-
-// Backdrop to catch body clicks on mobile, etc.
-// ---------------------------
-.dropdown-backdrop {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  z-index: @zindexDropdown - 10;
 }
 
 // Right aligned dropdowns
@@ -184,7 +173,7 @@
   left: 100%;
   margin-top: -6px;
   margin-left: -1px;
-  .border-radius(0 6px 6px 6px);
+  border-radius: 0 6px 6px 6px;
 }
 .dropdown-submenu:hover > .dropdown-menu {
   display: block;
@@ -196,7 +185,7 @@
   bottom: 0;
   margin-top: 0;
   margin-bottom: -2px;
-  .border-radius(5px 5px 5px 0);
+  border-radius: 5px 5px 5px 0;
 }
 
 // Caret to indicate there is a submenu
@@ -227,7 +216,7 @@
   > .dropdown-menu {
     left: -100%;
     margin-left: 10px;
-    .border-radius(6px 0 6px 6px);
+    border-radius: 6px 0 6px 6px;
   }
 }
 
@@ -242,7 +231,6 @@
 // Typeahead
 // ---------
 .typeahead {
-  z-index: 1051;
   margin-top: 2px; // give it some space to breathe
   .border-radius(@baseBorderRadius);
 }

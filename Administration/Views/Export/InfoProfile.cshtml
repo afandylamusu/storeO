@@ -8,21 +8,23 @@
 	{
 		<tr>
 			<td colspan="2">
-				@Html.Raw(T("Admin.DataExchange.Export.NoProfilesForProvider", Model.SystemName, Url.Action("List", "Export", new { area = "Admin" })))
+				<div class="alert alert-info">
+					@Html.Raw(T("Admin.DataExchange.Export.NoProfilesForProvider", Model.SystemName, Url.Action("List", "Export", new { area = "Admin" })))
+				</div>
 			</td>
 		</tr>
 	}
 	@foreach (var profile in Model.Profiles)
 	{
-		<tr>
-			<td class="adminTitle">
-				@Html.SmartLabelFor(m => m.Profiles)
-			</td>
-			<td class="adminData">
-				<a href="@Url.Action("Edit", "Export", new { id = profile.Id, area = "Admin" })">
-					@profile.Name
-				</a>
-			</td>
+		<tr class="info-profile">
+            <td class="adminTitle">
+                @Html.SmartLabelFor(m => m.Profiles)
+            </td>
+            <td class="adminData">
+                <a href="@Url.Action("Edit", "Export", new { id = profile.Id, area = "Admin" })">
+                    @profile.Name
+                </a>
+            </td>
 		</tr>
 		if (profile.ScheduleTaskId.HasValue)
 		{

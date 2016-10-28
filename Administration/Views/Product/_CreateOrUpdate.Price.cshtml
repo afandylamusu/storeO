@@ -16,7 +16,6 @@
 		fieldBasePriceBaseAmount = $("#@Html.FieldIdFor(model => model.BasePriceBaseAmount)");
 
 		fieldBasePriceMeasureUnit.on("change", getCurrentBasePrice);
-
 		fieldBasePriceAmount.on("blur", getCurrentBasePrice);
 		fieldBasePriceBaseAmount.on("blur", getCurrentBasePrice);
 
@@ -25,7 +24,9 @@
 		toggleBasePrice();
 
 		function getCurrentBasePrice() {
-			if (parseFloat(fieldBasePriceAmount.val()) > 0 && parseInt(fieldBasePriceBaseAmount.val()) > 0) {
+			var basePriceAmount = Globalize.parseFloat(fieldBasePriceAmount.val());
+			var basePriceBaseAmount = Globalize.parseInt(fieldBasePriceBaseAmount.val());
+			if (basePriceAmount > 0 && basePriceBaseAmount > 0) {
 				$.ajax({
 					cache:false,
 					type: "POST",
@@ -40,7 +41,7 @@
 						$("#BasePriceAmountInfo").html(data.BasePrice);
 					},
 					error: function (xhr, ajaxOptions, thrownError){
-						alert(thrownError);
+						//alert(thrownError);
 					}
 				});
 			}
@@ -85,8 +86,6 @@
                 @Html.ValidationMessageFor(model => model.Price)
             </td>
         </tr>
-        @if (!Model.IsCompanyUser)
-        {
         <tr>
             <td class="adminTitle">
                 @Html.SmartLabelFor(model => model.OldPrice)
@@ -238,23 +237,22 @@
                 </div>
             </td>
         </tr>
-        }
+        
     </table>
 
-    @if (!Model.IsCompanyUser)
-    {
-        <div id="TierPriceContainer" style="margin-top:30px;">
-            <h3>@T("Admin.Catalog.Products.TierPrices")</h3>
-            @if (Model.Id > 0)
-            {
-                <script>
+    <div id="TierPriceContainer" style="margin-top:30px;">
+        <h3>@T("Admin.Catalog.Products.TierPrices")</h3>
+
+        @if (Model.Id > 0)
+        {
+            <script>
 				function onTierPriceEdit(e) {
                     $(e.form).find('#Store').select2('val', e.dataItem['StoreId']);
                     $(e.form).find('#CustomerRole').select2('val', e.dataItem['CustomerRoleId']);
                 }
-                </script>
-
-                @(Html.Telerik().Grid<ProductModel.TierPriceModel>()
+            </script>
+			
+			@(Html.Telerik().Grid<ProductModel.TierPriceModel>()
             .Name("tierprices-grid")
             .DataKeys(keys =>
             {
@@ -272,13 +270,13 @@
             {
                 columns.Bound(x => x.Quantity)
                     .Centered()
-                    .Width(120);
-                columns.Bound(x => x.Price1)
-                    .Format("{0:0.00}")
-                    .Width(120)
-                    .RightAlign();
-                columns.Bound(x => x.Store);
-                columns.Bound(x => x.CustomerRole);
+					.Width(120);
+				columns.Bound(x => x.Price1)
+					.Format("{0:0.00}")
+					.Width(120)
+					.RightAlign();
+				columns.Bound(x => x.Store);
+				columns.Bound(x => x.CustomerRole);
                 columns.Command(commands =>
                 {
                     commands.Edit().Localize(T);
@@ -290,20 +288,18 @@
             .ClientEvents(events => events.OnEdit("onTierPriceEdit"))
             .EnableCustomBinding(true))
 
-                <script type="text/javascript">
+            <script type="text/javascript">
                 function onTierPriceEdit(e) {
                     $(e.form).find('#Store').select2('val', e.dataItem['StoreId']);
                     $(e.form).find('#CustomerRole').select2('val', e.dataItem['CustomerRoleId']);
                 }
-                </script>
-            }
-            else
-            {
-                <div class="alert alert-danger">
-                    @T("Admin.Catalog.Products.TierPrices.SaveBeforeEdit")
-                </div>
-            }
-        </div>
-    }
-
+            </script>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                @T("Admin.Catalog.Products.TierPrices.SaveBeforeEdit")
+            </div>
+        }
+    </div>
 </div>

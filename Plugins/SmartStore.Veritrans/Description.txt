@@ -1,10 +1,11 @@
-﻿FriendlyName: Veritans
-Description: Provides the PayPal payment methods PayPal Express, PayPal Standard and PayPal Direct.
+﻿FriendlyName: Payment Provider Veritans
+Description: Provides the Veritrans payment methods Veritrans Link, Veritrans Web and Veritrans Direct.
 SystemName: SmartStore.Veritrans
 Group: Payment
-Version: 1.0.0.0
-MinAppVersion: 1.0.0
+Version: 1.0.0
+Author: Afandy Lamusu
+MinAppVersion: 2.6.0
 DisplayOrder: 1
-FileName: SmartStore.Veritans.dll
-ResourceRootKey: Plugins.SmartStore.Veritans
-Url: http://community.smartstore.com/marketplace/file/29-paypal-payment-plugins/
+FileName: SmartStore.Veritrans.dll
+ResourceRootKey: Plugins.SmartStore.Veritrans
+Url: http://community.smartstore.com/marketplace/file/29-veritrans-payment-plugins/

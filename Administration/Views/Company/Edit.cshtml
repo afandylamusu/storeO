@@ -1,7 +1,7 @@
 ﻿@model CompanyModel
 @{
     //page title
-    ViewBag.Title = T("Admin.Customer.Companies.EditCompanyDetails").Text;
+    ViewBag.Title = T("Admin.Companies.Edit.Title").Text;
 
     Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
     Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
@@ -11,9 +11,9 @@
 {
     <div class="section-header">
         <div class="title">
-            @T("Admin.Customer.Companies.EditCompanyDetails") - @Model.Name
+            @T("Admin.Companies.Edit.Title") - @Model.Name
             @if (!Model.IsCompanyUser)
-            {<a href='@Url.Action("List")'>(@T("Admin.Customer.Companies.BackToList"))</a>}
+            {<a href='@Url.Action("List")'>(@T("Admin.Companies.Edit.BackToList"))</a>}
         </div>
         <div class="options">
             <button type="submit" name="save" value="save" class="btn btn-primary">

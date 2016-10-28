@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Administration/Views/Shared/_AdminPopupLayout.cshtml";
+}
+@model DestinationItemModel
+@{
+    //page title
+    ViewBag.Title = T("Admin.Configuration.Countries.States.Destinations.EditDestinationDetails").Text;
+}
+@using (Html.BeginForm())
+{
+    <div class="section-header">
+        <div class="title">
+            @T("Admin.Configuration.Countries.States.Destinations.EditDestinationDetails")
+        </div>
+        <div class="options">
+            <button type="submit" name="save" value="save" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;@T("Admin.Common.Save")</button>
+        </div>
+    </div>
+    @Html.Partial("_CreateOrUpdateDestination", Model)
+}

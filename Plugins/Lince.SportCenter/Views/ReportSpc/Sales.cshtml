@@ -1,0 +1,153 @@
+﻿@model OrderListModel
+@using Telerik.Web.Mvc.UI
+@using SmartStore.Web.Framework.UI;
+
+@{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = @T("Plugins.Lince.SportCenter.Report.Sales.Title");
+
+    var hideProfitReport = false;
+    var allString = T("Admin.Common.All").Text;
+
+    Html.AddCssFileParts(true, "~/Content/x-editable/bootstrap-editable.css");
+    Html.AppendScriptParts(true, "~/Content/x-editable/bootstrap-editable.js");
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-puzzle-piece"></i>
+        @T("Plugins.Lince.SportCenter.Report.Sales.Title")
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.StartDate)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.StartDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.EndDate)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.EndDate)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.CustomerName)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.CustomerName)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.CustomerEmail)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.CustomerEmail)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.OrderStatusIds)
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("OrderStatusIds", Model.AvailableOrderStatuses, null, new { multiple = "multiple" })
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.PaymentStatusIds)
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("PaymentStatusIds", Model.AvailablePaymentStatuses, null, new { multiple = "multiple" })
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ShippingStatusIds)
+            </td>
+            <td class="adminData">
+                @Html.DropDownList("ShippingStatusIds", Model.AvailableShippingStatuses, null, new { multiple = "multiple" })
+            </td>
+        </tr>
+        @if (Model.AvailableStores.Count > 1)
+        {
+            <tr>
+                <td class="adminTitle">
+                    @Html.SmartLabelFor(model => model.StoreId)
+                </td>
+                <td class="adminData">
+                    @Html.DropDownListFor(model => model.StoreId, Model.AvailableStores, allString)
+                </td>
+            </tr> }
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.OrderGuid)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.OrderGuid)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.OrderNumber)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.OrderNumber)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.GoDirectlyToNumber)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => Model.GoDirectlyToNumber)
+                <button type="submit" name="go-to-order-by-number" value="go-to-order-by-number" class="btn">
+                    <i class="fa fa-play-circle-o"></i>&nbsp;@T("Admin.Common.Go")
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td class="adminData">
+                <button type="submit" id="btnSearch" class="btn">
+                    <i class="fa fa-search"></i>
+                    @T("Admin.Common.Search")
+                </button>
+            </td>
+        </tr>
+    </table>
+}
+
+@helper TabAllResult() { 
+    <div>
+        sdfsd
+    </div>
+}
+
+@helper TabResultByPaymentMethods() {
+    <div>
+        sdf
+    </div>
+}
+
+
+@Html.SmartStore().TabStrip().Name("sportcenter-sales-report").OnAjaxSuccess("salesTab_onAjaxSuccess").HtmlAttributes(new { store_id = Model.StoreId }).Style(TabsStyle.Tabs).Position(TabsPosition.Left).Items(x =>
+{
+    x.Add().Text(T("Plugins.Lince.SportCenter.Report.Sales.Tab.AllResult").Text).Content(TabAllResult()).Selected(true);
+
+    x.Add().Text(T("Plugins.Lince.SportCenter.Report.Sales.Tab.FilterByPaymentMethods").Text).Content(TabResultByPaymentMethods());
+
+    EngineContext.Current.Resolve<IEventPublisher>().Publish(new TabStripCreated(x, "sportcenter-sales-report", this.Html, this.Model));
+})

@@ -42,6 +42,11 @@ a:hover {
 	background-color: @dropdownLinkBackgroundHover;
 }
 
+.alert {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
 /* Page
 -------------------------------------------------------------- */
 
@@ -266,16 +271,6 @@ header {
 /* SM additions
 -------------------------------------------------------------- */
 
-.ajax-loader-small {
-    display: inline-block;
-    position: relative;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    margin: 0;
-    background: transparent url('images/ajax_loader_small.gif') 50% 50% no-repeat;
-}
-
 #ajax-busy {
 	position: fixed;
 	opacity: 0;
@@ -395,25 +390,32 @@ td.adminData > input[type="checkbox"] {
 
 .admin-config-group {
 	.title,
-	.small-title {
+	.small-title,
+	.head {
 		font-family: @headingsFontFamily;
 		font-weight: @headingsFontWeight;
 		color: inherit; 
 		border-bottom: 1px solid #ddd;
 	}
-	.title {
-		font-size: @fontSizeLarge;
-		margin: 12px 0;
-		padding: 8px 0;
-	}
-	.small-title {
-		margin: 2px 0;
-		padding: 2px 0;
-	}
 	.sub-title {
 		font-family: @baseFontFamily;
 		font-size: @baseFontSize;
 		font-weight: normal;
+	}
+	.title,
+	.head {
+		font-size: @fontSizeLarge;
+		padding: 12px 0;
+	}
+	.head {
+		margin-bottom: 12px;
+	}
+	.title {
+		margin: 12px 0;
+	}
+	.small-title {
+		margin: 2px 0;
+		padding: 2px 0;
 	}
 }
 
@@ -425,17 +427,32 @@ td.adminData > input[type="checkbox"] {
     min-width: 314px; /* ensures more clean look & feel */
 }
 
+.select2-image-item {
+	img {
+		margin-bottom: 3px;
+	}
+	span:not(.select2-icon) {
+		padding-left: 5px;
+	}
+	.icon-container {
+		float: left;
+		display: inline-block;
+		width: 16px;
+		min-width: 16px;
+		max-width: 16px;
+	}
+}
 
 /* select2 with large, templated items
 -------------------------------------------------------------- */
 .large-select2 {
 	.select2-choice {
-		height: 52px;
-		min-height: 52px;
+		height: 42px;
+		min-height: 42px;
 		padding-top: 4px;
 
 		> div > b {
-			padding-top: 14px;
+			padding-top: 10px;
 		}
 	}
 }
@@ -444,10 +461,13 @@ td.adminData > input[type="checkbox"] {
 	overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+	height: 38px;
 
 	img {
 		margin-right: 12px;
 		vertical-align: middle;
+		text-align: center;
+		max-height: 100%;
 	}
 	> div {
 		margin-right: 0px !important;
@@ -577,11 +597,6 @@ body .t-content.t-state-active {
 .dialog-content-container {
 	margin: 6px 0 2px 0;
 	padding: 5px;
-}
-
-.modal-large {
-	width: 800px !important;
-	margin: -250px 0 0 -400px !important;
 }
 
 
@@ -806,6 +821,16 @@ td.adminTitle > .ctl-label {
 		}
 	}
 }
+tr.adminGroup {
+	> td {
+		padding-top: 18px;
+	}
+
+	label {
+		padding-bottom: 3px;
+		text-decoration: underline;
+	}
+}
 
 td.adminTitle:hover a.hint {
 	.opacity(100);
@@ -847,13 +872,14 @@ td.adminData .t-combobox {
     width: 306px;
 }
 
-tr.adminSeparator hr {
-    background-color: #D3D3D3;
-    border: medium none;
-    color: #D3D3D3;
+tr.adminSeparator hr,
+td.adminSeparator hr {
+	border: medium none;
+    background-color: #ddd;
+    color: #ddd;
     height: 1px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 12px;
+    margin-bottom: 12px;
     padding: 0;
 }
 
@@ -876,14 +902,24 @@ tr.adminSeparator hr {
 }
 
 .admin-table {
+    thead th {
+        text-transform: uppercase;
+    }
+    th, td {
+        padding: 12px;
+    }
 	.disabled {
 		.muted();
 	}
-	.centered {
-		text-align: center;
-	}
 	.progress-info {
 		min-width: 260px;
+	}
+	select, input {
+		margin-bottom: 0;
+	}
+	.control-large {
+		width: 500px;
+		min-width: 500px;
 	}
 }
 
@@ -1505,20 +1541,6 @@ table.payment-method-features td {
     text-decoration: none;
 }
 
-#product-edit h3,
-.caption-container h3 {
-    font-family: @headingsFontFamily;
-    font-weight: @headingsFontWeight;
-    font-size: 18px;
-    line-height: 36px;
-    color: #333;
-}
-#product-edit h3.bordered,
-.caption-container h3.bordered {
-    border: 0;
-    border-bottom: 1px solid #e5e5e5;
-}
-
 
 /* Download editor
 -------------------------------------------------------------- */
@@ -1555,4 +1577,91 @@ table.payment-method-features td {
 .minimal-task-widget .btn-actions {
 	display: inline-block; 
 	margin-left: 10px;
+}
+
+
+
+
+/* Data exchange
+-------------------------------------------------------------- */
+.profile-list {
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+.info-profile td {
+    padding-top: 20px;
+}
+
+/* Import column mapping
+-------------------------------------------------------------- */
+@media (max-width: 1280px) {
+	#ImportColumnMappings .right-label,
+	.column-mapping .mapping-button-label,
+	.mapping-list-item .right-label {
+		display: none;
+	}
+}
+
+.column-mapping .right-label,
+.mapping-list-item .right-label {
+	float: right;
+	font-size: 0.9em;
+}
+.mapping-list-item {
+	.ellipsis();
+}
+
+.column-mapping {
+	.column-one, .column-two {
+		width: 42%;
+	}
+
+	.select-column, .select-property, .input-default {
+		width: 98%;
+	}
+
+	th, td, .mapping-delete, .mapping-add, .mapping-apply, .mapping-cancel {
+		white-space: nowrap;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	.select2-container .select2-choice span {
+		margin-right: 12px;
+		white-space: nowrap;
+	}
+
+	.mapping-edit {
+		white-space: nowrap;
+
+		.select-column, .select-property {
+			width: 84%;
+		}
+		.select2-container {
+			float: left;
+			display: inline-block;
+			min-width: 220px;
+			margin-right: 4px;
+		}
+	}
+
+	.mapping-item {
+		.item-inner {
+			white-space: nowrap;
+			cursor: pointer;
+			padding: 7px 0;
+
+			.property-icon {
+				display: inline-block;
+				margin-right: 0;
+			}
+			.left-label {
+				display: inline-block;
+			}
+			.right-label {
+				margin-right: 20px;
+			}
+		}
+	}
 }

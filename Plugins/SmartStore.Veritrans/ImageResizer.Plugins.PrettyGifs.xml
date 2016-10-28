@@ -4,6 +4,28 @@
         <name>ImageResizer.Plugins.PrettyGifs</name>
     </assembly>
     <members>
+        <member name="T:ImageResizer.Plugins.PrettyGifs.PrettyGifs">
+            <summary>
+            Replaces .NET's poor default GIF encoding algorithm with Octree quantization and dithering, and allows 8-bit PNG creation. Compatible with all plugins.
+            </summary>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.#ctor">
+            <summary>
+            Creates a new instance of the plugin
+            </summary>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.#ctor(ImageResizer.ResizeSettings,System.Object)">
+            <summary>
+            Creates a new instance of the plugin as an encoder 
+            </summary>
+            <param name="settings"></param>
+            <param name="original"></param>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.PreservePalette">
+            <summary>
+            If true, the original palette will be used if it exists. May cause serious color problems if new content has been added to the image.
+            </summary>
+        </member>
         <member name="F:ImageResizer.Plugins.PrettyGifs.PrettyGifs.Colors">
             <summary>
             The number of colors to use. Only applicable for png, gif, and bmp photos where palletes can be used.
@@ -15,12 +37,35 @@
             Enables dithering for PNG8 and GIF
             </summary>
         </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.PrettyGifs.FourPassDither">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.PrettyGifs.DitherPercent">
+            <summary>
+            How much of the error should be passed on (in negative form) to neighbor pixels
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.OutputFormat">
+            <summary>
+            If you set this to anything other than Gif or Png, it will throw an exception. Defaults to GIF.
+            </summary>
+        </member>
         <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.CreateIfSuitable(ImageResizer.ResizeSettings,System.Object)">
             <summary>
             Returns an encoder instance if a Gif or 8-bit png is requested.
             </summary>
-            <param name="originalImage"></param>
+            <param name="original"></param>
             <param name="settings"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.GetFormatIfSuitable(ImageResizer.ResizeSettings,System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="settings"></param>
+            <param name="original"></param>
             <returns></returns>
         </member>
         <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.Write(System.Drawing.Image,System.IO.Stream)">
@@ -41,7 +86,11 @@
             <param name="dither"></param>
             <param name="fourPass"></param>
             <param name="ditherPercent"></param>
-            <param name="useGdiQuantization"></param>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.HasFullTrust">
+            <summary>
+            Returns true if the assembly can call unmanged code (i.e, has full trust)
+            </summary>
         </member>
         <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.GetBitsNeededForColorDepth(System.Byte)">
             <summary>
@@ -57,192 +106,44 @@
             <param name="f"></param>
             <returns></returns>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.PreservePalette">
+        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.SupportsTransparency">
             <summary>
-            If true, the original palette will be used if it exists. May cause serious color problems if new content has been added to the image.
+            If the configured encoding settings support transparency.
             </summary>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.OutputFormat">
+        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.MimeType">
             <summary>
-            If you set this to anything other than Gif or Png, it will throw an exception. Defaults to GIF.
+            The suggested mime-type for the output image produced by this encoder
             </summary>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.HasFullTrust">
+        <member name="P:ImageResizer.Plugins.PrettyGifs.PrettyGifs.Extension">
             <summary>
-            Returns true if the assembly can call unmanged code (i.e, has full trust)
+            The suggested extension for the output image produced by this encoder
             </summary>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.GetSupportedQuerystringKeys">
+            <summary>
+            Returns the querystrings command keys supported by this plugin. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.Install(ImageResizer.Configuration.Config)">
+            <summary>
+            Adds the plugin to the given configuration container
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.PrettyGifs.Uninstall(ImageResizer.Configuration.Config)">
+            <summary>
+            Removes the plugin from the given configuration container
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
         </member>
         <member name="T:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer">
             <summary>
             Quantize using an Octree
-            </summary>
-        </member>
-        <member name="T:ImageResizer.Plugins.PrettyGifs.Quantizer">
-            <summary>
-            Abstract Quantizer class - handles the messy, algorithm-independent details of quantization. 
-            Subclasses must implement InitialQuantizePixel, GetPallete(), and QuantizePixel. Not thread-safe!
-            </summary>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.#ctor(System.Boolean)">
-            <summary>
-            Construct the quantizer
-            </summary>
-            <param name="fixedPalette">If true, the quantization only needs to loop through the source pixels once - InitialQuantiize</param>
-            <remarks>
-            If you construct this class with a true value for singlePass, then the code will, when quantizing your image,
-            only call the 'QuantizeImage' function. If two passes are required, the code will call 'InitialQuantizeImage'
-            and then 'QuantizeImage'.
-            </remarks>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.Reset">
-            <summary>
-            Resets the quantizer so it can process a new image. 
-            </summary>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.Quantize(System.Drawing.Image)">
-            <summary>
-            Quantize an image and return the resulting output bitmap
-            </summary>
-            <param name="source">The image to quantize</param>
-            <returns>A quantized version of the image</returns>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.AnalyzeImage(System.Drawing.Imaging.BitmapData,System.Int32,System.Int32)">
-            <summary>
-            Execute the first pass through the pixels in the image
-            </summary>
-            <param name="sourceData">The source data</param>
-            <param name="width">The width in pixels of the image</param>
-            <param name="height">The height in pixels of the image</param>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.QuantizeImage(System.Drawing.Imaging.BitmapData,System.Drawing.Imaging.BitmapData,System.Drawing.Bitmap,System.Int32,System.Int32,System.Drawing.Rectangle)">
-            <summary>
-            Execute a second pass through the bitmap. If dithering is enabled, sourceData will be modified. 
-            </summary>
-            <param name="sourceData">The source bitmap, locked into memory</param>
-            <param name="intermediate">The intermediate bitmap, used for 4-pass quantization. If specified, output will not actually be modified</param>
-            <param name="output">The output bitmap</param>
-            <param name="width">The width in pixels of the image</param>
-            <param name="height">The height in pixels of the image</param>
-            <param name="bounds">The bounding rectangle</param>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.AdjustNeighborSource(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
-             <summary>
-             Can only be called from QuantizePixel...
-            This is how dithering is done... 
-            5-18-09 ndj
-             </summary>
-             <param name="offsetX"></param>
-             <param name="offsetY"></param>
-             <param name="deltaR"></param>
-             <param name="deltaG"></param>
-             <param name="deltaB"></param>
-             <param name="deltaA"></param>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.InitialQuantizePixel(ImageResizer.Plugins.PrettyGifs.Quantizer.Color32)">
-            <summary>
-            Override this to process the pixel in the first pass of the algorithm
-            </summary>
-            <param name="pixel">The pixel to quantize</param>
-            <remarks>
-            This function need only be overridden if your quantize algorithm needs two passes,
-            such as an Octree quantizer.
-            </remarks>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.QuantizePixel(ImageResizer.Plugins.PrettyGifs.Quantizer.Color32)">
-            <summary>
-            Override this to process the pixel in the second pass of the algorithm
-            </summary>
-            <param name="pixel">The pixel to quantize</param>
-            <returns>The quantized value</returns>
-        </member>
-        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.GetPalette(System.Drawing.Imaging.ColorPalette)">
-            <summary>
-            Retrieve the palette for the quantized image
-            </summary>
-            <param name="original">Any old palette, this is overrwritten</param>
-            <returns>The new color palette</returns>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FixedPalette">
-            <summary>
-            (Readonly) If true, the algorithm can do everything in QuantizePixel, and InitialQuantizePixel will not be called. Implies ResizeForFirstPass=False and FourPass=false=
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.PixelSize">
-            <summary>
-            The number of bytes in a ARGB structure. Should be 4
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FullTrust">
-            <summary>
-            If true, pointer arithmetic will be used instead of GetPixel. GetPixel is much slower. If false, OmitFinalStage will be assumed true, as only palette generation is possible in low trust.
-            Defaults to true.
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.ResizeForFirstPass">
-            <summary>
-            If true, the first pass (InitialQuantizePixel) will be performed on a size-limited version of the original image to control performance. Ignored if FixedPalette=True
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FirstPassPixelCount">
-            <summary>
-            The approximate number of pixels to use when making a scaled copy of the image for the first pass. Only used when ResizeForFirstPass=True and FirstPassPixelThreshold is exceeded.
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FirstPassPixelThreshold">
-            <summary>
-            The maximum number of pixels the original image may contain before a scaled copy is made for the first pass. 
-            Only relevant when ResizeForFirstPass=True
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FourPass">
-            <summary>
-            If true, image is re-paletted after quantization - forces 2 clones of the original image to be created. FixedPalette and OmitFinalStage should be false if this is used.
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.OmitFinalStage">
-            <summary>
-            If true, a 32-bit image with an 8-bit palette will be returned instead of an 8-bit image, which GDI can save using median-cut quantization. Much faster than our final quantization pass, although it can't do transparency.
-            Assumed true if FullTrust is false.
-            </summary>
-        </member>
-        <member name="T:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32">
-            <summary>
-            Struct that defines a 32 bpp colour
-            </summary>
-            <remarks>
-            This struct is used to read data from a 32 bits per pixel image
-            in memory, and is ordered in this manner as this is the way that
-            the data is layed out in memory
-            </remarks>
-        </member>
-        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Blue">
-            <summary>
-            Holds the blue component of the colour
-            </summary>
-        </member>
-        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Green">
-            <summary>
-            Holds the green component of the colour
-            </summary>
-        </member>
-        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Red">
-            <summary>
-            Holds the red component of the colour
-            </summary>
-        </member>
-        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Alpha">
-            <summary>
-            Holds the alpha component of the colour
-            </summary>
-        </member>
-        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.ARGB">
-            <summary>
-            Permits the color32 to be treated as an int32
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Color">
-            <summary>
-            Return the color for this Color32 object
             </summary>
         </member>
         <member name="M:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.#ctor(System.Int32,System.Int32)">
@@ -278,6 +179,11 @@
             such as an Octree quantizer.
             </remarks>
         </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Dither">
+            <summary>
+            Uses a Floyd-Steinberg dither
+            </summary>
+        </member>
         <member name="F:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.DitherMatrix">
             <summary>
             a Floyd-Steinberg dither matrix
@@ -310,11 +216,6 @@
             Maximum allowed color depth
             </summary>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Dither">
-            <summary>
-            Uses a Floyd-Steinberg dither
-            </summary>
-        </member>
         <member name="T:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree">
             <summary>
             Class which does the actual quantization
@@ -335,6 +236,16 @@
         <member name="M:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.Reduce">
             <summary>
             Reduce the depth of the tree
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.Leaves">
+            <summary>
+            Get/Set the number of leaves in the tree
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.ReducibleNodes">
+            <summary>
+            Return the array of reducible nodes
             </summary>
         </member>
         <member name="M:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.TrackPrevious(ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode)">
@@ -392,16 +303,6 @@
             Cache the previous color quantized
             </summary>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.Leaves">
-            <summary>
-            Get/Set the number of leaves in the tree
-            </summary>
-        </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.ReducibleNodes">
-            <summary>
-            Return the array of reducible nodes
-            </summary>
-        </member>
         <member name="T:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode">
             <summary>
             Class which encapsulates each node in the tree
@@ -423,6 +324,16 @@
             <param name="colorBits">The number of significant color bits</param>
             <param name="level">The level in the tree</param>
             <param name="octree">The tree to which this node belongs</param>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode.NextReducible">
+            <summary>
+            Get/Set the next reducible node
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode.Children">
+            <summary>
+            Return the child nodes
+            </summary>
         </member>
         <member name="M:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode.Reduce">
             <summary>
@@ -494,14 +405,172 @@
             The index of this node in the palette
             </summary>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode.NextReducible">
+        <member name="T:ImageResizer.Plugins.PrettyGifs.Quantizer">
             <summary>
-            Get/Set the next reducible node
+            Abstract Quantizer class - handles the messy, algorithm-independent details of quantization. 
+            Subclasses must implement InitialQuantizePixel, GetPallete(), and QuantizePixel. Not thread-safe!
             </summary>
         </member>
-        <member name="P:ImageResizer.Plugins.PrettyGifs.OctreeQuantizer.Octree.OctreeNode.Children">
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FixedPalette">
             <summary>
-            Return the child nodes
+            (Readonly) If true, the algorithm can do everything in QuantizePixel, and InitialQuantizePixel will not be called. Implies ResizeForFirstPass=False and FourPass=false=
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.PixelSize">
+            <summary>
+            The number of bytes in a ARGB structure. Should be 4
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FullTrust">
+            <summary>
+            If true, pointer arithmetic will be used instead of GetPixel. GetPixel is much slower. If false, OmitFinalStage will be assumed true, as only palette generation is possible in low trust.
+            Defaults to true.
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.ResizeForFirstPass">
+            <summary>
+            If true, the first pass (InitialQuantizePixel) will be performed on a size-limited version of the original image to control performance. Ignored if FixedPalette=True
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FirstPassPixelCount">
+            <summary>
+            The approximate number of pixels to use when making a scaled copy of the image for the first pass. Only used when ResizeForFirstPass=True and FirstPassPixelThreshold is exceeded.
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FirstPassPixelThreshold">
+            <summary>
+            The maximum number of pixels the original image may contain before a scaled copy is made for the first pass. 
+            Only relevant when ResizeForFirstPass=True
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.FourPass">
+            <summary>
+            If true, image is re-paletted after quantization - forces 2 clones of the original image to be created. FixedPalette and OmitFinalStage should be false if this is used.
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.OmitFinalStage">
+            <summary>
+            If true, a 32-bit image with an 8-bit palette will be returned instead of an 8-bit image, which GDI can save using median-cut quantization. Much faster than our final quantization pass, although it can't do transparency.
+            Assumed true if FullTrust is false.
+            </summary>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.#ctor(System.Boolean)">
+            <summary>
+            Construct the quantizer
+            </summary>
+            <param name="fixedPalette">If true, the quantization only needs to loop through the source pixels once - InitialQuantiize</param>
+            <remarks>
+            If you construct this class with a true value for singlePass, then the code will, when quantizing your image,
+            only call the 'QuantizeImage' function. If two passes are required, the code will call 'InitialQuantizeImage'
+            and then 'QuantizeImage'.
+            </remarks>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.Reset">
+            <summary>
+            Resets the quantizer so it can process a new image. 
+            </summary>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.Quantize(System.Drawing.Image)">
+            <summary>
+            Quantize an image and return the resulting output bitmap
+            </summary>
+            <param name="src">The image to quantize</param>
+            <returns>A quantized version of the image</returns>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.AnalyzeImage(System.Drawing.Imaging.BitmapData,System.Int32,System.Int32)">
+            <summary>
+            Execute the first pass through the pixels in the image
+            </summary>
+            <param name="sourceData">The source data</param>
+            <param name="width">The width in pixels of the image</param>
+            <param name="height">The height in pixels of the image</param>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.QuantizeImage(System.Drawing.Imaging.BitmapData,System.Drawing.Imaging.BitmapData,System.Drawing.Bitmap,System.Int32,System.Int32,System.Drawing.Rectangle)">
+            <summary>
+            Execute a second pass through the bitmap. If dithering is enabled, sourceData will be modified. 
+            </summary>
+            <param name="sourceData">The source bitmap, locked into memory</param>
+            <param name="intermediate">The intermediate bitmap, used for 4-pass quantization. If specified, output will not actually be modified</param>
+            <param name="output">The output bitmap</param>
+            <param name="width">The width in pixels of the image</param>
+            <param name="height">The height in pixels of the image</param>
+            <param name="bounds">The bounding rectangle</param>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.AdjustNeighborSource(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+             <summary>
+             Can only be called from QuantizePixel...
+            This is how dithering is done... 
+            5-18-09 ndj
+             </summary>
+             <param name="offsetX"></param>
+             <param name="offsetY"></param>
+             <param name="deltaR"></param>
+             <param name="deltaG"></param>
+             <param name="deltaB"></param>
+             <param name="deltaA"></param>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.InitialQuantizePixel(ImageResizer.Plugins.PrettyGifs.Quantizer.Color32)">
+            <summary>
+            Override this to process the pixel in the first pass of the algorithm
+            </summary>
+            <param name="pixel">The pixel to quantize</param>
+            <remarks>
+            This function need only be overridden if your quantize algorithm needs two passes,
+            such as an Octree quantizer.
+            </remarks>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.QuantizePixel(ImageResizer.Plugins.PrettyGifs.Quantizer.Color32)">
+            <summary>
+            Override this to process the pixel in the second pass of the algorithm
+            </summary>
+            <param name="pixel">The pixel to quantize</param>
+            <returns>The quantized value</returns>
+        </member>
+        <member name="M:ImageResizer.Plugins.PrettyGifs.Quantizer.GetPalette(System.Drawing.Imaging.ColorPalette)">
+            <summary>
+            Retrieve the palette for the quantized image
+            </summary>
+            <param name="original">Any old palette, this is overrwritten</param>
+            <returns>The new color palette</returns>
+        </member>
+        <member name="T:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32">
+            <summary>
+            Struct that defines a 32 bpp colour
+            </summary>
+            <remarks>
+            This struct is used to read data from a 32 bits per pixel image
+            in memory, and is ordered in this manner as this is the way that
+            the data is layed out in memory
+            </remarks>
+        </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Blue">
+            <summary>
+            Holds the blue component of the colour
+            </summary>
+        </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Green">
+            <summary>
+            Holds the green component of the colour
+            </summary>
+        </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Red">
+            <summary>
+            Holds the red component of the colour
+            </summary>
+        </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Alpha">
+            <summary>
+            Holds the alpha component of the colour
+            </summary>
+        </member>
+        <member name="F:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.ARGB">
+            <summary>
+            Permits the color32 to be treated as an int32
+            </summary>
+        </member>
+        <member name="P:ImageResizer.Plugins.PrettyGifs.Quantizer.Color32.Color">
+            <summary>
+            Return the color for this Color32 object
             </summary>
         </member>
     </members>
