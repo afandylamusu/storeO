@@ -8,27 +8,36 @@
 	<link type="text/css" href="styles.css" rel="stylesheet" />
 
 	<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+    <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
 
-    <script type="text/javascript" src="/lib/crypto-js/3.1.2/components/core-min.js"></script>
-    <script type="text/javascript" src="/lib/crypto-js/3.1.2/components/enc-utf16-min.js"></script>
-    <script type="text/javascript" src="/lib/crypto-js/3.1.2/components/enc-base64-min.js"></script>
-    <script type="text/javascript" src="/lib/crypto-js/3.1.2/rollups/hmac-md5.js"></script>
-    <script type="text/javascript" src="/lib/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
 
-	<!-- serves smNetConsumer which wraps api related code -->
-	<script type="text/javascript" src="smwapi-consumer.js"></script>
+	<!-- see https://code.google.com/p/crypto-js/ -->
+	<!--<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/core-min.js"></script>
+	<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-utf16-min.js"></script>
+	<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
+	<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-md5.js"></script>
+	<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha256.js"></script>-->
 
-	<!-- serves smNetClient which wraps this-demo related code -->
-	<script type="text/javascript" src="smwapi-client.js"></script>
+    <script type="text/javascript" src="/scripts/crypto-js/3.1.2/components/core-min.js"></script>
+    <script type="text/javascript" src="/scripts/crypto-js/3.1.2/components/enc-utf16-min.js"></script>
+    <script type="text/javascript" src="/scripts/crypto-js/3.1.2/components/enc-base64-min.js"></script>
+    <script type="text/javascript" src="/scripts/crypto-js/3.1.2/rollups/hmac-md5.js"></script>
+    <script type="text/javascript" src="/scripts/crypto-js/3.1.2/rollups/hmac-sha256.js"></script>
+
+    <!-- serves smNetConsumer which wraps api related code -->
+    <script type="text/javascript" src="/scripts/tool/smwapi-consumer.js"></script>
+
+    <!-- serves smNetClient which wraps this-demo related code -->
+    <script type="text/javascript" src="/scripts/tool/smwapi-client.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function () {
 
 			smNetConsumer.init({
-			    publicKey: 'aa32f1a42ea44607c7cb7eb9044b906d',
-			    secretKey: '2d490889bccf3bac1ef1b393d0f245b0',
-				url: 'http://d.kandangbola.com'
+			    publicKey: 'dcc70b51a6fb3b8d90aa5bb8963fb466',
+			    secretKey: '94ffb43560acd9e5080cd217e20cb551',
+			    url: 'http://d2.kandangbola.com/'
 			});
 
 			smNetClient.init();
@@ -44,13 +53,7 @@
 		<span>Resource</span>
 		<input type="text" name="resource" value="/Customers?$top=3&$inlinecount=allpages" spellcheck="false" />
 
-        <br /><br />
-        <span>Data</span>
-        <textarea name="parameters" cols="50" rows="20" spellcheck="false"></textarea>
-
 		<button id="GetData">Get</button>
-        <button id="PostData">Post</button>
-        <button id="PatchData">Patch</button>
 		<button id="AddOrderNote">Add order note</button>
 	</div>
 

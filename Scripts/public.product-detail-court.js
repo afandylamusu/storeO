@@ -7,12 +7,12 @@ var SportCenterCourt = (function ($, window, document, undefined) {
 
     smNetConsumer.init({
         /// ADE-KHI
-        publicKey: 'f5f557dd5455be386195a3a50c466cad',
-        secretKey: 'f02722d0f20daa702c52df579bf27eb8',
+        publicKey: 'dcc70b51a6fb3b8d90aa5bb8963fb466',
+        secretKey: '94ffb43560acd9e5080cd217e20cb551',
         /// ADE-HOME
         //publicKey: '683d33e859cf79745f3226f603ee8370',
         //secretKey: 'f91544ca30b41eeaca7abb76615213ce',
-        url: 'http://localhost:6100'
+        url: 'http://d2.kandangbola.com'
     });
 
     function GetApiResource(resource) {
