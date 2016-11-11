@@ -9,7 +9,7 @@
 
 	<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>-->
 	<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
-    <script type="text/javascript" src="/scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
 
 
 	<!-- see https://code.google.com/p/crypto-js/ -->
@@ -35,9 +35,9 @@
 		$(document).ready(function () {
 
 			smNetConsumer.init({
-			    publicKey: 'dcc70b51a6fb3b8d90aa5bb8963fb466',
-			    secretKey: '94ffb43560acd9e5080cd217e20cb551',
-			    url: 'http://d2.kandangbola.com'
+			    publicKey: '7087cbf6f718e36956e7aadffc16a717',
+			    secretKey: '9d76a14d28a8661d5a791483cc531ffd',
+			    url: 'http://localhost:56171'
 			});
 
 			smNetClient.init();
@@ -53,14 +53,7 @@
 		<span>Resource</span>
 		<input type="text" name="resource" value="/Customers?$top=3&$inlinecount=allpages" spellcheck="false" />
 
-        <br /><br />
-        <span>Data</span>
-        <textarea name="parameters" cols="50" rows="20" spellcheck="false"></textarea>
-
 		<button id="GetData">Get</button>
-        <button id="PostData">Post</button>
-        <button id="PatchData">Patch</button>
-        <button id="DelData">Delete</button>
 		<button id="AddOrderNote">Add order note</button>
 	</div>
 
