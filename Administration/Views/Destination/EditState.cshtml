@@ -4,14 +4,14 @@
 @model StateProvinceModel
 @{
     //page title
-    ViewBag.Title = T("Admin.Configuration.Countries.States.EditStateDetails").Text;
+    ViewBag.Title = T("Admin.Configuration.Countries.States.EditStateDetails").Text + " - " +Model.Name;
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "state-form" }))
 {
     <div class="section-header">
         <div class="title">
-            @T("Admin.Configuration.Countries.States.EditStateDetails") @Html.ActionLink("(" + T("Admin.Configuration.Countries.States.BackToEditCountry") + ")", "Edit", new { controller="Country", id=Model.CountryId })
+            @ViewBag.Title @Html.ActionLink("(" + T("Admin.Configuration.Countries.States.BackToEditCountry") + ")", "Edit", new { controller="Country", id=Model.CountryId })
         </div>
         <div class="options">
             <button type="submit" name="save" value="save" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;@T("Admin.Common.Save")</button>

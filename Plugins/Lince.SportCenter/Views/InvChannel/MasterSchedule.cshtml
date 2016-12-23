@@ -1,0 +1,299 @@
+﻿@using Lince.SportCenter.Models2.Inventory
+@using Lince.SportCenter.Domain
+@model MasterScheduleListModel
+@{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Master Schedules";
+    var gridPageSize = EngineContext.Current.Resolve<SmartStore.Core.Domain.Common.AdminAreaSettings>().GridPageSize;
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-puzzle-piece"></i>
+        @T("Plugins.Lince.SportCenter.InventoryChannels.MasterSchedules.Title")
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <button class="close" data-dismiss="alert">×</button>
+    @Html.Raw(@T("Plugins.Lince.SportCenter.InventoryChannels.MasterSchedules.AdminInstruction"))
+</div>
+
+@using (Html.BeginForm())
+{
+    <input type="submit" id="btnRefreshGrid" name="btnRefreshGrid" class="hide" />
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedMerchantId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedMerchantId, Model.AvailableMerchants)
+                @Html.ValidationMessageFor(model => model.SelectedMerchantId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedChannelId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedChannelId, Model.AvailableChannels)
+                @Html.ValidationMessageFor(model => model.SelectedChannelId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedCourtId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedCourtId, Model.AvailableCourts)
+                @Html.ValidationMessageFor(model => model.SelectedCourtId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedFieldId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedFieldId, Model.AvailableFields)
+                @Html.ValidationMessageFor(model => model.SelectedFieldId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td class="adminData">
+                <button type="submit" id="btnSearch" class="btn">
+                    <i class="fa fa-search"></i>
+                    @T("Admin.Common.Search")
+                </button> &nbsp;
+
+                <button type="button" class="btn btn-warning btn-above gen-master-schedules @(Model.HasHasMasterSchedules ? "hide" : "")">Generate MasterSchedules</button> 
+            </td>
+        </tr>
+    </table>
+
+    <p>&nbsp;</p>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#btnRefreshGrid').click(function () {
+                //refresh grid
+                var optionsGrid = $("#masterschedules-grid");
+                optionsGrid.data('tGrid').ajaxRequest();
+
+                //return false to don't reload a page
+                return false;
+            });
+
+            $("#@Html.FieldIdFor(model => model.SelectedMerchantId)").change(function () {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#@Html.FieldIdFor(model => model.SelectedCourtId)")
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetCourts"))",
+                    data: { "merchant": selectedItem, "addEmptyIfRequired": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        ddlStates.trigger("change");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+
+            $("#@Html.FieldIdFor(model => model.SelectedChannelId)").change(function () {
+                var selectedItem = $(this).val();
+                var courtSelectedItem = $("#@Html.FieldIdFor(model => model.SelectedCourtId)").val();
+
+                var ddlStates = $("#@Html.FieldIdFor(model => model.SelectedFieldId)")
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetFields"))",
+                    data: { "channel": selectedItem, "court": courtSelectedItem, "addEmptyIfRequired": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        ddlStates.trigger("change");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+
+            $("#@Html.FieldIdFor(model => model.SelectedCourtId)").change(function () {
+                var selectedItem = $(this).val();
+                var channelSelectedItem = $("#@Html.FieldIdFor(model => model.SelectedChannelId)").val();
+
+                var ddlStates = $("#@Html.FieldIdFor(model => model.SelectedFieldId)")
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetFields"))",
+                    data: { "channel": channelSelectedItem, "court": selectedItem, "addEmptyIfRequired": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        ddlStates.trigger("change");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+
+            $("#@Html.FieldIdFor(model => model.SelectedFieldId)").change(function () {
+                var selectedItem = $(this).val();
+                if (selectedItem != "0") {
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: "@(Url.Action("HaveMasterSchedules"))",
+                        data: { "field": selectedItem },
+                    success: function (data) {
+                        if (!data.success) {
+                            $('.gen-master-schedules').show();
+                        }
+                        else {
+                            $('.gen-master-schedules').hide();
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            }
+            });
+
+            $('.gen-master-schedules').click(function () {
+                var fieldItem = $("#@Html.FieldIdFor(model => model.SelectedFieldId)").val();
+                if (fieldItem != "0") {
+                    $.ajax({
+                        cache: false,
+                        type: "GET",
+                        url: "@(Url.Action("GenerateMasterSchedules"))",
+                        data: { "field": fieldItem },
+                        success: function (data) {
+                            if (!data.success) {
+                                $('.gen-master-schedules').show();
+                                $('#masterschedules-grid').hide();
+                            }
+                            else {
+                                $('.gen-master-schedules').hide();
+                                var optionsGrid = $("#masterschedules-grid");
+                                optionsGrid.show();
+                                optionsGrid.data('tGrid').ajaxRequest();
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert('Failed to retrieve states.');
+                        }
+                    });
+                }
+            });
+
+            $("#btnSearch").click(function () {
+
+                //search
+                var grid = $('#masterschedules-grid').data('tGrid');
+                grid.currentPage = 1; //new search. Set page size to 1
+                grid.ajaxRequest();
+
+                return false;
+            });
+
+        });
+        function onDataBinding(e) {
+
+            var searchModel = {
+                SelectedCourtId: $('#@Html.FieldIdFor(model => model.SelectedCourtId)').val(),
+                SelectedChannelId: $('#@Html.FieldIdFor(model => model.SelectedChannelId)').val(),
+                SelectedMerchantId: $('#@Html.FieldIdFor(model => model.SelectedMerchantId)').val(),
+                SelectedFieldId: $('#@Html.FieldIdFor(model => model.SelectedFieldId)').val(),
+            };
+            e.data = searchModel;
+        }
+
+        function onDataBound(e) {
+
+        }
+
+        function onComplete(e) {
+
+        }
+    </script>
+
+    @(Html.Telerik().Grid<MasterScheduleModel>()
+            .Name("masterschedules-grid")
+            .DataKeys(keys =>
+            {
+                keys.Add(x => x.Id);
+            })
+            .ClientEvents(events => events
+                .OnDataBinding("onDataBinding"))
+            .DataBinding(dataBinding =>
+            {
+                dataBinding.Ajax()
+                    .Select("MasterSchedule_List", "InvChannel")
+                    .Update("MasterSchedule_Update", "InvChannel");
+                //.Delete("MasterScheduleDelete", "Facility", new { productId = Model.ProductId, spcFacId = Model.Id });
+            })
+            .Columns(columns =>
+            {
+                columns.Bound(x => x.StartText)
+                    .Title("Begin")
+                    .Centered()
+                    .ReadOnly()
+                    .Width(50);
+
+                columns.Bound(x => x.FieldId).Hidden();
+                columns.Bound(x => x.Start).Hidden();
+                columns.Bound(x => x.End).Hidden();
+
+                columns.Bound(x => x.EndText)
+                    .Centered()
+                    .Title("End")
+                    .ReadOnly()
+                    .Width(50);
+
+                columns.Bound(x => x.DisplayOrder)
+                    .Title("Order")
+                    .Width(50)
+                    .Centered();
+
+                columns.Bound(x => x.DefaultAvailStatus)
+                    .Title("Status")
+                    .ClientTemplate("<#= DefaultAvailStatusName #>")
+                    .Width(50)
+                    .Centered();
+
+                columns.Bound(x => x.DefaultBasePrice)
+                    .Title("Price")
+                    .Format("{0:#,###.00}")
+                    .Width(120)
+                    .RightAlign();
+
+                columns.Command(commands =>
+                {
+                    commands.Edit().Localize(T);
+                })
+                .Width(180);
+            })
+            //.Pageable(settings => settings.PageSize(gridPageSize).Position(GridPagerPosition.Both))
+            .PreserveGridState()
+            .EnableCustomBinding(true))
+
+}

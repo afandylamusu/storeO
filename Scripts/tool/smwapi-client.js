@@ -4,6 +4,7 @@
 	smNetClient.init = function () {
 	    $('#GetData').click(GetData);
 	    $('#PostData').click(PostData);
+	    $('#PutData').click(PutData);
 	    $('#PatchData').click(PatchData);
 	    $('#DelData').click(DelData);
 		$('#AddOrderNote').click(AddOrderNote);
@@ -28,6 +29,19 @@
 	    smNetConsumer.startRequest({
 	        resource: GetResource(),
 	        method: 'PATCH',
+	        content: GetParameters(),
+	        beforeSend: BeforeSend,
+	        fail: Fail,
+	        done: Done
+	    });
+	}
+
+	function PutData() {
+	    $('#Outputs').empty();
+
+	    smNetConsumer.startRequest({
+	        resource: GetResource(),
+	        method: 'PUT',
 	        content: GetParameters(),
 	        beforeSend: BeforeSend,
 	        fail: Fail,

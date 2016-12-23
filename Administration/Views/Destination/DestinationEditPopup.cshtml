@@ -4,13 +4,13 @@
 @model DestinationItemModel
 @{
     //page title
-    ViewBag.Title = T("Admin.Configuration.Countries.States.Destinations.EditDestinationDetails").Text;
+    ViewBag.Title = T("Admin.Configuration.Countries.States.Destinations.EditDestinationDetails").Text + " - " + Model.Name;
 }
 @using (Html.BeginForm())
 {
     <div class="section-header">
         <div class="title">
-            @T("Admin.Configuration.Countries.States.Destinations.EditDestinationDetails")
+            @ViewBag.Title
         </div>
         <div class="options">
             <button type="submit" name="save" value="save" class="btn btn-primary"><i class="fa fa-check"></i>&nbsp;@T("Admin.Common.Save")</button>

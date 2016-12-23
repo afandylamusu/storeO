@@ -1,4 +1,4 @@
-﻿FriendlyName: Sport Center Product
+﻿FriendlyName: Sport Center Booking Engine
 Description: Provides sport center products for rent.
 SystemName: Lince.SportCenter
 Group: Developer

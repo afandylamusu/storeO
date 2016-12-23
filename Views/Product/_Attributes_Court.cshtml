@@ -29,7 +29,10 @@
     string invTypeCodeControlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", invTypeCodeControl.ProductId, invTypeCodeControl.BundleItemId, invTypeCodeControl.ProductAttributeId, invTypeCodeControl.Id);
 }
 <div class="attributes">
-
+    <div class="control-group">
+        <label class="control-label" for="SportField">Field</label>
+        @Html.DropDownList("SportField", new List<SelectListItem>(), new { style = "width: 250px" })
+    </div>
     <div class="control-group">
         <label class='control-label@(dayControl.IsRequired ? " required" : "")' for="@(dayControlId)">@textPromptDayControl</label>
         @if (!string.IsNullOrEmpty(dayControl.Description))
@@ -50,7 +53,7 @@
     <div class="control-group">
         <label class='control-label@(invTypeCodeControl.IsRequired ? " required" : "")' for="@(invTypeCodeControl)">Schedules</label>
         <div class="btn-group btn-group-vertical spc-schedules">
-            <a class="btn disabled">07:00 - 08:00 | Rp. 150,000.00</a>
+            @*<a class="btn disabled">07:00 - 08:00 | Rp. 150,000.00</a>
             <a class="btn btn-warning add-to-cart-button ajax-cart-link"
                 href="#"
 			    rel="nofollow"
@@ -68,13 +71,43 @@
                data-type="cart"
                data-action="add">
                 09:00 - 10:00 | Rp. 150,000.00
-            </a>
+            </a>*@
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
     $(function () {
+
+        function loadFields()
+        {
+            var ddlStates = $("#attributes_@(Model.Id)_SportField");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "@Url.RouteUrl("Lince.SportCenter.SPC.Default", new { controller = "PublicCommon", action = "GetFields" })",
+                data: { "product": @(Model.Id), "addEmptyIfRequired": false },
+                success: function (data) {
+                    if(data == null)
+                        return;
+
+                    ddlStates.html('');
+                    $.each(data, function (id, option) {
+                        ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                    ddlStates.trigger("change");
+                    //ddlStates.val(data[0].id);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+
+        }
+
+        $("#attributes_@(Model.Id)_SportField").change(function(e){
+            refreshSchdules();
+        });
 
         function refreshSchdules() {
             /// SportCenterCourt in public.product-detail-court.js
@@ -85,14 +118,18 @@
                 $("#@startControlId"),
                 $("#@endControlId"),
                 $("#@invTypeCodeControlId"),
-                '@Url.Action("AddProduct", "ShoppingCart", new { productId = Model.AddToCart.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })'
+                '@Url.Action("AddProduct", "ShoppingCart", new { productId = Model.AddToCart.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })',
+                '@Url.RouteUrl("Lince.SportCenter.SPC.Default", new { controller = "PublicCommon", action = "SearchAvails" })',
+                $("#attributes_@(Model.Id)_SportField").val()
             );
         }
 
-        $("select[name='@(dayControlId + "_day")']").ready(function(){
+        loadFields();
+
+        @*$("select[name='@(dayControlId + "_day")']").ready(function(){
             refreshSchdules();
-        });
-        
+        });*@
+
 
         $("select[name='@(dayControlId + "_day")'").change(function() {
             refreshSchdules();

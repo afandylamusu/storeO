@@ -2,36 +2,42 @@
 
 var SportCenterCourt = (function ($, window, document, undefined) {
 
-    var ctrStart = null, ctrEnd = null, ctrInvTypeCode = null, ctrDay = null, ctrMonth = null, ctrYear = null, urlCartAction = null;
+    var ctrStart = null, ctrEnd = null, ctrInvTypeCode = null, ctrDay = null, ctrMonth = null, ctrYear = null, urlCartAction = null, urlAvails = null, ctrField = 0;
     var productId = null; 
 
-    smNetConsumer.init({
-        /// ADE-KHI
-        publicKey: 'dcc70b51a6fb3b8d90aa5bb8963fb466',
-        secretKey: '94ffb43560acd9e5080cd217e20cb551',
-        /// ADE-HOME
-        //publicKey: '683d33e859cf79745f3226f603ee8370',
-        //secretKey: 'f91544ca30b41eeaca7abb76615213ce',
-        url: 'http://d2.kandangbola.com'
-    });
+    //smNetConsumer.init({
+    //    /// ADE-KHI
+    //    //publicKey: 'daf9a79c9d639d9021398a97e7bdc247',
+    //    //secretKey: 'a96c48090ce879e794b07eae2099bd82',
+    //    /// ADE-HOME
+    //    publicKey: '942d9a98267efc81d97146d72b7832cb',
+    //    secretKey: '2d101deafd9907dfa95db87044e74cb9',
+    //    url: 'http://localhost:6100'
+    //});
 
     function GetApiResource(resource) {
-        return "/api/v1"+ resource;
+        return "/api/v2"+ resource;
     }
 
-    function callSMWapi(resourceUrl, method, data) {
-        smNetConsumer.startRequest({
-            resource: resourceUrl,
-            method: method,
-            content: data,
-            beforeSend: BeforeSend,
-            fail: Fail,
-            done: Done
+    function callSMWapi(resourceUrl, data) {
+
+        $('div.spc-schedules').empty();
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            accepts: 'application/json, text/javascript, */*',
+            cache: false,
+            type: "POST",
+            url: resourceUrl,
+            data: JSON.stringify(data),
+            success: Done,
+            error: Fail
         });
     }
 
     function BeforeSend(jqXHR, settings) {
         //console.log('Request ajax settings: ' + JsonStringify(settings));
+        /// remove all childs
     }
 
     function formatTime(dt) {
@@ -40,13 +46,22 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     }
 
     function Done(data, textStatus, jqXHR) {
+
         //console.log('Response OK:\r\n' + jqXHR.getAllResponseHeaders() + '\r\n' + JsonStringify(data));
+        var notAvail = jQuery("<div/>", {})
+            .addClass("control-label")
+            .html("Schedules not found, Please try another criteria.");
 
-        /// remove all childs
-        $('div.spc-schedules').empty();
-
-        if (!data[0])
+        if (!data[0]) {
+            notAvail.appendTo('div.spc-schedules');
             return;
+        }
+
+        if (data[0].schedules.length == 0)
+        {
+            notAvail.appendTo('div.spc-schedules');
+            return;
+        }
 
         $.each(data[0].schedules, function (i, v) {
 
@@ -55,7 +70,7 @@ var SportCenterCourt = (function ($, window, document, undefined) {
             
             var btn = jQuery('<div/>', {
                 'data-id': v.id,
-                'data-invtypecode': v.master_schedule_id + ":" + v.id + ":" + v.rate_id,
+                'data-invtypecode': v.field_id + ":" + v.master_schedule_id + ":" + v.id + ":" + v.rate_id,
                 'data-start': v.start,
                 'data-end': v.end,
                 'data-href': urlCartAction,
@@ -137,12 +152,14 @@ var SportCenterCourt = (function ($, window, document, undefined) {
         var d = {
             pid: productId,
             ci: bookingDate,
-            co: bookingDate
+            co: bookingDate,
+            field: ctrField
         };
 
-        callSMWapi(GetApiResource("/search"), "post", {
+        callSMWapi(urlAvails, {
             check_in: d.ci,
-            field_ids: [d.pid]
+            field_ids: [d.field],
+            court_ids:[d.pid]
         });
     }
 
@@ -161,17 +178,21 @@ var SportCenterCourt = (function ($, window, document, undefined) {
     });
 
     return {
-        refreshSchedules: function (pid, oDay, oMonth, oYear, oStart, oEnd, oInvTypeCode, urlAction) {
-            productId = pid;
-            ctrStart = oStart;
-            ctrEnd = oEnd;
-            ctrInvTypeCode = oInvTypeCode;
-            ctrDay = oDay;
-            ctrMonth = oMonth;
-            ctrYear = oYear;
-            urlCartAction = urlAction;
+        refreshSchedules: function (pid, oDay, oMonth, oYear, oStart, oEnd, oInvTypeCode, urlAction, urlAvail, fieldId) {
+            if (pid != null && fieldId != null) {
+                productId = pid;
+                ctrStart = oStart;
+                ctrEnd = oEnd;
+                ctrInvTypeCode = oInvTypeCode;
+                ctrDay = oDay;
+                ctrMonth = oMonth;
+                ctrYear = oYear;
+                urlCartAction = urlAction;
+                urlAvails = urlAvail;
+                ctrField = fieldId;
 
-            reloadSchedules();
+                reloadSchedules();
+            }
         },
     };
 

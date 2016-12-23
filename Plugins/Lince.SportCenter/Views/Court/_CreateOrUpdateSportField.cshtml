@@ -1,0 +1,85 @@
+﻿@using Lince.SportCenter.Models2.Inventory
+@model SportFieldModel
+@if (ViewBag.RefreshPage == true)
+{
+    <script type="text/javascript">
+        try {window.opener.document.forms['@(ViewBag.formId)'].@(ViewBag.btnId).click();}
+        catch (e){}
+        window.close();
+    </script>
+}
+<table class="adminContent">
+    @if (Model.Id == 0)
+    {
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ChannelId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.ChannelId, Model.AvailableChannels)
+                @Html.ValidationMessageFor(model => model.ChannelId)
+            </td>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.ChannelId)
+            </td>
+            <td class="adminData">
+                @Html.Raw(Model.ChannelName)
+                @Html.HiddenFor(model => model.ChannelId)
+                @Html.ValidationMessageFor(model => model.ChannelId)
+            </td>
+        </tr>
+    }
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.Name)
+        </td>
+        <td class="adminData">
+            @Html.HiddenFor(model => model.Id)
+            @Html.EditorFor(model => model.Name)
+            @Html.HiddenFor(model => model.SportCourtId)
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.Type)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Type)
+            @Html.ValidationMessageFor(model => model.Type)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.NumOfFields)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.NumOfFields)
+            @Html.ValidationMessageFor(model => model.NumOfFields)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.UsedInventoryId)
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(model => model.UsedInventoryId, Model.AvailableFields)
+            @Html.ValidationMessageFor(model => model.UsedInventoryId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.Active)
+        </td>
+        <td class="adminData">
+            @Html.EditorFor(model => model.Active)
+            @Html.ValidationMessageFor(model => model.Active)
+        </td>
+    </tr>
+    
+</table>

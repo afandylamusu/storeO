@@ -42,6 +42,10 @@
 		var hash = CryptoJS.HmacSHA256(messageRepresentation, this.settings.secretKey),
 			signature = CryptoJS.enc.Base64.stringify(hash);
 
+		console.log(messageRepresentation);
+		console.log(this.settings.secretKey);
+		console.log(signature);
+
 		return signature;
 	};
 
@@ -53,7 +57,7 @@
 	};
 
 	smNetConsumer.startRequest = function (options) {
-		var now = new Date(),
+	    var now = new Date(),
 			timestamp = now.toISOString(),
 			contentMd5Hash = null;
 
@@ -86,12 +90,14 @@
 			});
 
 			$.extend(ajaxOptions.headers, {
-			    "Content-MD5": contentMd5Hash		// optional
-			    //"Content-Type": "application/json; charset=utf-8",
+			    "Content-MD5": contentMd5Hash,		// optional
+			    "Content-Type": options.method == 'PATCH' ? "application/json-patch+json; charset=utf-8" : "application/json; charset=utf-8",
 			    //"Access-Control-Allow-Origin": "*",
 			    //"Access-Control-Allow-Methods": options.method
 
 			});
+
+			console.log(options.content);
 		}
 
 		var messageRepresentation = this.createMessageRepresentation(contentMd5Hash, timestamp, ajaxOptions),
@@ -119,6 +125,8 @@
 		function pad(number) {
 			return (number < 10 ? '0' + number : number);
 		}
+
+		console.log('manual time')
 
 		// fallback
 		Date.prototype.toISOString = function () {

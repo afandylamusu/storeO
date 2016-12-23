@@ -1,0 +1,212 @@
+﻿@using Lince.SportCenter.Models2.Inventory
+@model InventoryScheduleListModel
+@{
+    Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Inventory Schedules";
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-puzzle-piece"></i>
+        @T("Plugins.Lince.SportCenter.InventoryChannels.InventorySchedules.Title")
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <button class="close" data-dismiss="alert">×</button>
+    @Html.Raw(@T("Plugins.Lince.SportCenter.InventoryChannels.InventorySchedules.AdminInstruction"))
+</div>
+
+@using (Html.BeginForm())
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#@Html.FieldIdFor(model => model.SelectedMerchantId)").change(function () {
+                var selectedItem = $(this).val();
+                var ddlStates = $("#@Html.FieldIdFor(model => model.SelectedCourtId)")
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetCourts"))",
+                    data: { "merchant": selectedItem, "addEmptyIfRequired": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        ddlStates.trigger("change");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+
+            $("#@Html.FieldIdFor(model => model.SelectedChannelId)").change(function () {
+                var selectedItem = $(this).val();
+                var courtSelectedItem = $("#@Html.FieldIdFor(model => model.SelectedCourtId)").val();
+
+                var ddlStates = $("#@Html.FieldIdFor(model => model.SelectedFieldId)")
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetFields"))",
+                    data: { "channel": selectedItem, "court": courtSelectedItem, "addEmptyIfRequired": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        ddlStates.trigger("change");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+
+            $("#@Html.FieldIdFor(model => model.SelectedCourtId)").change(function () {
+                var selectedItem = $(this).val();
+                var channelSelectedItem = $("#@Html.FieldIdFor(model => model.SelectedChannelId)").val();
+
+                var ddlStates = $("#@Html.FieldIdFor(model => model.SelectedFieldId)")
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: "@(Url.Action("GetFields"))",
+                    data: { "channel": channelSelectedItem, "court": selectedItem, "addEmptyIfRequired": "true" },
+                    success: function (data) {
+                        ddlStates.html('');
+                        $.each(data, function (id, option) {
+                            ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                        });
+                        ddlStates.trigger("change");
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert('Failed to retrieve states.');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <table class="adminContent">
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedMerchantId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedMerchantId, Model.AvailableMerchants)
+                @Html.ValidationMessageFor(model => model.SelectedMerchantId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedChannelId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedChannelId, Model.AvailableChannels)
+                @Html.ValidationMessageFor(model => model.SelectedChannelId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedCourtId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedCourtId, Model.AvailableCourts)
+                @Html.ValidationMessageFor(model => model.SelectedCourtId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.SelectedFieldId)
+            </td>
+            <td class="adminData">
+                @Html.DropDownListFor(model => model.SelectedFieldId, Model.AvailableFields)
+                @Html.ValidationMessageFor(model => model.SelectedFieldId)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.Start)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.Start)
+                @Html.ValidationMessageFor(model => model.Start)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                @Html.SmartLabelFor(model => model.End)
+            </td>
+            <td class="adminData">
+                @Html.EditorFor(model => model.End)
+                @Html.ValidationMessageFor(model => model.End)
+            </td>
+        </tr>
+        <tr>
+            <td class="adminTitle">
+                &nbsp;
+            </td>
+            <td class="adminData">
+                <button type="submit" id="btnSearch" class="btn">
+                    <i class="fa fa-search"></i>
+                    @T("Admin.Common.Search")
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <p>&nbsp;</p>
+    <style type="text/css">
+        .tbl-schedules input {
+            width: 100px;
+        }
+
+        .count-badge {
+          position: relative;
+          top: -50px;
+          right: -50px;
+        }
+    </style>
+
+    <div class="t-widget t-grid tbl-schedules">
+        <table cellspacing="0" class="table">
+            <thead class="t-grid-header">
+                <tr>
+                    <td>Date</td>
+                    <td>07:00 - 07:59</td>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2016-11-16</td>
+                    <td>
+                        <div class="tabbable tabs-below">
+                            <div class="tab-content">
+                                <div id="i0_prc" class="tab-pane fade in active">
+                                    <input class="t-input valid" type="text" value="10000" />
+                                </div>
+                                <div id="i0_sch" class="tab-pane fade in">
+                                    <input class="t-input valid" type="text" readonly value="07:00 - 07:59" />
+                                </div>
+                                <div id="i0_sta" class="tab-pane fade in">
+                                    <input class="t-input valid" type="text" readonly value="Available" />
+                                </div>
+                            </div>
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#i0_prc"><i class="fa fa-fw fa-puzzle-piece"></i></a></li>
+                                <li><a data-toggle="tab" href="#i0_sch">sch</a></li>
+                                <li><a data-toggle="tab" href="#i0_sta">sta</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+}

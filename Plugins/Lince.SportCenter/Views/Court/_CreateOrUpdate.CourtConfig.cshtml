@@ -1,0 +1,284 @@
+﻿@using Lince.SportCenter.Models2.Catalog
+@using Lince.SportCenter.Models2.Inventory
+@using Telerik.Web.Mvc.UI
+
+@model SportCourtModel
+@{
+    Layout = "";
+    var urlEditMasterSchedule = Url.Action("MasterSchedule", "InvChannel");
+    var urlEditInventorySchedules = Url.Action("InventorySchedules", "InvChannel");
+}
+
+@* VERY IMPORTANT for proper model binding *@
+@Html.Hidden("__Type__", Model.GetType().AssemblyQualifiedName)
+
+@Html.HiddenFor(m => m.ProductId)
+@Html.HiddenFor(m => m.Id)
+
+<script type="text/javascript">
+    $(function () {
+        $("#@Html.FieldIdFor(model => model.CountryCode)").change(function () {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#@Html.FieldIdFor(model => model.CityId)")
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "@(Url.Action("GetCities"))",
+                data: { "countrycode": selectedItem, "addEmptyIfRequired": "true" },
+                success: function (data) {
+                    ddlStates.html('');
+                    $.each(data, function (id, option) {
+                        ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                    ddlStates.trigger("change");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        });
+
+        $("#@Html.FieldIdFor(model => model.CityId)").change(function () {
+            var selectedItem = $(this).val();
+            var ddlStates = $("#@Html.FieldIdFor(model => model.AreaId)")
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: "@(Url.Action("GetAreas"))",
+                data: { "cityId": selectedItem, "addEmptyIfRequired": "true" },
+                success: function (data) {
+                    ddlStates.html('');
+                    $.each(data, function (id, option) {
+                        ddlStates.append($('<option></option>').val(option.id).html(option.name));
+                    });
+                    ddlStates.trigger("change");
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Failed to retrieve states.');
+                }
+            });
+        });
+    });
+</script>
+<table class="adminContent">
+    <tr>
+        <td colspan="2">
+            <div class="admin-config-group">
+                <div class="head">@T("Plugins.Lince.SportCenter.ProductTabs.CourtConfig.Title")</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.MerchantId)
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(model => model.MerchantId, Model.AvailableMerchants)
+            @Html.ValidationMessageFor(model => model.MerchantId)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.TimezoneId)
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(o => new SelectListItem { Value = o.Id, Text = o.StandardName }))
+            @Html.ValidationMessageFor(model => model.Operation_Start)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.Operation_Start)
+        </td>
+        <td class="adminData">
+            @Html.Telerik().TimePickerFor(m => m.Operation_Start).Interval(60).Format("HH:mm")
+            @Html.ValidationMessageFor(model => model.Operation_Start)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(model => model.Operation_End)
+        </td>
+        <td class="adminData">
+            @Html.Telerik().TimePickerFor(m => m.Operation_End).Interval(60).Format("HH:mm")
+            @Html.ValidationMessageFor(model => model.Operation_End)
+        </td>
+    </tr>
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(m => m.CountryCode)
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(m => m.CountryCode, Model.AvailableCountries)
+            @Html.ValidationMessageFor(m => m.CountryCode)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(m => m.CityId)
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(m => m.CityId, Model.AvailableCities)
+            @Html.ValidationMessageFor(m => m.CityId)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(m => m.AreaId)
+        </td>
+        <td class="adminData">
+            @Html.DropDownListFor(m => m.AreaId, Model.AvailableAreas)
+            @Html.ValidationMessageFor(m => m.AreaId)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(m => m.Street)
+        </td>
+        <td class="adminData">
+            @Html.TextAreaFor(m => m.Street)
+            @Html.ValidationMessageFor(m => m.Street)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="adminTitle">
+            @Html.SmartLabelFor(m => m.Phone)
+        </td>
+        <td class="adminData">
+            @Html.TextBoxFor(m => m.Phone)
+            @Html.ValidationMessageFor(m => m.Phone)
+        </td>
+    </tr>
+</table>
+
+<p>&nbsp;</p>
+
+@if (Model.Id > 0)
+{
+    <div style="margin-top:30px;">
+        <h3>@T("Plugins.Lince.SportCenter.ProductTabs.SportFields.Title")</h3>
+        <div class="alert alert-info">
+            @T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.Description")
+        </div>
+
+        <div class="clearfix" style="margin-bottom: 15px">
+            <button class="btn btn-warning btn-above add-new-field">
+                <i class="fa fa-plus"></i>
+                @T("Plugins.Lince.SportCenter.ProductTabs.SportFields.AddNew")
+            </button>
+
+            @*<div class="pull-right">
+                    <button type="button" id="btnCreateAllCombinations" class="btn" data-url='@Url.Action("CreateAllAttributeCombinations", new { productId = Model.Id })'
+                            data-ask="@T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.AskToCombineAll")">
+                        <i class="fa fa-tasks"></i>
+                        @T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.CreateAllCombinations")
+                    </button>
+
+                    <button type="button" id="btnDeleteAllCombinations" class="btn" data-url='@Url.Action("DeleteAllAttributeCombinations", new { productId = Model.Id })'
+                            data-ask="@T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.AskToDeleteAll")">
+                        <i class="fa fa-trash-o"></i>
+                        @T("Admin.Catalog.Products.ProductVariantAttributes.AttributeCombinations.DeleteAllCombinations")
+                    </button>
+                </div>*@
+
+            <input type="submit" id="btnRefreshFields" name="btnRefreshFields" class="hide" />
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.add-new-field').on('click', function (e) {
+                        OpenWindow('@(Url.Action("SportFieldCreatePopup", "Court", new { productId = Model.ProductId }))&btnId=btnRefreshFields&formId=product-form',
+                            800,
+                            300,
+                            true);
+                        return false;
+                    });
+
+                    $('#btnRefreshFields').click(function () {
+                        //refresh grid
+                        var optionsGrid = $("#sportfields-grid");
+                        optionsGrid.data('tGrid').ajaxRequest();
+
+                        //return false to don't reload a page
+                        return false;
+                    });
+
+                    $('#btnCreateAllCombinations, #btnDeleteAllCombinations').click(function () {
+                        $(this).doAjax({
+                            callbackSuccess: function (resp) {
+                                $('#btnRefreshCombinations').click();
+                            }
+                        });
+                    });
+                });
+            </script>
+        </div>
+
+    </div>
+
+    <div>
+        @(Html.Telerik().Grid<SportFieldModel>()
+                .Name("sportfields-grid")
+                .DataKeys(x =>
+                {
+                    x.Add(y => y.Id);
+                })
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.Active).Width(100)
+                    .ClientTemplate(@Html.SymbolForBool("Active"));
+
+                    columns.Bound(x => x.Name);
+
+                    columns.Bound(x => x.Type)
+                        .Width(100)
+                        .Centered();
+
+                    columns.Bound(x => x.UsedInventoryId)
+                        .ClientTemplate("<#= UsedInventoryName #>")
+                        .Width(100)
+                        .Centered();
+
+                    columns.Bound(x => x.ChannelId)
+                        .ClientTemplate("<#= ChannelName #>")
+                        .Width(100)
+                        .Centered();
+
+                    columns.Bound(x => x.ButtonMasterSchedules)
+                                .Centered()
+                                .Width(120)
+                                .ClientTemplate("<a target='_blank' class=\"btn t-button\" href=\"" + urlEditMasterSchedule + "?fieldId=<#= Id #>&courtId=<#= SportCourtId #>\">Master</a>")
+                                .Title("Inventory");
+
+                    columns.Bound(x => x.ButtonInventorySchedules)
+                                .Centered()
+                                .Width(120)
+                                .ClientTemplate("<a target='_blank' class=\"btn t-button\" href=\"" + urlEditInventorySchedules + "?fieldId=<#= Id #>&courtId=<#= SportCourtId #>\">Daily</a>")
+                                .Title("Inventory");
+
+                    columns.Bound(x => x.Id)
+                                .Centered()
+                                .Width(120)
+                                .ClientTemplate("<input type='submit' value='" + @T("Admin.Common.Edit").Text + "' onclick=\"" + "javascript:OpenWindow('" + @Url.RouteUrl("Lince.SportCenter.SPC.Default", new { controller = "Court", action = "SportFieldEditPopup" }) + "/<#= Id #>?courtId=<#= SportCourtId #>&btnId=btnRefreshFields&formId=product-form', 800, 300, true); return false;\" class='t-button' />")
+                                .Title("");
+
+                    columns.Command(commands =>
+                    {
+                        commands.Delete().Localize(T);
+                    }).Width(180);
+
+                })
+                .Editable(x =>
+                {
+                    x.Mode(GridEditMode.InLine);
+                })
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax().Select("SportField_List", "Court", new { courtId = Model.Id })
+                    .Delete("SportField_Delete", "Court");
+                })
+                .EnableCustomBinding(true))
+    </div>
+}

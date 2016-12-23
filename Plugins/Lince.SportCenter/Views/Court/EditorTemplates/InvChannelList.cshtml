@@ -1,0 +1,15 @@
+﻿@{
+    var controlName = Html.Id("").ToString();
+}
+
+<select name="@controlName"
+        id="@controlName"
+        class="autowidth"
+        style="min-width: 200px"
+        data-select-url='@Url.Action("AllChannelList", "InvChannel")'></select>
+
+<script>
+    $(function () {
+        $('#@controlName').selectWrapper();
+    });
+</script>

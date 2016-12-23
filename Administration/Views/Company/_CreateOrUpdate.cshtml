@@ -153,7 +153,7 @@
                 <hr />
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="adminTitle">
                 @Html.SmartLabelFor(model => model.Title)
             </td>
@@ -179,7 +179,7 @@
                 @Html.EditorFor(model => model.Lastname)
                 @Html.ValidationMessageFor(model => model.Lastname)
             </td>
-        </tr>
+        </tr>*@
         
         <tr>
             <td class="adminTitle">
@@ -267,7 +267,7 @@
             </td>
         </tr>
 
-        <tr>
+        @*<tr>
             <td class="adminTitle">
                 @Html.SmartLabelFor(model => model.Email)
             </td>
@@ -275,12 +275,12 @@
                 @Html.EditorFor(model => model.Email)
                 @Html.ValidationMessageFor(model => model.Email)
             </td>
-        </tr>
+        </tr>*@
         
 
     </table>
 
-    <table class="adminContent">
+    @*<table class="adminContent">
         <tr class="adminSeparator">
             <td colspan="2">
                 <hr />
@@ -322,7 +322,7 @@
                 @Html.ValidationMessageFor(model => model.BA_Name)
             </td>
         </tr>
-    </table>
+    </table>*@
         }
 
 

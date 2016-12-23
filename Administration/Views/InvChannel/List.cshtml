@@ -1,0 +1,62 @@
+﻿@{
+    //Layout = "~/Administration/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "List";
+}
+
+<div class="section-header">
+    <div class="title">
+        <i class="fa fa-puzzle-piece"></i>
+        @T("Plugins.Lince.SportCenter.InventoryChannels.List.Title")
+    </div>
+</div>
+
+<div class="alert alert-info">
+    <button class="close" data-dismiss="alert">×</button>
+    @Html.Raw(@T("Plugins.Lince.SportCenter.InventoryChannels.AdminInstruction"))
+</div>
+
+<div class="adminContent">
+    <div class="clearfix" style="margin-bottom: 15px">
+        @*<button class="btn btn-warning btn-above add-new-channel">
+                <i class="fa fa-plus"></i>
+                @T("Plugins.Lince.SportCenter.InventoryChannels.AddNew")
+            </button>*@
+    </div>
+    <div>
+        @(Html.Telerik().Grid<InventoryChannelModel>()
+                .Name("invchannels-grid")
+                .DataKeys(x =>
+                {
+                    x.Add(y => y.Id);
+                })
+                .Columns(columns =>
+                {
+                    columns.Bound(x => x.Active).Width(100)
+                    .ClientTemplate(@Html.SymbolForBool("Active"));
+
+                    columns.Bound(x => x.Name);
+
+                    columns.Command(commands =>
+                    {
+                        commands.Edit().Localize(T);
+                        commands.Delete().Localize(T);
+                    }).Width(180);
+
+                })
+                .Editable(x =>
+                {
+                    x.Mode(GridEditMode.InLine);
+                })
+                .ToolBar(commands => commands.Insert())
+                .DataBinding(dataBinding =>
+                {
+                    dataBinding.Ajax().Select("Grid_List", "InvChannel")
+                        .Insert("Grid_Insert", "InvChannel")
+                        .Update("Grid_Update", "InvChannel")
+                        .Delete("Grid_Delete", "InvChannel");
+                })
+                .EnableCustomBinding(true))
+    </div>
+</div>
+
+
