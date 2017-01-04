@@ -1,0 +1,9 @@
+﻿FriendlyName: Hotel Booking Engine
+Description: Provides hotel reservation system.
+Group: Developer
+SystemName: Lince.HotelCenter
+Version: 2.6.0
+MinAppVersion: 2.5.0
+DisplayOrder: 0
+FileName: Lince.HotelCenter.dll
+ResourceRootKey: Plugins.Lince.HotelCenter

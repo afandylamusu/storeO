@@ -93,6 +93,10 @@ var SportCenterCourt = (function ($, window, document, undefined) {
                 case 0:
                     btn.addClass('btn btn-success add-to-cart-button ajax-cart-link');
                     break;
+                default:
+                    btn.addClass('btn btn-error add-to-cart-button');
+                    btn.attr("disabled", 'disabled');
+                    break;
             }              
             
             btn.appendTo('div.spc-schedules');

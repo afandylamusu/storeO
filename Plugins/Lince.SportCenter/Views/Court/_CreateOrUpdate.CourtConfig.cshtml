@@ -1,8 +1,4 @@
-﻿@using Lince.SportCenter.Models2.Catalog
-@using Lince.SportCenter.Models2.Inventory
-@using Telerik.Web.Mvc.UI
-
-@model SportCourtModel
+﻿@model SportCourtModel
 @{
     Layout = "";
     var urlEditMasterSchedule = Url.Action("MasterSchedule", "InvChannel");
@@ -261,7 +257,7 @@
                     columns.Bound(x => x.Id)
                                 .Centered()
                                 .Width(120)
-                                .ClientTemplate("<input type='submit' value='" + @T("Admin.Common.Edit").Text + "' onclick=\"" + "javascript:OpenWindow('" + @Url.RouteUrl("Lince.SportCenter.SPC.Default", new { controller = "Court", action = "SportFieldEditPopup" }) + "/<#= Id #>?courtId=<#= SportCourtId #>&btnId=btnRefreshFields&formId=product-form', 800, 300, true); return false;\" class='t-button' />")
+                                .ClientTemplate("<input type='submit' value='" + @T("Admin.Common.Edit").Text + "' onclick=\"" + "javascript:OpenWindow('" + @Url.RouteUrl("Lince.SportCenter.Default", new { controller = "Court", action = "SportFieldEditPopup" }) + "/<#= Id #>?courtId=<#= SportCourtId #>&btnId=btnRefreshFields&formId=product-form', 800, 300, true); return false;\" class='t-button' />")
                                 .Title("");
 
                     columns.Command(commands =>

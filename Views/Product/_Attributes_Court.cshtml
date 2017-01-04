@@ -85,7 +85,7 @@
             $.ajax({
                 cache: false,
                 type: "GET",
-                url: "@Url.RouteUrl("Lince.SportCenter.SPC.Default", new { controller = "PublicCommon", action = "GetFields" })",
+                url: "@Url.RouteUrl("Lince.SportCenter.Default", new { controller = "PublicCommon", action = "GetFields" })",
                 data: { "product": @(Model.Id), "addEmptyIfRequired": false },
                 success: function (data) {
                     if(data == null)
@@ -119,7 +119,7 @@
                 $("#@endControlId"),
                 $("#@invTypeCodeControlId"),
                 '@Url.Action("AddProduct", "ShoppingCart", new { productId = Model.AddToCart.ProductId, shoppingCartTypeId = (int)ShoppingCartType.ShoppingCart })',
-                '@Url.RouteUrl("Lince.SportCenter.SPC.Default", new { controller = "PublicCommon", action = "SearchAvails" })',
+                '@Url.RouteUrl("Lince.SportCenter.Default", new { controller = "PublicCommon", action = "SearchAvails" })',
                 $("#attributes_@(Model.Id)_SportField").val()
             );
         }

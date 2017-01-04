@@ -1,0 +1,9 @@
+﻿FriendlyName: Flight Booking Engine
+Description: Provides Flight reservation system.
+Group: Developer
+SystemName: Lince.FlightCenter
+Version: 2.6.0
+MinAppVersion: 2.5.0
+DisplayOrder: 0
+FileName: Lince.FlightCenter.dll
+ResourceRootKey: Plugins.Lince.FlightCenter
